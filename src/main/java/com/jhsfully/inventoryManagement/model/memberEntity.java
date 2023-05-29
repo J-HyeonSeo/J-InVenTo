@@ -3,9 +3,8 @@ package com.jhsfully.inventoryManagement.model;
 import com.sun.istack.NotNull;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,5 +24,7 @@ public class memberEntity {
     @NotNull
     private String name;
     private String department;
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    private List<String> roles;
 
 }

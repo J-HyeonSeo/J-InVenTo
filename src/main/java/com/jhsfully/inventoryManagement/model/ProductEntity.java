@@ -1,5 +1,6 @@
 package com.jhsfully.inventoryManagement.model;
 
+import com.jhsfully.inventoryManagement.dto.ProductDto;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -22,5 +23,14 @@ public class ProductEntity {
     private String company;
     private double price;
     private String spec;
+
+    public ProductDto toDto(){
+        return ProductDto.builder()
+                .name(this.name)
+                .company(this.company)
+                .price(this.price)
+                .spec(this.spec)
+                .build();
+    }
 
 }
