@@ -24,8 +24,9 @@ public class ProductEntity {
     private double price;
     private String spec;
 
-    public ProductDto toDto(){
-        return ProductDto.builder()
+    public ProductDto.ProductResponse toDto(){
+        return ProductDto.ProductResponse.builder()
+                .id(this.id)
                 .name(this.name)
                 .company(this.company)
                 .price(this.price)
