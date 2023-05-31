@@ -1,9 +1,12 @@
 package com.jhsfully.inventoryManagement.service;
 
 import com.jhsfully.inventoryManagement.dto.ProductDto;
+import com.jhsfully.inventoryManagement.exception.BomException;
 import com.jhsfully.inventoryManagement.exception.ProductException;
 import com.jhsfully.inventoryManagement.model.ProductEntity;
+import com.jhsfully.inventoryManagement.repository.BomRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
+import com.jhsfully.inventoryManagement.type.BomErrorType;
 import com.jhsfully.inventoryManagement.type.ProductErrorType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,6 +34,9 @@ class ProductServiceTest {
     //Mocking and Inject
     @Mock
     private ProductRepository productRepository;
+
+    @Mock
+    private BomRepository bomRepository;
 
     @InjectMocks
     private ProductService productService;
@@ -160,6 +166,22 @@ class ProductServiceTest {
         assertEquals("newSpec", captor.getValue().getSpec());
     }
 
+    @Test
+    @DisplayName("[Service]품목 삭제 테스트 - Success")
+    void deleteProductTestSuccess(){
+        //given
+        given(productRepository.existsById(anyLong()))
+                .willReturn(true);
+        given(bomRepository.existsByPidOrCid(anyLong(), anyLong()))
+                .willReturn(false);
+
+        //when
+        productService.deleteProduct(123L);
+
+        //then
+        verify(productRepository, times(1)).deleteById(123L);
+    }
+
 
     //======= Fail Tests =======
 
@@ -245,5 +267,33 @@ class ProductServiceTest {
 
         //then
         assertEquals(ProductErrorType.PRODUCT_PRICE_MINUS, exception.getProductErrorType());
+    }
+
+    @Test
+    @DisplayName("[Service]품목 삭제 테스트(품목 없음) - Fail")
+    void deleteProductTestProductNotFoundFail(){
+        //given
+        given(productRepository.existsById(anyLong()))
+                .willReturn(false);
+        //when
+        ProductException exception = assertThrows(ProductException.class,
+                () -> productService.deleteProduct(1L));
+        //then
+        assertEquals(ProductErrorType.PRODUCT_NOT_FOUND, exception.getProductErrorType());
+    }
+
+    @Test
+    @DisplayName("[Service]품목 삭제 테스트(BOM 존재) - Fail")
+    void deleteProductTestBomHasProductFail(){
+        //given
+        given(productRepository.existsById(anyLong()))
+                .willReturn(true);
+        given(bomRepository.existsByPidOrCid(anyLong(), anyLong()))
+                .willReturn(true);
+        //when
+        ProductException exception = assertThrows(ProductException.class,
+                () -> productService.deleteProduct(1L));
+        //then
+        assertEquals(ProductErrorType.PRODUCT_HAS_BOM, exception.getProductErrorType());
     }
 }

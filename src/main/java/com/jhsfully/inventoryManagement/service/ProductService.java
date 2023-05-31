@@ -96,7 +96,7 @@ public class ProductService implements ProductInterface{
         }
 
         if(bomRepository.existsByPidOrCid(id, id)){
-            throw new BomException(BomErrorType.BOM_HAS_PRODUCT);
+            throw new ProductException(PRODUCT_HAS_BOM);
         }
     }
 
