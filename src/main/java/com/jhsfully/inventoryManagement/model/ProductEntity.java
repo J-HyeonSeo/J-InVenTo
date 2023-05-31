@@ -24,13 +24,13 @@ public class ProductEntity {
     private double price;
     private String spec;
 
-    public ProductDto.ProductResponse toDto(){
+    public static ProductDto.ProductResponse toDto(ProductEntity p){
         return ProductDto.ProductResponse.builder()
-                .id(this.id)
-                .name(this.name)
-                .company(this.company)
-                .price(this.price)
-                .spec(this.spec)
+                .id(p.getId())
+                .name(p.getName())
+                .company(p.getCompany())
+                .price(p.getPrice())
+                .spec(p.getSpec())
                 .build();
     }
 

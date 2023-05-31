@@ -4,6 +4,7 @@ import com.jhsfully.inventoryManagement.dto.ProductDto;
 import com.jhsfully.inventoryManagement.exception.ProductException;
 import com.jhsfully.inventoryManagement.model.ProductEntity;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
+import com.jhsfully.inventoryManagement.type.ProductErrorType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,7 @@ public class ProductService implements ProductInterface{
     public List<ProductDto.ProductResponse> getProducts(){
         List<ProductEntity> productEntities = productRepository.findAll();
         return productEntities.stream()
-                .map(x -> x.toDto())
+                .map(ProductEntity::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -40,7 +41,7 @@ public class ProductService implements ProductInterface{
                 .spec(request.getSpec())
                 .build();
 
-        return productRepository.save(productEntity).toDto();
+        return ProductEntity.toDto(productRepository.save(productEntity));
     }
 
     @Override
@@ -52,12 +53,15 @@ public class ProductService implements ProductInterface{
             productEntity.setName(request.getName());
         if(request.getCompany() != null && !request.getCompany().trim().equals(""))
             productEntity.setCompany(request.getCompany());
-        if(request.getPrice() >= 0)
+        if(request.getPrice() >= 0) {
             productEntity.setPrice(request.getPrice());
+        }else{
+            throw new ProductException(PRODUCT_PRICE_MINUS);
+        }
         if(request.getSpec() != null && !request.getSpec().trim().equals(""))
             productEntity.setSpec(request.getSpec());
 
-        return productRepository.save(productEntity).toDto();
+        return ProductEntity.toDto(productRepository.save(productEntity));
     }
 
     //가장 BOM의 구성에서 종속적인 경우 삭제 불가능함.

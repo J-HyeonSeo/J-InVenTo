@@ -1,0 +1,40 @@
+#main-section{
+    height: 75vh;
+}
+
+.table-wrapper{
+    height: 100%;
+    overflow: auto;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+tbody{
+    overflow: hidden;
+}
+
+th{
+    position: sticky;
+    top: 0;
+    background-color: rgb(39, 39, 39);
+    color: white;
+    font-size: 1.3rem;
+    border: 1px solid rgb(82, 82, 82);
+}
+
+td{
+    border: 1px solid rgb(145, 145, 145);
+    font-size: 1.1rem;
+}
+
+tr:nth-child(even){
+    background-color: rgb(221, 221, 221);
+}
+
+tr:hover{
+    color: white;
+    background-color: rgb(85, 85, 85);
+}

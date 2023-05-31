@@ -1,8 +1,10 @@
 package com.jhsfully.inventoryManagement.service;
 
 import com.jhsfully.inventoryManagement.dto.ProductDto;
+import com.jhsfully.inventoryManagement.exception.ProductException;
 import com.jhsfully.inventoryManagement.model.ProductEntity;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
+import com.jhsfully.inventoryManagement.type.ProductErrorType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +21,7 @@ import java.util.Optional;
 import static java.util.Optional.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -78,7 +81,7 @@ class ProductServiceTest {
     }
 
     @Test
-    @DisplayName("[Service]품목 추가 테스트 - S")
+    @DisplayName("[Service]품목 추가 테스트 - Success")
     void addProductTestSuccess(){
         //given
         given(productRepository.save(any()))
@@ -112,6 +115,135 @@ class ProductServiceTest {
 
     }
 
+    @Test
+    @DisplayName("[Service]품목 수정 테스트 - Success")
+    void updateProductTestSuccess(){
+        //given
+        given(productRepository.findById(anyLong()))
+                .willReturn(Optional.of(
+                        ProductEntity.builder()
+                                .id(10L)
+                                .name("testName")
+                                .company("testCompany")
+                                .price(1000)
+                                .spec("testSpec")
+                                .build()
+                ));
+        given(productRepository.save(any()))
+                .willReturn(
+                        ProductEntity.builder()
+                                .id(10L)
+                                .name("testName")
+                                .company("testCompany")
+                                .price(1000)
+                                .spec("testSpec")
+                                .build()
+                );
+        ArgumentCaptor<ProductEntity> captor = ArgumentCaptor.forClass(ProductEntity.class);
+
+        //when
+        productService.updateProduct(ProductDto.ProductUpdateRequest.builder()
+                        .id(10L)
+                        .name("newName")
+                        .company("newCompany")
+                        .price(2000)
+                        .spec("newSpec")
+                        .build());
+
+        //then
+        verify(productRepository, times(1)).save(captor.capture());
+
+        assertEquals(10L, captor.getValue().getId());
+        assertEquals("newName", captor.getValue().getName());
+        assertEquals("newCompany", captor.getValue().getCompany());
+        assertEquals(2000, captor.getValue().getPrice());
+        assertEquals("newSpec", captor.getValue().getSpec());
+    }
+
+
     //======= Fail Tests =======
 
+    @Test
+    @DisplayName("[Service]품목 추가 테스트(이름 누락) - Fail")
+    void addProductTestNameNullFail(){
+        //when
+        ProductException exception = assertThrows(ProductException.class,
+                () -> productService.addProduct(
+                        ProductDto.ProductAddRequest.builder()
+                                .name(null)
+                                .company("com")
+                                .price(1)
+                                .spec("spec")
+                                .build()
+                ));
+
+        //then
+        assertEquals(ProductErrorType.PRODUCT_NAME_NULL, exception.getProductErrorType());
+    }
+
+    @Test
+    @DisplayName("[Service]품목 추가 테스트(음수 단가) - Fail")
+    void addProductTestPriceMinusFail(){
+        //when
+        ProductException exception = assertThrows(ProductException.class,
+                () -> productService.addProduct(
+                        ProductDto.ProductAddRequest.builder()
+                                .name("name")
+                                .company("com")
+                                .price(-0.1)
+                                .spec("spec")
+                                .build()
+                ));
+
+        //then
+        assertEquals(ProductErrorType.PRODUCT_PRICE_MINUS, exception.getProductErrorType());
+    }
+
+    @Test
+    @DisplayName("[Service]품목 수정 테스트(품목 X) - Fail")
+    void updateProductTestProductNotFoundFail(){
+        //given
+        given(productRepository.findById(anyLong()))
+                .willReturn(Optional.empty());
+
+        //when
+        ProductException exception = assertThrows(ProductException.class,
+                () -> productService.updateProduct(
+                        ProductDto.ProductUpdateRequest.builder()
+                                .id(1L)
+                                .build()
+                ));
+
+        //then
+        assertEquals(ProductErrorType.PRODUCT_NOT_FOUND, exception.getProductErrorType());
+    }
+
+    @Test
+    @DisplayName("[Service]품목 수정 테스트(음수 단가) - Fail")
+    void updateProductTestPriceMinusFail(){
+        //given
+        given(productRepository.findById(any()))
+                .willReturn(Optional.of(
+                        ProductEntity.builder()
+                                .id(10L)
+                                .name("testName")
+                                .company("testCompany")
+                                .price(100)
+                                .spec("testSpec")
+                                .build()
+                ));
+        //when
+        ProductException exception = assertThrows(ProductException.class, () ->
+                productService.updateProduct(ProductDto.ProductUpdateRequest.builder()
+                        .id(10L)
+                        .name("testName")
+                        .company("testCompany")
+                        .price(-0.1)
+                        .spec("testSpec")
+                        .build())
+        );
+
+        //then
+        assertEquals(ProductErrorType.PRODUCT_PRICE_MINUS, exception.getProductErrorType());
+    }
 }

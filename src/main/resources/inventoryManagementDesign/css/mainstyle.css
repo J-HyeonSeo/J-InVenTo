@@ -1,0 +1,127 @@
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+*{
+    font-family: 'GmarketSansMedium';
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    text-align: center;
+    background-color: #cccccc;
+}
+
+/*==============================네비게이션바================================*/
+
+nav{
+    height: 6rem;
+    background-color: rgb(32, 32, 32)
+}
+
+#nav-ul{
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    height: inherit;
+}
+
+.main-menu{
+    list-style: none;
+    padding: 1rem 1.5rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    transition: background-color 0.3s ease;
+    position: relative;
+}
+
+.main-menu:last-child{
+    border-right: none;
+}
+
+.main-menu:hover{
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.main-menu a{
+    text-decoration: none;
+    color: white;
+    font-size: 2rem;
+}
+
+.main-menu:hover > .additional-list{
+    display: block;
+}
+
+.additional-list {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    top: 6rem;
+    left: 0;
+    width: 100%;
+    list-style: none;
+    z-index: 1;
+}
+
+.additional-list li{
+    padding: 1rem;
+}
+.additional-list li:hover{
+    background-color: rgba(255, 255, 255, 0.3);
+}
+.additional-list a{
+    font-size: 1.4rem;
+}
+/*==========================메인 섹션================================*/
+
+#main-section{
+    padding: 2rem;
+    background-color: #eeeeee;
+    width: 80%;
+    /*height: 1050px;*/
+    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
+    margin: 3rem auto;
+    border-radius: 30px;
+}
+
+#main-section h1{
+    margin: 2rem 0;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+#main-section h2{
+    margin: 3rem 0;
+}
+
+.card-group{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.card{
+    background-color: #e0e0e0;
+    width: 400px;
+    height: 500px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+hr{
+    margin: 0.6rem 0;
+}
+
+.context{
+    margin: 0.4rem 0;
+    font-size: 1.2rem;
+}

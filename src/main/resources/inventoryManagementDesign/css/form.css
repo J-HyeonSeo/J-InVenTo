@@ -1,0 +1,19 @@
+select{
+    font-size: 1rem;
+    padding: 3px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0 , 0.2);
+}
+
+input{
+    font-size: 1rem;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0 , 0.2);
+}
+
+input:hover{
+    background-color: aliceblue;
+}
+
+button:hover{
+    color: white;
+    background-color: gray;
+}
