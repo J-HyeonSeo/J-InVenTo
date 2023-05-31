@@ -1,14 +1,15 @@
 package com.jhsfully.inventoryManagement.dto;
 
+import com.jhsfully.inventoryManagement.type.ErrorTypeInterface;
 import com.jhsfully.inventoryManagement.type.ProductErrorType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ErrorResponse {
+public class ErrorResponse{
 
-    private ProductErrorType ErrorType;
+    private ErrorTypeInterface ErrorType;
     private String ErrorMessage;
 
 }

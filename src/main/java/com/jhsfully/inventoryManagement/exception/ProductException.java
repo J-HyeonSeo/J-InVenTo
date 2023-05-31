@@ -5,9 +5,6 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class ProductException extends RuntimeException{
     private ProductErrorType productErrorType;
     private String errorMessage;

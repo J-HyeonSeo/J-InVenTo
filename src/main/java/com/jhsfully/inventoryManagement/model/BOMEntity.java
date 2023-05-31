@@ -1,16 +1,17 @@
 package com.jhsfully.inventoryManagement.model;
 
+import com.jhsfully.inventoryManagement.dto.BomDto;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
-@Entity()
+@Entity
+@Builder
 @Table(
         name = "bom",
         uniqueConstraints = {
@@ -30,5 +31,14 @@ public class BOMEntity {
     private long cid;
     @NotNull
     private double cost;
+
+    public static BomDto.BomResponse toDto(BOMEntity b){
+        return BomDto.BomResponse.builder()
+                .id(b.getId())
+                .pid(b.getPid())
+                .cid(b.getCid())
+                .cost(b.getCost())
+                .build();
+    }
 
 }

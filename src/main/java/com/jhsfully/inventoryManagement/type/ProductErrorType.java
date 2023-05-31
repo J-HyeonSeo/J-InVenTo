@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ProductErrorType {
+public enum ProductErrorType implements ErrorTypeInterface{
 
     PRODUCT_NOT_FOUND("상품을 찾을 수 없습니다."),
     PRODUCT_NAME_NULL("상품명이 비어있습니다."),
