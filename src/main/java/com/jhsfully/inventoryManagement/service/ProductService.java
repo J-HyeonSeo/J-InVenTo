@@ -1,9 +1,12 @@
 package com.jhsfully.inventoryManagement.service;
 
 import com.jhsfully.inventoryManagement.dto.ProductDto;
+import com.jhsfully.inventoryManagement.exception.BomException;
 import com.jhsfully.inventoryManagement.exception.ProductException;
 import com.jhsfully.inventoryManagement.model.ProductEntity;
+import com.jhsfully.inventoryManagement.repository.BomRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
+import com.jhsfully.inventoryManagement.type.BomErrorType;
 import com.jhsfully.inventoryManagement.type.ProductErrorType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ import static com.jhsfully.inventoryManagement.type.ProductErrorType.*;
 public class ProductService implements ProductInterface{
 
     private final ProductRepository productRepository;
+    private final BomRepository bomRepository;
 
     @Override
     public List<ProductDto.ProductResponse> getProducts(){
@@ -65,18 +69,13 @@ public class ProductService implements ProductInterface{
     }
 
     //가장 BOM의 구성에서 종속적인 경우 삭제 불가능함.
-    //즉, pid == cid가 일치할 경우에만 삭제가능함.
     @Override
     public void deleteProduct(Long id) {
-        boolean exists = productRepository.existsById(id);
-
-        if(!exists){
-            throw new ProductException(PRODUCT_NOT_FOUND);
-        }
+        validateDeleteProduct(id);
         productRepository.deleteById(id);
     }
 
-    //Product Utilities..
+    //============================ Validates ===================================
     private void validateAddProduct(ProductDto.ProductAddRequest request){
 
         if(request.getName() == null || request.getName().trim().equals("")){
@@ -87,6 +86,18 @@ public class ProductService implements ProductInterface{
             throw new ProductException(PRODUCT_PRICE_MINUS);
         }
 
+    }
+
+    private void validateDeleteProduct(Long id){
+
+        boolean exists = productRepository.existsById(id);
+        if(!exists){
+            throw new ProductException(PRODUCT_NOT_FOUND);
+        }
+
+        if(bomRepository.existsByPidOrCid(id, id)){
+            throw new BomException(BomErrorType.BOM_HAS_PRODUCT);
+        }
     }
 
 }

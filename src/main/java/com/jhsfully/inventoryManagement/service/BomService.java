@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-//@Transactional
+@Transactional
 public class BomService implements BomInterface{
 
     private final BomRepository bomRepository;
@@ -64,9 +64,22 @@ public class BomService implements BomInterface{
         return BOMEntity.toDto(bomRepository.save(bomEntity));
     }
 
+    //하나의 BOM Node를 제거합니다.
     @Override
-    public void deleteBom(Long id) {
+    public void deleteBomNode(Long bid) {
+        if(!bomRepository.existsById(bid)){
+            throw new BomException(BomErrorType.BOM_NOT_FOUND);
+        }
+        bomRepository.deleteById(bid);
+    }
 
+    //선택된 BOM의 구성요소를 전부 제거합니다.
+    @Override
+    public void deleteBomTree(Long pid){
+        if(!bomRepository.existsByPid(pid)){
+            throw new BomException(BomErrorType.BOM_NOT_FOUND);
+        }
+        bomRepository.deleteByPid(pid);
     }
 
     //======================== Validates =============================

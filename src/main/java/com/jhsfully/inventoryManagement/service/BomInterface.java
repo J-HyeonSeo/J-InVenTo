@@ -12,6 +12,8 @@ public interface BomInterface {
 
     public BomDto.BomResponse addBom(BomDto.BomAddRequest request);
 
-    public void deleteBom(Long id);
+    public void deleteBomNode(Long bid);
+
+    public void deleteBomTree(Long pid);
 
 }

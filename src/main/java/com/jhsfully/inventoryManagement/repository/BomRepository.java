@@ -9,8 +9,15 @@ import java.util.List;
 @Repository
 public interface BomRepository extends JpaRepository<BOMEntity, Long> {
 
+    //select
     List<BOMEntity> findByPid(Long pid);
     List<BOMEntity> findByCid(Long cid);
-    boolean existsByCid(Long cid);
 
+    //exists
+    boolean existsByPid(Long pid);
+    boolean existsByCid(Long cid);
+    boolean existsByPidOrCid(Long pid, Long cid);
+
+    //delete
+    void deleteByPid(Long pid);
 }

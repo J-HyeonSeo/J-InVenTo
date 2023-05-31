@@ -28,10 +28,16 @@ public class BomController {
         return ResponseEntity.ok(bomService.addBom(request));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBom(@PathVariable Long id){
-        bomService.deleteBom(id);
-        return ResponseEntity.ok(id);
+    @DeleteMapping("/node/{bid}")
+    public ResponseEntity<?> deleteBomNode(@PathVariable Long bid){
+        bomService.deleteBomNode(bid);
+        return ResponseEntity.ok(bid);
+    }
+
+    @DeleteMapping("/tree/{pid}")
+    public ResponseEntity<?> deleteBomTree(@PathVariable Long pid){
+        bomService.deleteBomTree(pid);
+        return ResponseEntity.ok(pid);
     }
 
 }
