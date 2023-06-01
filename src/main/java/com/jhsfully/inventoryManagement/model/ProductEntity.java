@@ -21,7 +21,7 @@ public class ProductEntity {
     private Long id;
     private String name;
     private String company;
-    private double price;
+    private Double price;
     private String spec;
 
     public static ProductDto.ProductResponse toDto(ProductEntity p){

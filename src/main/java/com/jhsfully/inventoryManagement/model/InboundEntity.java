@@ -1,27 +1,32 @@
 package com.jhsfully.inventoryManagement.model;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity(name = "plan")
-public class planEntity {
+@Entity(name = "inbound")
+public class InboundEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private long pid;
-    private LocalDate due;
-    private String destination;
-    private double amount;
+    private Long id;
+    @NotNull
+    private Long purchaseid;
+    @NotNull
+    private LocalDateTime at;
+    @NotNull
+    private Double amount;
+    @NotNull
+    private String note;
 
 }

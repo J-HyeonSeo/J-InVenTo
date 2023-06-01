@@ -14,21 +14,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity(name = "purchase")
-public class purchaseEntity {
+@Entity(name = "outbound")
+public class OutBoundEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+    private Long id;
     @NotNull
-    private long productid;
+    private Long productid;
+    private String destination;
+    @NotNull
+    private Double amount;
     @NotNull
     private LocalDateTime at;
-    @NotNull
-    private double amount;
-    @NotNull
-    private double price;
     private String note;
 
 }

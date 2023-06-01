@@ -43,10 +43,10 @@ class ProductControllerTest {
                 .willReturn(new ArrayList<>(Arrays.asList(
                         ProductDto.ProductResponse
                                 .builder()
-                                .id(1)
+                                .id(1L)
                                 .name("testProduct")
                                 .company("testCompany")
-                                .price(2500)
+                                .price(2500D)
                                 .spec("testSpec")
                                 .build()
                 )));
@@ -67,10 +67,10 @@ class ProductControllerTest {
         //given
         ProductDto.ProductResponse obj = ProductDto.ProductResponse
                                                         .builder()
-                                                        .id(1)
+                                                        .id(1L)
                                                         .name("testProduct")
                                                         .company("testCompany")
-                                                        .price(2500)
+                                                        .price(2500D)
                                                         .spec("testSpec")
                                                         .build();
 
@@ -97,10 +97,10 @@ class ProductControllerTest {
         //given
         ProductDto.ProductResponse obj = ProductDto.ProductResponse
                                                 .builder()
-                                                .id(1)
+                                                .id(1L)
                                                 .name("testProduct")
                                                 .company("testCompany")
-                                                .price(2500)
+                                                .price(2500D)
                                                 .spec("testSpec")
                                                 .build();
         given(productService.updateProduct(any()))

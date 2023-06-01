@@ -13,7 +13,7 @@ public class ProductDto {
     public static class ProductAddRequest{
         private String name;
         private String company;
-        private double price;
+        private Double price;
         private String spec;
     }
 
@@ -26,7 +26,7 @@ public class ProductDto {
         private Long id;
         private String name;
         private String company;
-        private double price;
+        private Double price;
         private String spec;
     }
 
@@ -36,10 +36,10 @@ public class ProductDto {
     @AllArgsConstructor
     @Builder
     public static class ProductResponse {
-        private long id;
+        private Long id;
         private String name;
         private String company;
-        private double price;
+        private Double price;
         private String spec;
     }
 

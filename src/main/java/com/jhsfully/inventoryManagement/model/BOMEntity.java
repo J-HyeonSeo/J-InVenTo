@@ -24,13 +24,13 @@ public class BOMEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @NotNull
-    private long pid;
+    private Long pid;
     @NotNull
-    private long cid;
+    private Long cid;
     @NotNull
-    private double cost;
+    private Double cost;
 
     public static BomDto.BomResponse toDto(BOMEntity b){
         return BomDto.BomResponse.builder()

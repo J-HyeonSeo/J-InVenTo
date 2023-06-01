@@ -57,11 +57,15 @@ public class ProductService implements ProductInterface{
             productEntity.setName(request.getName());
         if(request.getCompany() != null && !request.getCompany().trim().equals(""))
             productEntity.setCompany(request.getCompany());
-        if(request.getPrice() >= 0) {
-            productEntity.setPrice(request.getPrice());
-        }else{
-            throw new ProductException(PRODUCT_PRICE_MINUS);
+
+        if(request.getPrice() != null) {
+            if (request.getPrice() >= 0) {
+                productEntity.setPrice(request.getPrice());
+            } else {
+                throw new ProductException(PRODUCT_PRICE_MINUS);
+            }
         }
+
         if(request.getSpec() != null && !request.getSpec().trim().equals(""))
             productEntity.setSpec(request.getSpec());
 
@@ -80,6 +84,10 @@ public class ProductService implements ProductInterface{
 
         if(request.getName() == null || request.getName().trim().equals("")){
             throw new ProductException(PRODUCT_NAME_NULL);
+        }
+
+        if(request.getPrice() == null){
+            throw new ProductException(PRODUCT_PRICE_NULL);
         }
 
         if(request.getPrice() < 0){

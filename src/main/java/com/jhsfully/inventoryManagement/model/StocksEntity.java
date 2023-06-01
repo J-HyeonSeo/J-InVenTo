@@ -14,13 +14,13 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @Entity(name = "stocks")
-public class stocksEntity {
+public class StocksEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private long pid;
-    private double amount;
+    private Long id;
+    private Long pid;
+    private Double amount;
     private LocalDate lot;
 
 }

@@ -12,11 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity(name = "member")
-public class memberEntity {
+public class MemberEntity {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
     @NotNull
     private String username;
     @NotNull

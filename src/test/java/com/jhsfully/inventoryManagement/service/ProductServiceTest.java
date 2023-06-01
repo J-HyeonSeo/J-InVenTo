@@ -52,14 +52,14 @@ class ProductServiceTest {
                                 .id(1L)
                                 .name("TestName1")
                                 .company("TestCompany1")
-                                .price(1)
+                                .price(1D)
                                 .spec("TestSpec1")
                                 .build()
                         ,ProductEntity.builder()
                                 .id(2L)
                                 .name("TestName2")
                                 .company("TestCompany2")
-                                .price(2)
+                                .price(2D)
                                 .spec("TestSpec2")
                                 .build()
                 ));
@@ -95,7 +95,7 @@ class ProductServiceTest {
                         .id(1L)
                         .name("TestName1")
                         .company("TestCompany1")
-                        .price(1)
+                        .price(1D)
                         .spec("TestSpec1")
                         .build());
 
@@ -106,7 +106,7 @@ class ProductServiceTest {
         ProductDto.ProductResponse productResponse = productService.addProduct(ProductDto.ProductAddRequest.builder()
                 .name("TestName1")
                 .company("TestCompany1")
-                .price(1)
+                .price(1D)
                 .spec("TestSpec1")
                 .build());
 
@@ -131,7 +131,7 @@ class ProductServiceTest {
                                 .id(10L)
                                 .name("testName")
                                 .company("testCompany")
-                                .price(1000)
+                                .price(1000D)
                                 .spec("testSpec")
                                 .build()
                 ));
@@ -141,7 +141,7 @@ class ProductServiceTest {
                                 .id(10L)
                                 .name("testName")
                                 .company("testCompany")
-                                .price(1000)
+                                .price(1000D)
                                 .spec("testSpec")
                                 .build()
                 );
@@ -152,7 +152,7 @@ class ProductServiceTest {
                         .id(10L)
                         .name("newName")
                         .company("newCompany")
-                        .price(2000)
+                        .price(2000D)
                         .spec("newSpec")
                         .build());
 
@@ -194,13 +194,30 @@ class ProductServiceTest {
                         ProductDto.ProductAddRequest.builder()
                                 .name(null)
                                 .company("com")
-                                .price(1)
+                                .price(1D)
                                 .spec("spec")
                                 .build()
                 ));
 
         //then
         assertEquals(ProductErrorType.PRODUCT_NAME_NULL, exception.getProductErrorType());
+    }
+
+    @Test
+    @DisplayName("[Service]품목 추가 테스트(단가 누락) - Fail")
+    void addProductTestPriceNullFail(){
+        //when
+        ProductException exception = assertThrows(ProductException.class,
+                () -> productService.addProduct(
+                        ProductDto.ProductAddRequest.builder()
+                                .name("name")
+                                .company("com")
+                                .spec("spec")
+                                .build()
+                ));
+
+        //then
+        assertEquals(ProductErrorType.PRODUCT_PRICE_NULL, exception.getProductErrorType());
     }
 
     @Test
@@ -250,7 +267,7 @@ class ProductServiceTest {
                                 .id(10L)
                                 .name("testName")
                                 .company("testCompany")
-                                .price(100)
+                                .price(100D)
                                 .spec("testSpec")
                                 .build()
                 ));

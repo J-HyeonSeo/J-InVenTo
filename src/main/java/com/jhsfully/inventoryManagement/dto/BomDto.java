@@ -14,7 +14,7 @@ public class BomDto {
     public static class BomAddRequest{
         private Long pid;
         private Long cid;
-        private double cost;
+        private Double cost;
     }
 
     @Getter
@@ -26,7 +26,7 @@ public class BomDto {
         private Long id;
         private Long pid;
         private Long cid;
-        private double cost;
+        private Double cost;
     }
 
     @Getter
@@ -38,7 +38,7 @@ public class BomDto {
         private Long id;
         private Long pid;
         private Long cid;
-        private double cost;
+        private Double cost;
     }
 
     @Getter
@@ -49,7 +49,7 @@ public class BomDto {
     public static class BomTree{
         private Long bid;
         private Long pid;
-        private double cost;
+        private Double cost;
         private List<BomTree> children;
     }
 
