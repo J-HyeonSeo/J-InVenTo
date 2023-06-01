@@ -1,6 +1,7 @@
 package com.jhsfully.inventoryManagement.restcontroller;
 
 import com.jhsfully.inventoryManagement.dto.PurchaseDto;
+import com.jhsfully.inventoryManagement.service.PurchaseInterface;
 import com.jhsfully.inventoryManagement.service.PurchaseService;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @RequestMapping("/purchase")
 public class PurchaseController {
 
-    private final PurchaseService purchaseService;
+    private final PurchaseInterface purchaseService;
 
     @GetMapping("")
     public ResponseEntity<?> getPurchases(@RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,

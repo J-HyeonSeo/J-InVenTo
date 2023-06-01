@@ -1,6 +1,7 @@
 package com.jhsfully.inventoryManagement.restcontroller;
 
 import com.jhsfully.inventoryManagement.dto.BomDto;
+import com.jhsfully.inventoryManagement.service.BomInterface;
 import com.jhsfully.inventoryManagement.service.BomService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/bom")
 public class BomController {
 
-    private final BomService bomService;
+    private final BomInterface bomService;
 
     @GetMapping("")
     public ResponseEntity<?> getBoms(){

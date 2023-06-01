@@ -22,6 +22,7 @@ public class InboundEntity {
     private Long id;
     @NotNull
     private Long purchaseid;
+    private Long stockid;
     @NotNull
     private LocalDateTime at;
     @NotNull
