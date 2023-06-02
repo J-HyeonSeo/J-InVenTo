@@ -2,9 +2,7 @@ package com.jhsfully.inventoryManagement.model;
 
 import com.jhsfully.inventoryManagement.dto.StocksDto;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +12,9 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity(name = "stocks")
 public class StocksEntity {
 
@@ -27,15 +27,9 @@ public class StocksEntity {
     private Double amount;
     @NotNull
     private LocalDate lot;
-    @NotNull
+
     private String company;
 
-    public static StocksDto.StockResponse toDto(StocksEntity s){
-        return StocksDto.StockResponse.builder()
-                .pid(s.getId())
-                .amount(s.getAmount())
-                .build();
-    }
     public static StocksDto.StockResponseLot toLotDto(StocksEntity s){
         return StocksDto.StockResponseLot.builder()
                 .id(s.getId())
@@ -43,6 +37,13 @@ public class StocksEntity {
                 .lot(s.getLot())
                 .company(s.getCompany())
                 .build();
+    }
+
+    public void spendAmount(double amount){
+        if(this.amount < amount){
+            throw new RuntimeException("임시 오류!");
+        }
+        this.amount -= amount;
     }
 
 }

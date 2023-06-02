@@ -14,20 +14,22 @@ public class StocksDto{
     public static class StockAddRequest{
         private Long pid;
         private Double amount;
-        private Long lot;
+        private LocalDate lot;
         private String company;
     }
 
     @Getter
     @Setter
-    @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class StockResponse{
         private Long pid;
         private String productName;
         private String spec;
         private Double amount;
+//        public StockResponse(Long pid, Double amount){
+//            this.pid = pid;
+//            this.amount = amount;
+//        }
     }
 
     @Getter

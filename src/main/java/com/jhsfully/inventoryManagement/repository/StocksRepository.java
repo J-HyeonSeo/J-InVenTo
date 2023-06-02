@@ -12,8 +12,9 @@ import java.util.List;
 public interface StocksRepository extends JpaRepository<StocksEntity, Long> {
 
     @Query(
-            "SELECT new com.jhsfully.inventoryManagement.dto.StocksDto$StockResponse(s.pid, null, null, SUM(s.amount)) " +
+            "SELECT new com.jhsfully.inventoryManagement.dto.StocksDto$StockResponse(s.pid, p.name, p.spec, SUM(s.amount)) " +
                     "FROM stocks s " +
+                    "JOIN productinfo p on s.pid = p.id " +
                     "GROUP BY s.pid"
     )
     List<StocksDto.StockResponse> findStockGroupPid();

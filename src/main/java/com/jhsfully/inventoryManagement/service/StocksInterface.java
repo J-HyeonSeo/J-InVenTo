@@ -12,7 +12,7 @@ public interface StocksInterface {
 
     public StocksDto.StockResponseLot addStock(StocksDto.StockAddRequest request);
 
-    public void spendStockById(Long id);
+    public void spendStockById(Long id, Double amount);
 
     public void deleteStock(Long id);
 

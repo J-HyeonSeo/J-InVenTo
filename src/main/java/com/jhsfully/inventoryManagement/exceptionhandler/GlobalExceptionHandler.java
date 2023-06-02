@@ -4,6 +4,7 @@ import com.jhsfully.inventoryManagement.dto.ErrorResponse;
 import com.jhsfully.inventoryManagement.exception.BomException;
 import com.jhsfully.inventoryManagement.exception.ProductException;
 import com.jhsfully.inventoryManagement.exception.PurchaseException;
+import com.jhsfully.inventoryManagement.exception.StocksException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,5 +27,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PurchaseException.class)
     public ResponseEntity<ErrorResponse> handlePurchaseException(PurchaseException e){
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getPurchaseErrorType(), e.getMessage()));
+    }
+
+    @ExceptionHandler(StocksException.class)
+    public ResponseEntity<ErrorResponse> handleStocksException(StocksException e){
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getStocksErrorType(), e.getMessage()));
     }
 }
