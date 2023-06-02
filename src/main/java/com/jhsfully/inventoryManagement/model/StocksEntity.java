@@ -1,5 +1,6 @@
 package com.jhsfully.inventoryManagement.model;
 
+import com.jhsfully.inventoryManagement.dto.StocksDto;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,5 +29,20 @@ public class StocksEntity {
     private LocalDate lot;
     @NotNull
     private String company;
+
+    public static StocksDto.StockResponse toDto(StocksEntity s){
+        return StocksDto.StockResponse.builder()
+                .pid(s.getId())
+                .amount(s.getAmount())
+                .build();
+    }
+    public static StocksDto.StockResponseLot toLotDto(StocksEntity s){
+        return StocksDto.StockResponseLot.builder()
+                .id(s.getId())
+                .amount(s.getAmount())
+                .lot(s.getLot())
+                .company(s.getCompany())
+                .build();
+    }
 
 }
