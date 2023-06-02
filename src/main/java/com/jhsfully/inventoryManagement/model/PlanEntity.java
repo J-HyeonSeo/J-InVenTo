@@ -1,5 +1,6 @@
 package com.jhsfully.inventoryManagement.model;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -19,9 +20,12 @@ public class PlanEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     private Long pid;
+    @NotNull
     private LocalDate due;
     private String destination;
+    @NotNull
     private Double amount;
 
 }

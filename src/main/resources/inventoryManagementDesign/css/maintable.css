@@ -19,22 +19,26 @@ tbody{
 th{
     position: sticky;
     top: 0;
-    background-color: rgb(39, 39, 39);
+    background-color: #FF1E56;
     color: white;
-    font-size: 1.3rem;
-    border: 1px solid rgb(82, 82, 82);
+    font-size: 1rem;
+    border: 1px solid rgb(151, 151, 151);
 }
 
 td{
-    border: 1px solid rgb(145, 145, 145);
+    border: 1px solid rgb(151, 151, 151);
     font-size: 1.1rem;
 }
 
+tr{
+    background-color: white;
+}
+
 tr:nth-child(even){
-    background-color: rgb(221, 221, 221);
+    background-color: rgb(228, 228, 228);
 }
 
 tr:hover{
     color: white;
-    background-color: rgb(85, 85, 85);
+    background-color: rgb(155, 155, 155);
 }

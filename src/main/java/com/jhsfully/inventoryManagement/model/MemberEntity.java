@@ -23,6 +23,7 @@ public class MemberEntity {
     private String password;
     @NotNull
     private String name;
+    @NotNull
     private String department;
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     private List<String> roles;

@@ -29,11 +29,6 @@ public class PurchaseController {
         return ResponseEntity.ok(purchaseService.addPurchase(request));
     }
 
-    @PutMapping("")
-    public ResponseEntity<?> updatePurchase(){
-        return null;
-    }
-
     @DeleteMapping("")
     public ResponseEntity<?> deletePurchase(){
         return null;

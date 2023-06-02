@@ -15,19 +15,7 @@ public class PurchaseDto {
         private Long productId;
         private Double amount;
         private Double price;
-        private String note;
-    }
-
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class PurchaseUpdateRequest{
-        private Long id;
-        private Long productId;
-        private Double amount;
-        private Double price;
+        private String company;
         private String note;
     }
 
@@ -42,6 +30,7 @@ public class PurchaseDto {
         private LocalDateTime at;
         private Double amount;
         private Double price;
+        private String company;
         private String note;
     }
 }

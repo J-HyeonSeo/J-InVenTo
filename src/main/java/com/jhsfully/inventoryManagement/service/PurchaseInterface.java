@@ -12,8 +12,6 @@ public interface PurchaseInterface {
 
     public PurchaseDto.PurchaseResponse addPurchase(PurchaseDto.PurchaseAddRequest request);
 
-    public void updatePurchase();
-
     public void deletePurchase(Long id);
 
 }

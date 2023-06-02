@@ -1,6 +1,7 @@
 package com.jhsfully.inventoryManagement.model;
 
 import com.jhsfully.inventoryManagement.dto.ProductDto;
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -19,8 +20,10 @@ public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     private String name;
     private String company;
+    @NotNull
     private Double price;
     private String spec;
 

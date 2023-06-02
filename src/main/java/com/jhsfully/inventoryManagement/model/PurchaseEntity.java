@@ -21,7 +21,6 @@ public class PurchaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotNull
     private Long productid;
     @NotNull
@@ -30,6 +29,7 @@ public class PurchaseEntity {
     private Double amount;
     @NotNull
     private Double price;
+    private String company;
     private String note;
 
     public static PurchaseDto.PurchaseResponse toDto(PurchaseEntity p){
@@ -39,6 +39,7 @@ public class PurchaseEntity {
                 .at(p.getAt())
                 .amount(p.getAmount())
                 .price(p.getPrice())
+                .company(p.getCompany())
                 .note(p.getNote())
                 .build();
     }

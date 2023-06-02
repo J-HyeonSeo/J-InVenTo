@@ -45,15 +45,11 @@ public class PurchaseService implements PurchaseInterface{
                 .at(LocalDateTime.now())
                 .amount(request.getAmount())
                 .price(request.getPrice())
+                .company(request.getCompany())
                 .note(request.getNote())
                 .build();
 
         return PurchaseEntity.toDto(purchaseRepository.save(purchaseEntity));
-    }
-
-    @Override
-    public void updatePurchase() {
-        //구현 보류, 입고단에서 해당 ID를 참조하지 않을 경우에만 삭제 가능!!
     }
 
     @Override

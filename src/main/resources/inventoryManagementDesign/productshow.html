@@ -8,12 +8,15 @@
     <link rel="stylesheet" href="css/maintable.css">
     <link rel="stylesheet" href="css/form.css">
     <script src="js/main.js" defer></script>
-    <script src="js/productload.js" defer></script>
-    <script src="js/productviewer.js" defer></script>
+    <script src="js/tablemanager.js" defer></script>
     <title>재고관리</title>
 </head>
 <body>
     <input id="page-type" type="hidden" value="show">
+
+    <br>
+    <br>
+
     <header>
         <nav>
             <ul id="nav-ul">
@@ -49,6 +52,12 @@
                         <li><a href="">품목수정</a></li>
                     </ul>
                 </li>
+                <li class="main-menu"><a>BOM</a>
+                    <ul class="additional-list">
+                        <li><a href="">BOM조회</a></li>
+                        <li><a href="">BOM관리</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </header>
@@ -56,25 +65,40 @@
     <br>
     <br>
 
-    <section>
+    <section class="form-wrapper">
         <select id="filter">
             <option value="productName">품목명</option>
             <option value="companyName">거래처명</option>
         </select>
         <input type="text" id="search">
+        <label>
+            <input type="checkbox" name="option1" value="value1">
+            품목명순
+          </label>
+      
+          <label>
+            <input type="checkbox" name="option2" value="value2">
+            거래처명순
+          </label>
+      
+          <label>
+            <input type="checkbox" name="option3" value="value3">
+            단가오름차순
+          </label>
+          <label>
+            <input type="checkbox" name="option3" value="value3">
+            단가내림차순
+          </label>
     </section>
+
+    <br>
 
     <main>
         <section id="main-section">
             <div class="table-wrapper">
-            <table>
+            <table id="table">
                 <thead>
                     <tr>
-                        <th>품목 ID</th>
-                        <th>품목명</th>
-                        <th>거래처명</th>
-                        <th>단가</th>
-                        <th>규격</th>
                     </tr>
                 </thead>
                 <tbody id="product-content">
@@ -83,6 +107,18 @@
             </div>
         </section>
     </main>
-
+    <br>
+    <br>
+    <footer>
+        <p class="context">
+            오픈소스프로젝트이며, 코드 수정 및 상업적이용으로써 사용이 가능합니다.
+        </p>
+        <p class="context">
+            단, 해당 프로그램을 개조하여, 판매의 목적으로 사용하는 것을 금지합니다.
+        </p>
+        <p class="context">
+            Copyright 2023. J-HYEONSEO. All right reserved.
+        </p>
+    </footer>
 </body>
 </html>

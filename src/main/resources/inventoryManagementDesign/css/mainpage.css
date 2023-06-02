@@ -1,0 +1,59 @@
+/*==========================메인 섹션================================*/
+
+#main-section{
+    padding: 2rem 0;
+    background-color: #323232;
+    width: 90%;
+    height: 100%;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+}
+
+#main-section h1{
+    margin: 2rem 0;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+#main-section h2{
+    margin: 3rem 0;
+}
+
+.card-group{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.card{
+    background-color: #FFAC41;
+    width: 25%;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    padding: 20px;
+    color: black;
+}
+
+.card img{
+    width: 80%;
+}
+
+hr{
+    margin: 0.6rem 0;
+}
+
+.context{
+    margin: 0.4rem 0;
+    font-size: 1.2rem;
+}
+
+.introduce{
+    padding: 2rem;
+    width: 100%;
+    background-color: #FFAC41;
+}
+
+.introduce img{
+    border: solid 1px black;
+    width: 50%;
+}
