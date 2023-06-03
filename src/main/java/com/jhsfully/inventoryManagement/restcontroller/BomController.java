@@ -21,7 +21,12 @@ public class BomController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getBom(@PathVariable Long id){
-        return ResponseEntity.ok(bomService.getBom(null ,id, 1));
+        return ResponseEntity.ok(bomService.getBom(id));
+    }
+
+    @GetMapping("/leaf/{id}")
+    public ResponseEntity<?> getLeafProducts(@PathVariable Long id){
+        return ResponseEntity.ok(bomService.getLeafProducts(id));
     }
 
     @PostMapping("")

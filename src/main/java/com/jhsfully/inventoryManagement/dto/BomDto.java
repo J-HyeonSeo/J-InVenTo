@@ -53,4 +53,11 @@ public class BomDto {
         private List<BomTree> children;
     }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class BomLeaf{
+        private Long pid;
+        private Double cost;
+    }
 }

@@ -23,31 +23,27 @@ public class BomService implements BomInterface{
 
     private final BomRepository bomRepository;
     private final ProductRepository productRepository;
-
+    
+    //BOM 전체 리스트 리턴
     @Override
     public List<BomDto.BomResponse> getBoms() {
         return bomRepository.findAll().stream()
                 .map(BOMEntity::toDto)
                 .collect(Collectors.toList());
     }
-
+    
+    //해당 품목을 기준으로하는, BOM TREE 리턴
     @Override
-    public BomDto.BomTree getBom(Long bid, Long pid, double cost){
-        List<BOMEntity> entities = bomRepository.findByPid(pid);
-        BomDto.BomTree bomTree = BomDto.BomTree.builder()
-                .bid(bid)
-                .pid(pid)
-                .cost(cost)
-                .children(new ArrayList<>())
-                .build();
-        System.out.println(entities);
-        if(entities.size() == 0){ //escape
-            return bomTree;
-        }
-        for(BOMEntity entity : entities){
-            bomTree.getChildren().add(getBom(entity.getId(), entity.getCid(), cost * entity.getCost()));
-        }
-        return bomTree;
+    public BomDto.BomTree getBom(Long pid){
+        return getBomTree(null, pid, 1);
+    }
+
+    //해당 품목을 기준으로하는, 최하단 품목 및 코스트 리턴.
+    @Override
+    public List<BomDto.BomLeaf> getLeafProducts(Long id){
+        List<BomDto.BomLeaf> leafs = new ArrayList<>();
+        findLeafProductAndCost(leafs, id, null);
+        return leafs;
     }
 
     @Override
@@ -117,6 +113,25 @@ public class BomService implements BomInterface{
         return parents1.size() == 0;
     }
 
+    //========================== Utils ========================================
+    private BomDto.BomTree getBomTree(Long bid, Long pid, double cost){
+        List<BOMEntity> entities = bomRepository.findByPid(pid);
+        BomDto.BomTree bomTree = BomDto.BomTree.builder()
+                .bid(bid)
+                .pid(pid)
+                .cost(cost)
+                .children(new ArrayList<>())
+                .build();
+        System.out.println(entities);
+        if(entities.size() == 0){ //escape
+            return bomTree;
+        }
+        for(BOMEntity entity : entities){
+            bomTree.getChildren().add(getBomTree(entity.getId(), entity.getCid(), entity.getCost()));
+        }
+        return bomTree;
+    }
+
     private void findParents(Long id, ArrayList<Long> out){
         //자식 ID로 부모ID를 찾을 수 없으면 최상단 부모임.
         if(!bomRepository.existsByCid(id)){
@@ -129,4 +144,24 @@ public class BomService implements BomInterface{
         }
     }
 
+    //최하단 품목 및 코스트 찾기
+    public void findLeafProductAndCost(List<BomDto.BomLeaf> leafs, Long pid, Double cost){
+        //check leaf node
+        if(!bomRepository.existsByPid(pid)){
+            if(cost == null){ //bom에 존재하지 않는 경우.
+                leafs.add(new BomDto.BomLeaf(pid, 1D));
+            }else{
+                leafs.add(new BomDto.BomLeaf(pid, cost));
+            }
+            return;
+        }
+        if(cost == null){
+            cost = 1D;
+        }
+
+        List<BOMEntity> bomEntities = bomRepository.findByPid(pid);
+        for(BOMEntity bomEntity : bomEntities){
+            findLeafProductAndCost(leafs, bomEntity.getCid(), cost * bomEntity.getCost());
+        }
+    }
 }
