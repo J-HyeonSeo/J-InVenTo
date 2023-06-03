@@ -4,32 +4,18 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-public class StocksDto{
+public class PlanDto {
 
     @Getter
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class StockAddRequest{
+    public static class PlanAddRequest{
         private Long productId;
+        private LocalDate due;
+        private String destination;
         private Double amount;
-        private LocalDate lot;
-        private String company;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    public static class StockResponse{
-        private Long productId;
-        private String productName;
-        private String spec;
-        private Double amount;
-//        public StockResponse(Long pid, Double amount){
-//            this.pid = pid;
-//            this.amount = amount;
-//        }
     }
 
     @Getter
@@ -37,11 +23,24 @@ public class StocksDto{
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class StockResponseLot{
+    public static class PlanUpdateRequest{
         private Long id;
+        private Long productId;
+        private LocalDate due;
+        private String destination;
         private Double amount;
-        private LocalDate lot;
-        private String company;
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class PlanResponse{
+        private Long id;
+        private Long productId;
+        private LocalDate due;
+        private String destination;
+        private Double amount;
+    }
 }

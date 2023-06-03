@@ -25,12 +25,12 @@ public class StocksService implements StocksInterface {
     //쿼리 증명을 아직 하지 않았음!
     @Override
     public List<StocksDto.StockResponse> getAllStocks() {
-        return stocksRepository.findStockGroupPid();
+        return stocksRepository.findStockGroupProductid();
     }
 
     @Override
-    public List<StocksDto.StockResponseLot> getLotByPid(Long pid) {
-        return stocksRepository.findByPid(pid)
+    public List<StocksDto.StockResponseLot> getLotByPid(Long productid) {
+        return stocksRepository.findByProductid(productid)
                 .stream()
                 .map(StocksEntity::toLotDto)
                 .collect(Collectors.toList());
@@ -42,7 +42,7 @@ public class StocksService implements StocksInterface {
         validateAddStock(request);
 
         StocksEntity stocksEntity = StocksEntity.builder()
-                .pid(request.getPid())
+                .productid(request.getProductId())
                 .amount(request.getAmount())
                 .lot(request.getLot())
                 .company(request.getCompany())
@@ -76,11 +76,11 @@ public class StocksService implements StocksInterface {
 
     //======================== Validates ======================================
     public void validateAddStock(StocksDto.StockAddRequest request){
-        if(request.getPid() == null){
+        if(request.getProductId() == null){
             throw new ProductException(PRODUCT_NAME_NULL);
         }
 
-        boolean exists = productRepository.existsById(request.getPid());
+        boolean exists = productRepository.existsById(request.getProductId());
         if(!exists){
             throw new ProductException(PRODUCT_NOT_FOUND);
         }

@@ -20,9 +20,9 @@ public class OutBoundDetailsEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private Long oid;
+    private Long outboundid;
     @NotNull
-    private Long sid;
+    private Long stockid;
     @NotNull
     private Double amount;
 

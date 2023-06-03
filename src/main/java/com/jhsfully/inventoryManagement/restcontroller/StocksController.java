@@ -20,9 +20,9 @@ public class StocksController {
         return ResponseEntity.ok(stocksService.getAllStocks());
     }
 
-    @GetMapping("/{pid}")
-    public ResponseEntity<?> getLotByPid(@PathVariable Long pid){
-        return ResponseEntity.ok(stocksService.getLotByPid(pid));
+    @GetMapping("/{productid}")
+    public ResponseEntity<?> getLotByPid(@PathVariable Long productid){
+        return ResponseEntity.ok(stocksService.getLotByPid(productid));
     }
 
     //파서드 구현 이후 구현 할 것!!

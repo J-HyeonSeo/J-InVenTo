@@ -21,7 +21,7 @@ public class OutBoundEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private Long stockid;
+    private Long productid;
     private String destination;
     @NotNull
     private Double amount;

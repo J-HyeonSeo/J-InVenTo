@@ -22,7 +22,7 @@ public class StocksEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private Long pid;
+    private Long productid;
     @NotNull
     private Double amount;
     @NotNull

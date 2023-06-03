@@ -1,5 +1,6 @@
 package com.jhsfully.inventoryManagement.model;
 
+import com.jhsfully.inventoryManagement.dto.PlanDto;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -21,11 +22,21 @@ public class PlanEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private Long pid;
+    private Long productid;
     @NotNull
     private LocalDate due;
     private String destination;
     @NotNull
     private Double amount;
+
+    public static PlanDto.PlanResponse toDto(PlanEntity p){
+        return PlanDto.PlanResponse.builder()
+                .id(p.getId())
+                .productId(p.getProductid())
+                .due(p.getDue())
+                .destination(p.getDestination())
+                .amount(p.getAmount())
+                .build();
+    }
 
 }

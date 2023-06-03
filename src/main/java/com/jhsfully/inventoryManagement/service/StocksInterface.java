@@ -8,7 +8,7 @@ public interface StocksInterface {
 
     public List<StocksDto.StockResponse> getAllStocks();
 
-    public List<StocksDto.StockResponseLot> getLotByPid(Long pid);
+    public List<StocksDto.StockResponseLot> getLotByPid(Long productid);
 
     public StocksDto.StockResponseLot addStock(StocksDto.StockAddRequest request);
 
