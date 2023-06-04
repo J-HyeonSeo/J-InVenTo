@@ -25,7 +25,6 @@ public class PlanDto {
     @Builder
     public static class PlanUpdateRequest{
         private Long id;
-        private Long productId;
         private LocalDate due;
         private String destination;
         private Double amount;
