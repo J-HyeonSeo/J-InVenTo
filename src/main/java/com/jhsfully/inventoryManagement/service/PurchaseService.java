@@ -32,6 +32,12 @@ public class PurchaseService implements PurchaseInterface{
     private final InboundRepository inboundRepository;
 
     @Override
+    public PurchaseDto.PurchaseResponse getPurchase(Long id){
+        return PurchaseEntity.toDto(purchaseRepository.findById(id)
+                .orElseThrow(() -> new PurchaseException(PURCHASE_NOT_FOUND)));
+    }
+
+    @Override
     public List<PurchaseDto.PurchaseResponse> getPurchases(LocalDate startDate, LocalDate endDate) {
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
@@ -70,6 +76,7 @@ public class PurchaseService implements PurchaseInterface{
 
         purchaseRepository.delete(purchase);
     }
+
 
     //============================ Validates ==================================
     public void validateAddPurchase(PurchaseDto.PurchaseAddRequest request){

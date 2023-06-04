@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface PurchaseInterface {
 
+    public PurchaseDto.PurchaseResponse getPurchase(Long id);
     public List<PurchaseDto.PurchaseResponse> getPurchases(LocalDate startDate, LocalDate endDate);
 
     public PurchaseDto.PurchaseResponse addPurchase(PurchaseDto.PurchaseAddRequest request);

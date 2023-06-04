@@ -16,7 +16,7 @@ public interface StocksRepository extends JpaRepository<StocksEntity, Long> {
                     "FROM stocks s " +
                     "GROUP BY s.productid"
     )
-    List<StocksDto.StockGroupResponse> findStockGroupProductid();
+    List<StocksDto.StockGroupResponse> findStocksGroupProductid();
 
     List<StocksEntity> findByProductid(Long productid);
 

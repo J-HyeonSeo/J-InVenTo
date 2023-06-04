@@ -22,10 +22,10 @@ public class StocksService implements StocksInterface {
     private final StocksRepository stocksRepository;
     private final ProductRepository productRepository;
 
-    //쿼리 증명을 아직 하지 않았음!
+
     @Override
     public List<StocksDto.StockGroupResponse> getAllStocks() {
-        return stocksRepository.findStockGroupProductid();
+        return stocksRepository.findStocksGroupProductid();
     }
 
     @Override
