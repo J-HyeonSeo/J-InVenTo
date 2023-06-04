@@ -35,4 +35,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handlePlanException(PlanException e){
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getPlanErrorType(), e.getMessage()));
     }
+
+    @ExceptionHandler(InboundException.class)
+    public ResponseEntity<ErrorResponse> handleInboundException(InboundException e){
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getInboundErrorType(), e.getMessage()));
+    }
 }
