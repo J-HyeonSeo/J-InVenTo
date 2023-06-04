@@ -1,12 +1,17 @@
 package com.jhsfully.inventoryManagement.service;
 
 import com.jhsfully.inventoryManagement.dto.PurchaseDto;
+import com.jhsfully.inventoryManagement.exception.InboundException;
 import com.jhsfully.inventoryManagement.exception.ProductException;
 import com.jhsfully.inventoryManagement.exception.PurchaseException;
+import com.jhsfully.inventoryManagement.model.InboundEntity;
 import com.jhsfully.inventoryManagement.model.PurchaseEntity;
+import com.jhsfully.inventoryManagement.repository.InboundRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
 import com.jhsfully.inventoryManagement.repository.PurchaseRepository;
+import com.jhsfully.inventoryManagement.type.InboundErrorType;
 import com.jhsfully.inventoryManagement.type.ProductErrorType;
+import com.jhsfully.inventoryManagement.type.PurchaseErrorType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +29,7 @@ import static com.jhsfully.inventoryManagement.type.PurchaseErrorType.*;
 public class PurchaseService implements PurchaseInterface{
     private final PurchaseRepository purchaseRepository;
     private final ProductRepository productRepository;
+    private final InboundRepository inboundRepository;
 
     @Override
     public List<PurchaseDto.PurchaseResponse> getPurchases(LocalDate startDate, LocalDate endDate) {
@@ -54,7 +60,15 @@ public class PurchaseService implements PurchaseInterface{
 
     @Override
     public void deletePurchase(Long id) {
-        //구현 보류, 입고단에서 해당 ID를 참조하지 않을 경우에만 삭제 가능!!
+        //입고단에서 해당 ID를 참조하지 않을 경우에만 삭제 가능!!
+        PurchaseEntity purchase = purchaseRepository.findById(id)
+                .orElseThrow(() -> new PurchaseException(PURCHASE_NOT_FOUND));
+
+        if(inboundRepository.existsByPurchaseid(purchase.getId())){
+            throw new PurchaseException(PURCHASE_HAS_INBOUND);
+        }
+
+        purchaseRepository.delete(purchase);
     }
 
     //============================ Validates ==================================

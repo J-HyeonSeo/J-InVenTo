@@ -35,7 +35,9 @@ public class InboundDto {
 
     @Getter
     @Setter
+    @NoArgsConstructor
     @AllArgsConstructor
+    @Builder
     public static class InboundResponse{
         private Long id;
         private Long purchaseId;

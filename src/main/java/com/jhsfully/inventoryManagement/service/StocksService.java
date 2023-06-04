@@ -24,7 +24,7 @@ public class StocksService implements StocksInterface {
 
     //쿼리 증명을 아직 하지 않았음!
     @Override
-    public List<StocksDto.StockResponse> getAllStocks() {
+    public List<StocksDto.StockGroupResponse> getAllStocks() {
         return stocksRepository.findStockGroupProductid();
     }
 

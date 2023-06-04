@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface StocksInterface {
 
-    public List<StocksDto.StockResponse> getAllStocks();
+    public List<StocksDto.StockGroupResponse> getAllStocks();
 
     public List<StocksDto.StockResponseLot> getLotByPid(Long productid);
 

@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface PlanRepository extends JpaRepository<PlanEntity, Long> {
 
-    List<PlanEntity> findByDueGreaterThanEqual(LocalDate due);
-    List<PlanEntity> findByDueBetween(LocalDate startDate, LocalDate endDate);
+    List<PlanEntity> findByDueGreaterThanEqualOrderByDueAsc(LocalDate due);
+    List<PlanEntity> findByDueBetweenOrderByDueAsc(LocalDate startDate, LocalDate endDate);
 
 }

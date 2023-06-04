@@ -21,15 +21,24 @@ public class StocksDto{
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class StockResponse{
+    public static class StockGroupResponse{ //Use Inner Dto
+        private Long productId;
+        private Double amount;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class StockResponse{ //Client Return Dto
         private Long productId;
         private String productName;
         private String spec;
         private Double amount;
-//        public StockResponse(Long pid, Double amount){
-//            this.pid = pid;
-//            this.amount = amount;
-//        }
+        private LocalDate lackDate;
+        private Double lackAmount;
+
     }
 
     @Getter

@@ -4,6 +4,7 @@ import com.jhsfully.inventoryManagement.dto.PurchaseDto;
 import com.jhsfully.inventoryManagement.service.PurchaseInterface;
 import com.jhsfully.inventoryManagement.service.PurchaseService;
 import lombok.AllArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,10 @@ public class PurchaseController {
         return ResponseEntity.ok(purchaseService.addPurchase(request));
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<?> deletePurchase(){
-        return null;
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePurchase(@PathVariable Long id){
+        purchaseService.deletePurchase(id);
+        return ResponseEntity.ok(id);
     }
 
 }

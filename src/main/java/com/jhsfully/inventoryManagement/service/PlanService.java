@@ -28,12 +28,12 @@ public class PlanService implements PlanInterface{
     public List<PlanDto.PlanResponse> getPlans(LocalDate startDate, LocalDate endDate) {
 
         if(endDate == null){
-            return planRepository.findByDueGreaterThanEqual(startDate)
+            return planRepository.findByDueGreaterThanEqualOrderByDueAsc(startDate)
                     .stream()
                     .map(PlanEntity::toDto)
                     .collect(Collectors.toList());
         }
-        return planRepository.findByDueBetween(startDate, endDate)
+        return planRepository.findByDueBetweenOrderByDueAsc(startDate, endDate)
                 .stream()
                 .map(PlanEntity::toDto)
                 .collect(Collectors.toList());

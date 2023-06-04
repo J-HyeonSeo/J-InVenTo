@@ -24,4 +24,5 @@ public interface InboundRepository extends JpaRepository<InboundEntity, Long> {
     )
     List<InboundDto.InboundResponse> findInbounds(LocalDateTime start, LocalDateTime end);
 
+    boolean existsByPurchaseid(Long purchaseid);
 }

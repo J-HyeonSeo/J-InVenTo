@@ -1,5 +1,6 @@
 package com.jhsfully.inventoryManagement.restcontroller;
 
+import com.jhsfully.inventoryManagement.facade.StocksFacade;
 import com.jhsfully.inventoryManagement.service.StocksInterface;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,21 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class StocksController {
 
     private final StocksInterface stocksService;
+    private final StocksFacade stocksFacade;
 
+    //파서드에서 가져옴.
     @GetMapping("")
     public ResponseEntity<?> getAllStocks(){
-        return ResponseEntity.ok(stocksService.getAllStocks());
+        return ResponseEntity.ok(stocksFacade.getAllStocks());
     }
 
     @GetMapping("/{productid}")
     public ResponseEntity<?> getLotByPid(@PathVariable Long productid){
         return ResponseEntity.ok(stocksService.getLotByPid(productid));
-    }
-
-    //파서드 구현 이후 구현 할 것!!
-    @GetMapping("/lacks")
-    public ResponseEntity<?> getLacks(){
-        return null;
     }
 
 }
