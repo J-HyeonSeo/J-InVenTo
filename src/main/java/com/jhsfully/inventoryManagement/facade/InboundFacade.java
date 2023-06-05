@@ -31,7 +31,7 @@ public class InboundFacade {
     }
 
     @Transactional
-    public void executeInbound(InboundDto.InboundOuterAddRequest request){
+    public Long executeInbound(InboundDto.InboundOuterAddRequest request){
         //구매번호에대한 입고된 합이, 구매수량 이하여야 함. (구매 수량을 가져옴)
         PurchaseDto.PurchaseResponse purchase =
                 purchaseService.getPurchase(request.getPurchaseId());
@@ -72,9 +72,11 @@ public class InboundFacade {
                         .note(request.getNote())
                         .build()
         );
+
+        return inbound.getId();
     }
 
-    public void deleteInbound(){
+    public void deleteInbound(Long id){
         //출고 이력 여부 확인 필수!!
     }
 

@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Builder
 @Entity(name = "outbounddetails")
-public class OutBoundDetailsEntity{
+public class OutboundDetailsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

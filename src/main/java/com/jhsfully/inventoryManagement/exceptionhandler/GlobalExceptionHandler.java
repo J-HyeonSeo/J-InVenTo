@@ -40,4 +40,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleInboundException(InboundException e){
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getInboundErrorType(), e.getMessage()));
     }
+
+    @ExceptionHandler(OutboundException.class)
+    public ResponseEntity<ErrorResponse> handleOutboundException(OutboundException e){
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getOutboundErrorType(), e.getMessage()));
+    }
 }

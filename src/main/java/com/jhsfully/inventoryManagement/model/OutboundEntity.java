@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity(name = "outbound")
-public class OutBoundEntity {
+public class OutboundEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

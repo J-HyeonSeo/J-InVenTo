@@ -1,5 +1,6 @@
 package com.jhsfully.inventoryManagement.restcontroller;
 
+import com.jhsfully.inventoryManagement.dto.InboundDto;
 import com.jhsfully.inventoryManagement.facade.InboundFacade;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,13 +25,14 @@ public class InboundController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> executeInbound(){
-        return null;
+    public ResponseEntity<?> executeInbound(@RequestBody InboundDto.InboundOuterAddRequest request){
+        return ResponseEntity.ok(inboundFacade.executeInbound(request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteInbound(){
-        return null;
+    public ResponseEntity<?> deleteInbound(@PathVariable Long id){
+        inboundFacade.deleteInbound(id);
+        return ResponseEntity.ok(id);
     }
 
 }
