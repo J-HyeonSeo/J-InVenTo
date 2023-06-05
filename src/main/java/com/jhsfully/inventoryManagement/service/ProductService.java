@@ -95,12 +95,10 @@ public class ProductService implements ProductInterface{
 
     private void validateDeleteProduct(Long id){
 
-        boolean exists = productRepository.existsById(id);
-        if(!exists){
-            throw new ProductException(PRODUCT_NOT_FOUND);
-        }
+        ProductEntity product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
 
-        if(bomRepository.existsByPidOrCid(id, id)){
+        if(bomRepository.existsByParentProductOrChildProduct(product, product)){
             throw new ProductException(PRODUCT_HAS_BOM);
         }
     }

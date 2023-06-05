@@ -34,10 +34,23 @@ public class BomDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    public static class BomTopResponse{
+        private Long productId;
+        private String productName;
+
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class BomResponse{
         private Long id;
         private Long pid;
+        private String parentName;
         private Long cid;
+        private String childName;
         private Double cost;
     }
 
@@ -46,18 +59,20 @@ public class BomDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class BomTree{
-        private Long bid;
-        private Long pid;
+    public static class BomTreeResponse{
+        private Long id;
+        private Long productId;
+        private String productName;
         private Double cost;
-        private List<BomTree> children;
+        private List<BomTreeResponse> children;
     }
 
     @Getter
     @Setter
     @AllArgsConstructor
     public static class BomLeaf{
-        private Long pid;
+        private Long productId;
+        private String productName;
         private Double cost;
     }
 }

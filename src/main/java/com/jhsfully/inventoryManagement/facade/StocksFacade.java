@@ -65,9 +65,9 @@ public class StocksFacade {
             List<BomDto.BomLeaf> productsLeaves = bomService.getLeafProducts(plan.getProductId());
 
             for(var productLeaf : productsLeaves) {
-                if (responses.containsKey(productLeaf.getPid())) {
+                if (responses.containsKey(productLeaf.getProductId())) {
 
-                    var response = responses.get(productLeaf.getPid());
+                    var response = responses.get(productLeaf.getProductId());
 
                     Double nowAmount = response.getAmount();
                     nowAmount -= plan.getAmount() * productLeaf.getCost();

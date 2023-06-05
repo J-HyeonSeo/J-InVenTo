@@ -10,33 +10,31 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Builder
-@Table(
-        name = "bom",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        columnNames = {"pid", "cid"}
-                )
-        }
-)
+@Entity(name = "bom")
 public class BOMEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private Long pid;
+    @ManyToOne
+    @JoinColumn(name = "pid")
+    private ProductEntity parentProduct;
     @NotNull
-    private Long cid;
+    @ManyToOne
+    @JoinColumn(name = "cid")
+    private ProductEntity childProduct;
     @NotNull
     private Double cost;
 
     public static BomDto.BomResponse toDto(BOMEntity b){
         return BomDto.BomResponse.builder()
                 .id(b.getId())
-                .pid(b.getPid())
-                .cid(b.getCid())
+                .pid(b.getParentProduct().getId())
+                .parentName(b.getParentProduct().getName())
+                .cid(b.getChildProduct().getId())
+                .childName(b.getChildProduct().getName())
                 .cost(b.getCost())
                 .build();
     }

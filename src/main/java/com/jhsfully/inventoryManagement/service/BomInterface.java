@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface BomInterface {
 
-    public List<BomDto.BomResponse> getBoms();
+    public List<BomDto.BomTopResponse> getBoms();
 
-    public BomDto.BomTree getBom(Long pid);
+    public BomDto.BomTreeResponse getBom(Long pid);
 
     public List<BomDto.BomLeaf> getLeafProducts(Long id);
 
