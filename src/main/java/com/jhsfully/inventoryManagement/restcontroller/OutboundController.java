@@ -1,5 +1,6 @@
 package com.jhsfully.inventoryManagement.restcontroller;
 
+import com.jhsfully.inventoryManagement.dto.OutboundDto;
 import com.jhsfully.inventoryManagement.facade.OutboundFacade;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,16 +21,19 @@ public class OutboundController {
             @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate
     ){
-        return null;
+        return ResponseEntity.ok(outboundFacade.getOutbounds(startDate, endDate));
     }
 
     @GetMapping("/details/{id}")
     public ResponseEntity<?> getOutboundDetails(@PathVariable Long id){
-        return null;
+        return ResponseEntity.ok(outboundFacade.getOutboundDetails(id));
     }
 
     @PostMapping("")
-    public ResponseEntity<?> executeOutbound(){
+    public ResponseEntity<?> executeOutbound(
+            @RequestBody OutboundDto.OutboundAddRequest request
+            ){
+        outboundFacade.executeOutbound(request);
         return null;
     }
 

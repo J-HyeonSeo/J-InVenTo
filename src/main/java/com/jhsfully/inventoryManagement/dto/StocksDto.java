@@ -48,6 +48,7 @@ public class StocksDto{
     @Builder
     public static class StockResponseLot{
         private Long id;
+        private Long productId;
         private String productName;
         private Double amount;
         private LocalDate lot;

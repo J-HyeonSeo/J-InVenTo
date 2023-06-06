@@ -35,6 +35,7 @@ public class StocksEntity {
     public static StocksDto.StockResponseLot toLotDto(StocksEntity s){
         return StocksDto.StockResponseLot.builder()
                 .id(s.getId())
+                .productId(s.getProduct().getId())
                 .productName(s.getProduct().getName())
                 .amount(s.getAmount())
                 .lot(s.getLot())

@@ -6,6 +6,7 @@ import com.jhsfully.inventoryManagement.model.InboundEntity;
 import java.util.List;
 
 public interface StocksInterface {
+    public StocksDto.StockResponseLot getStock(Long id);
 
     public List<StocksDto.StockGroupResponse> getAllStocks();
 

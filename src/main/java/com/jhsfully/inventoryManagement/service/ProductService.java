@@ -23,6 +23,12 @@ public class ProductService implements ProductInterface{
     private final BomRepository bomRepository;
 
     @Override
+    public ProductDto.ProductResponse getProduct(Long id){
+        return ProductEntity.toDto(productRepository.findById(id)
+                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND)));
+    }
+
+    @Override
     public List<ProductDto.ProductResponse> getProducts(){
         List<ProductEntity> productEntities = productRepository.findAll();
         return productEntities.stream()

@@ -12,7 +12,7 @@ public interface OutboundInterface {
 
     public List<OutboundDto.OutboundDetailResponse> getOutboundDetails(Long outboundId);
 
-    public void addOutbound(OutboundDto.OutboundAddRequest request);
+    public OutboundDto.OutboundResponse addOutbound(OutboundDto.OutboundAddRequest request);
 
     public void addOutboundDetail(OutboundDto.OutboundDetailAddRequest request);
 

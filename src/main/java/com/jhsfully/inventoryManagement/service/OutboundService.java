@@ -1,11 +1,21 @@
 package com.jhsfully.inventoryManagement.service;
 
 import com.jhsfully.inventoryManagement.dto.OutboundDto;
+import com.jhsfully.inventoryManagement.dto.StocksDto;
 import com.jhsfully.inventoryManagement.exception.OutboundException;
+import com.jhsfully.inventoryManagement.exception.ProductException;
+import com.jhsfully.inventoryManagement.exception.StocksException;
+import com.jhsfully.inventoryManagement.model.OutboundDetailsEntity;
 import com.jhsfully.inventoryManagement.model.OutboundEntity;
+import com.jhsfully.inventoryManagement.model.ProductEntity;
+import com.jhsfully.inventoryManagement.model.StocksEntity;
 import com.jhsfully.inventoryManagement.repository.OutboundDetailRepository;
 import com.jhsfully.inventoryManagement.repository.OutboundRepository;
+import com.jhsfully.inventoryManagement.repository.ProductRepository;
+import com.jhsfully.inventoryManagement.repository.StocksRepository;
 import com.jhsfully.inventoryManagement.type.OutboundErrorType;
+import com.jhsfully.inventoryManagement.type.ProductErrorType;
+import com.jhsfully.inventoryManagement.type.StocksErrorType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +26,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.jhsfully.inventoryManagement.type.OutboundErrorType.*;
+import static com.jhsfully.inventoryManagement.type.ProductErrorType.*;
+import static com.jhsfully.inventoryManagement.type.StocksErrorType.*;
 
 @Service
 @AllArgsConstructor
@@ -23,6 +35,8 @@ public class OutboundService implements OutboundInterface{
 
     private final OutboundRepository outboundRepository;
     private final OutboundDetailRepository outboundDetailRepository;
+    private final ProductRepository productRepository;
+    private final StocksRepository stocksRepository;
 
     @Override
     public List<OutboundDto.OutboundResponse> getOutbounds(LocalDate startDate, LocalDate endDate) {
@@ -42,13 +56,41 @@ public class OutboundService implements OutboundInterface{
     }
 
     @Override
-    public void addOutbound(OutboundDto.OutboundAddRequest request) {
+    public OutboundDto.OutboundResponse addOutbound(OutboundDto.OutboundAddRequest request) {
 
+        ProductEntity product = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+
+        OutboundEntity outbound = OutboundEntity.builder()
+                .product(product)
+                .destination(request.getDestination())
+                .amount(request.getAmount())
+                .at(LocalDateTime.now())
+                .note(request.getNote())
+                .build();
+
+        return OutboundEntity.toDto(outboundRepository.save(outbound));
     }
 
     @Override
     public void addOutboundDetail(OutboundDto.OutboundDetailAddRequest request) {
 
+        validateAddOutboundDetail(request);
+
+        OutboundEntity outbound = outboundRepository.findById(request.getOutboundId())
+                .orElseThrow(() -> new OutboundException(OUTBOUND_NOT_FOUND));
+
+        StocksEntity stock = stocksRepository.findById(request.getStockId())
+                .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
+
+        OutboundDetailsEntity outboundDetailsEntity = OutboundDetailsEntity
+                .builder()
+                .outbound(outbound)
+                .stock(stock)
+                .amount(request.getAmount())
+                .build();
+
+        outboundDetailRepository.save(outboundDetailsEntity);
     }
 
     @Override
@@ -58,6 +100,32 @@ public class OutboundService implements OutboundInterface{
 
     @Override
     public void deleteOutboundDetail(Long detailId) {
+
+    }
+
+    //======================== Validates===================================
+
+    public void validateAddOutbound(OutboundDto.OutboundAddRequest request){
+
+        if(request.getAmount() == null){
+            throw new OutboundException(OUTBOUND_AMOUNT_NULL);
+        }
+
+        if(request.getAmount() <= 0){
+            throw new OutboundException(OUTBOUND_AMOUNT_OR_LESS_ZERO);
+        }
+
+    }
+
+    public void validateAddOutboundDetail(OutboundDto.OutboundDetailAddRequest request){
+
+        if(request.getAmount() == null){
+            throw new OutboundException(OUTBOUND_AMOUNT_NULL);
+        }
+
+        if(request.getAmount() <= 0){
+            throw new OutboundException(OUTBOUND_AMOUNT_OR_LESS_ZERO);
+        }
 
     }
 }

@@ -32,6 +32,12 @@ public class StocksService implements StocksInterface {
     private final InboundRepository inboundRepository;
 
     @Override
+    public StocksDto.StockResponseLot getStock(Long id){
+        return StocksEntity.toLotDto(stocksRepository.findById(id)
+                .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND)));
+    }
+
+    @Override
     public List<StocksDto.StockGroupResponse> getAllStocks() {
         return stocksRepository.getStocksGroupProduct();
     }

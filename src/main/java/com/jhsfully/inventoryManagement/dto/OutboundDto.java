@@ -22,9 +22,11 @@ public class OutboundDto {
 
     }
 
+    @Getter
+    @Setter
     public static class stock{
         private Long stockId;
-        private Long amount;
+        private Double amount;
     }
 
     @Getter

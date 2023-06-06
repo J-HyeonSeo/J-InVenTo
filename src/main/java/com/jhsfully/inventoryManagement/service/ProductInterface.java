@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ProductInterface {
 
+    public ProductDto.ProductResponse getProduct(Long id);
     public List<ProductDto.ProductResponse> getProducts();
 
     public ProductDto.ProductResponse addProduct(ProductDto.ProductAddRequest request);
