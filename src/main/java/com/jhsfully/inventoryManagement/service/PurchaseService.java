@@ -1,17 +1,13 @@
 package com.jhsfully.inventoryManagement.service;
 
 import com.jhsfully.inventoryManagement.dto.PurchaseDto;
-import com.jhsfully.inventoryManagement.exception.InboundException;
 import com.jhsfully.inventoryManagement.exception.ProductException;
 import com.jhsfully.inventoryManagement.exception.PurchaseException;
-import com.jhsfully.inventoryManagement.model.InboundEntity;
+import com.jhsfully.inventoryManagement.model.ProductEntity;
 import com.jhsfully.inventoryManagement.model.PurchaseEntity;
 import com.jhsfully.inventoryManagement.repository.InboundRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
 import com.jhsfully.inventoryManagement.repository.PurchaseRepository;
-import com.jhsfully.inventoryManagement.type.InboundErrorType;
-import com.jhsfully.inventoryManagement.type.ProductErrorType;
-import com.jhsfully.inventoryManagement.type.PurchaseErrorType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +17,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.jhsfully.inventoryManagement.type.ProductErrorType.*;
+import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NOT_FOUND;
 import static com.jhsfully.inventoryManagement.type.PurchaseErrorType.*;
 
 @Service
@@ -50,10 +46,10 @@ public class PurchaseService implements PurchaseInterface{
     @Override
     public PurchaseDto.PurchaseResponse addPurchase(PurchaseDto.PurchaseAddRequest request) {
 
-        validateAddPurchase(request);
+        ProductEntity product = validateAddPurchase(request);
 
         PurchaseEntity purchaseEntity = PurchaseEntity.builder()
-                .productid(request.getProductId())
+                .product(product)
                 .at(LocalDateTime.now())
                 .amount(request.getAmount())
                 .price(request.getPrice())
@@ -70,7 +66,7 @@ public class PurchaseService implements PurchaseInterface{
         PurchaseEntity purchase = purchaseRepository.findById(id)
                 .orElseThrow(() -> new PurchaseException(PURCHASE_NOT_FOUND));
 
-        if(inboundRepository.existsByPurchaseid(purchase.getId())){
+        if(inboundRepository.existsByPurchase(purchase)){
             throw new PurchaseException(PURCHASE_HAS_INBOUND);
         }
 
@@ -79,14 +75,11 @@ public class PurchaseService implements PurchaseInterface{
 
 
     //============================ Validates ==================================
-    public void validateAddPurchase(PurchaseDto.PurchaseAddRequest request){
-        if(request.getProductId() == null){
-            throw new ProductException(PRODUCT_ID_NULL);
-        }
-        //품목 ID가 존재해야함.
-        if(!productRepository.existsById(request.getProductId())){
-            throw new ProductException(PRODUCT_NOT_FOUND);
-        }
+    public ProductEntity validateAddPurchase(PurchaseDto.PurchaseAddRequest request){
+
+        ProductEntity product = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+
         //amount가 존재해야함.
         if(request.getAmount() == null){
             throw new PurchaseException(PURCHASE_AMOUNT_NULL);
@@ -103,6 +96,8 @@ public class PurchaseService implements PurchaseInterface{
         if(request.getPrice() <= 0){
             throw new PurchaseException(PURCHASE_AMOUNT_LESS_ZERO);
         }
+
+        return product;
     }
 
 }

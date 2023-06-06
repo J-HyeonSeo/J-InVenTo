@@ -4,10 +4,7 @@ import com.jhsfully.inventoryManagement.dto.PlanDto;
 import com.sun.istack.NotNull;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter
@@ -22,7 +19,9 @@ public class PlanEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private Long productid;
+    @ManyToOne
+    @JoinColumn(name = "productid")
+    private ProductEntity product;
     @NotNull
     private LocalDate due;
     private String destination;
@@ -32,7 +31,8 @@ public class PlanEntity {
     public static PlanDto.PlanResponse toDto(PlanEntity p){
         return PlanDto.PlanResponse.builder()
                 .id(p.getId())
-                .productId(p.getProductid())
+                .productId(p.getProduct().getId())
+                .productName(p.getProduct().getName())
                 .due(p.getDue())
                 .destination(p.getDestination())
                 .amount(p.getAmount())

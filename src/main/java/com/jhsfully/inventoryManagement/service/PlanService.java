@@ -4,6 +4,7 @@ import com.jhsfully.inventoryManagement.dto.PlanDto;
 import com.jhsfully.inventoryManagement.exception.PlanException;
 import com.jhsfully.inventoryManagement.exception.ProductException;
 import com.jhsfully.inventoryManagement.model.PlanEntity;
+import com.jhsfully.inventoryManagement.model.ProductEntity;
 import com.jhsfully.inventoryManagement.repository.PlanRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
 import com.jhsfully.inventoryManagement.type.PlanErrorType;
@@ -41,9 +42,11 @@ public class PlanService implements PlanInterface{
 
     @Override
     public PlanDto.PlanResponse addPlan(PlanDto.PlanAddRequest request) {
-        validateAddPlan(request);
+
+        ProductEntity product = validateAddPlan(request);
+
         PlanEntity planEntity = PlanEntity.builder()
-                .productid(request.getProductId())
+                .product(product)
                 .due(request.getDue())
                 .destination(request.getDestination())
                 .amount(request.getAmount())
@@ -66,15 +69,10 @@ public class PlanService implements PlanInterface{
     }
 
     //======================== Validates ===========================
-    public void validateAddPlan(PlanDto.PlanAddRequest request){
+    public ProductEntity validateAddPlan(PlanDto.PlanAddRequest request){
 
-        if(request.getProductId() == null){
-            throw new ProductException(ProductErrorType.PRODUCT_ID_NULL);
-        }
-
-        if(!productRepository.existsById(request.getProductId())){
-            throw new ProductException(ProductErrorType.PRODUCT_NOT_FOUND);
-        }
+        ProductEntity product = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new ProductException(ProductErrorType.PRODUCT_NOT_FOUND));
 
         if(request.getDue() == null){
             throw new PlanException(PlanErrorType.PLAN_DUE_IS_NULL);
@@ -92,6 +90,7 @@ public class PlanService implements PlanInterface{
             throw new PlanException(PlanErrorType.PLAN_AMOUNT_HAS_NOT_OR_LESS_ZERO);
         }
 
+        return product;
     }
 
     public PlanEntity validateAndUpdatePlan(PlanDto.PlanUpdateRequest request){

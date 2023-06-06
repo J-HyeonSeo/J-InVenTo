@@ -12,14 +12,6 @@ import java.util.List;
 @Repository
 public interface OutboundRepository extends JpaRepository<OutboundEntity, Long> {
 
-    @Query(
-            "SELECT " +
-            "new com.jhsfully.inventoryManagement.dto.OutboundDto$OutboundResponse" +
-            "(o.id, p.name, o.destination, o.amount, o.at, o.note) " +
-            "FROM outbound o " +
-            "JOIN productinfo p ON p.id = o.productid " +
-            "WHERE o.at BETWEEN ?1 AND ?2"
-    )
-    List<OutboundDto.OutboundResponse> getOutbounds(LocalDateTime start, LocalDateTime end);
+    List<OutboundEntity> findByAtBetween(LocalDateTime start, LocalDateTime end);
 
 }

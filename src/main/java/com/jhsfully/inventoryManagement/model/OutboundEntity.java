@@ -1,12 +1,10 @@
 package com.jhsfully.inventoryManagement.model;
 
+import com.jhsfully.inventoryManagement.dto.OutboundDto;
 import com.sun.istack.NotNull;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,12 +19,25 @@ public class OutboundEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private Long productid;
+    @ManyToOne
+    @JoinColumn(name = "productid")
+    private ProductEntity product;
     private String destination;
     @NotNull
     private Double amount;
     @NotNull
     private LocalDateTime at;
     private String note;
+
+    public static OutboundDto.OutboundResponse toDto(OutboundEntity o){
+        return OutboundDto.OutboundResponse.builder()
+                .id(o.getId())
+                .productName(o.getProduct().getName())
+                .destination(o.getDestination())
+                .amount(o.getAmount())
+                .at(o.getAt())
+                .note(o.getNote())
+                .build();
+    }
 
 }

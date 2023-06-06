@@ -27,6 +27,7 @@ public class PurchaseDto {
     public static class PurchaseResponse{
         private Long id;
         private Long productId;
+        private String productName;
         private LocalDateTime at;
         private Double amount;
         private Double price;

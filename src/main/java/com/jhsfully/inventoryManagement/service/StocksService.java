@@ -1,36 +1,48 @@
 package com.jhsfully.inventoryManagement.service;
 
 import com.jhsfully.inventoryManagement.dto.StocksDto;
+import com.jhsfully.inventoryManagement.exception.InboundException;
 import com.jhsfully.inventoryManagement.exception.ProductException;
 import com.jhsfully.inventoryManagement.exception.StocksException;
+import com.jhsfully.inventoryManagement.model.InboundEntity;
+import com.jhsfully.inventoryManagement.model.ProductEntity;
 import com.jhsfully.inventoryManagement.model.StocksEntity;
+import com.jhsfully.inventoryManagement.repository.InboundRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
 import com.jhsfully.inventoryManagement.repository.StocksRepository;
+import com.jhsfully.inventoryManagement.type.InboundErrorType;
+import com.jhsfully.inventoryManagement.type.StocksErrorType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NAME_NULL;
+import static com.jhsfully.inventoryManagement.type.InboundErrorType.*;
 import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NOT_FOUND;
 import static com.jhsfully.inventoryManagement.type.StocksErrorType.*;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class StocksService implements StocksInterface {
     private final StocksRepository stocksRepository;
     private final ProductRepository productRepository;
-
+    private final InboundRepository inboundRepository;
 
     @Override
     public List<StocksDto.StockGroupResponse> getAllStocks() {
-        return stocksRepository.findStocksGroupProductid();
+        return stocksRepository.getStocksGroupProduct();
     }
 
     @Override
     public List<StocksDto.StockResponseLot> getLotByPid(Long productid) {
-        return stocksRepository.findByProductid(productid)
+
+        ProductEntity product = productRepository.findById(productid)
+                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+
+        return stocksRepository.findByProduct(product)
                 .stream()
                 .map(StocksEntity::toLotDto)
                 .collect(Collectors.toList());
@@ -39,16 +51,27 @@ public class StocksService implements StocksInterface {
     @Override
     public StocksDto.StockResponseLot addStock(StocksDto.StockAddRequest request) {
 
-        validateAddStock(request);
+        ProductEntity productEntity = validateAddStock(request);
 
         StocksEntity stocksEntity = StocksEntity.builder()
-                .productid(request.getProductId())
+                .product(productEntity)
                 .amount(request.getAmount())
                 .lot(request.getLot())
-                .company(request.getCompany())
                 .build();
 
         return StocksEntity.toLotDto(stocksRepository.save(stocksEntity));
+    }
+
+    @Override
+    public void addInbound(Long stockId, Long inboundId){
+        StocksEntity stock = stocksRepository.findById(stockId)
+                .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
+
+        InboundEntity inbound = inboundRepository.findById(inboundId)
+                        .orElseThrow(() -> new InboundException(INBOUND_NOT_FOUND));
+
+        stock.setInbound(inbound);
+        stocksRepository.save(stock);
     }
 
     @Override
@@ -75,15 +98,10 @@ public class StocksService implements StocksInterface {
     }
 
     //======================== Validates ======================================
-    public void validateAddStock(StocksDto.StockAddRequest request){
-        if(request.getProductId() == null){
-            throw new ProductException(PRODUCT_NAME_NULL);
-        }
+    public ProductEntity validateAddStock(StocksDto.StockAddRequest request){
 
-        boolean exists = productRepository.existsById(request.getProductId());
-        if(!exists){
-            throw new ProductException(PRODUCT_NOT_FOUND);
-        }
+        ProductEntity product = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
 
         if(request.getAmount() == null){
             throw new StocksException(STOCKS_AMOUNT_NULL);
@@ -92,5 +110,7 @@ public class StocksService implements StocksInterface {
         if(request.getAmount() <= 0){
             throw new StocksException(STOCKS_NOT_CREATE_OR_LESS_ZERO);
         }
+
+        return product;
     }
 }

@@ -4,10 +4,7 @@ import com.jhsfully.inventoryManagement.dto.InboundDto;
 import com.sun.istack.NotNull;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,13 +19,17 @@ public class InboundEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private Long purchaseid;
-    private Long stockid;
+    @ManyToOne
+    @JoinColumn(name = "purchaseid")
+    private PurchaseEntity purchase;
+    @NotNull
+    @OneToOne
+    @JoinColumn(name = "stockid")
+    private StocksEntity stock;
     @NotNull
     private LocalDateTime at;
     @NotNull
     private Double amount;
-    private String company;
     @NotNull
     private String note;
 
@@ -36,10 +37,12 @@ public class InboundEntity {
     public static InboundDto.InboundResponse toDto(InboundEntity i){
         return InboundDto.InboundResponse.builder()
                 .id(i.getId())
-                .purchaseId(i.getPurchaseid())
+                .purchaseId(i.getPurchase().getId())
+                .productName(i.getStock().getProduct().getName())
                 .inboundAt(i.getAt())
+                .purchasedAt(i.getPurchase().getAt())
                 .amount(i.getAmount())
-                .company(i.getCompany())
+                .company(i.getPurchase().getCompany())
                 .note(i.getNote())
                 .build();
     }

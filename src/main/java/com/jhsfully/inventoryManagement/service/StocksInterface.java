@@ -1,6 +1,7 @@
 package com.jhsfully.inventoryManagement.service;
 
 import com.jhsfully.inventoryManagement.dto.StocksDto;
+import com.jhsfully.inventoryManagement.model.InboundEntity;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ public interface StocksInterface {
     public List<StocksDto.StockResponseLot> getLotByPid(Long productid);
 
     public StocksDto.StockResponseLot addStock(StocksDto.StockAddRequest request);
+
+    public void addInbound(Long stockId, Long inboundId);
 
     public void spendStockById(Long id, Double amount);
 

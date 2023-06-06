@@ -4,10 +4,7 @@ import com.jhsfully.inventoryManagement.dto.PurchaseDto;
 import com.sun.istack.NotNull;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,7 +19,9 @@ public class PurchaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private Long productid;
+    @ManyToOne
+    @JoinColumn(name = "productid")
+    private ProductEntity product;
     @NotNull
     private LocalDateTime at;
     @NotNull
@@ -35,7 +34,8 @@ public class PurchaseEntity {
     public static PurchaseDto.PurchaseResponse toDto(PurchaseEntity p){
         return PurchaseDto.PurchaseResponse.builder()
                 .id(p.getId())
-                .productId(p.getProductid())
+                .productId(p.getProduct().getId())
+                .productName(p.getProduct().getName())
                 .at(p.getAt())
                 .amount(p.getAmount())
                 .price(p.getPrice())

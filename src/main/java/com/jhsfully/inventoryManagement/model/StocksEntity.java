@@ -4,10 +4,7 @@ import com.jhsfully.inventoryManagement.dto.StocksDto;
 import com.sun.istack.NotNull;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter
@@ -22,20 +19,26 @@ public class StocksEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private Long productid;
+    @ManyToOne
+    @JoinColumn(name = "productid")
+    private ProductEntity product;
+
+    @OneToOne
+    @JoinColumn(name = "inboundid")
+    private InboundEntity inbound;
+
     @NotNull
     private Double amount;
     @NotNull
     private LocalDate lot;
 
-    private String company;
-
     public static StocksDto.StockResponseLot toLotDto(StocksEntity s){
         return StocksDto.StockResponseLot.builder()
                 .id(s.getId())
+                .productName(s.getProduct().getName())
                 .amount(s.getAmount())
                 .lot(s.getLot())
-                .company(s.getCompany())
+                .company(s.getInbound().getPurchase().getCompany())
                 .build();
     }
 

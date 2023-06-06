@@ -4,6 +4,7 @@ import com.jhsfully.inventoryManagement.dto.InboundDto;
 import com.jhsfully.inventoryManagement.dto.PurchaseDto;
 import com.jhsfully.inventoryManagement.dto.StocksDto;
 import com.jhsfully.inventoryManagement.exception.InboundException;
+import com.jhsfully.inventoryManagement.model.StocksEntity;
 import com.jhsfully.inventoryManagement.service.InboundInterface;
 import com.jhsfully.inventoryManagement.service.PurchaseInterface;
 import com.jhsfully.inventoryManagement.service.StocksInterface;
@@ -72,6 +73,9 @@ public class InboundFacade {
                         .note(request.getNote())
                         .build()
         );
+
+        //만들어진 inbound를 stock에 할당해주어야함.
+        stocksService.addInbound(stock.getId(), inbound.getId());
 
         return inbound.getId();
     }

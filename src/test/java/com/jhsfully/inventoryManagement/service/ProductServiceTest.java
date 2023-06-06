@@ -1,12 +1,10 @@
 package com.jhsfully.inventoryManagement.service;
 
 import com.jhsfully.inventoryManagement.dto.ProductDto;
-import com.jhsfully.inventoryManagement.exception.BomException;
 import com.jhsfully.inventoryManagement.exception.ProductException;
 import com.jhsfully.inventoryManagement.model.ProductEntity;
 import com.jhsfully.inventoryManagement.repository.BomRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
-import com.jhsfully.inventoryManagement.type.BomErrorType;
 import com.jhsfully.inventoryManagement.type.ProductErrorType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,8 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Optional.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -170,9 +168,13 @@ class ProductServiceTest {
     @DisplayName("[Service]품목 삭제 테스트 - Success")
     void deleteProductTestSuccess(){
         //given
-        given(productRepository.existsById(anyLong()))
-                .willReturn(true);
-        given(bomRepository.existsByPidOrCid(anyLong(), anyLong()))
+        given(productRepository.findById(anyLong()))
+                .willReturn(Optional.of(ProductEntity.builder()
+                                .id(1L)
+                                .name("T")
+                                .price(1D)
+                        .build()));
+        given(bomRepository.existsByParentProductOrChildProduct(any(), any()))
                 .willReturn(false);
 
         //when
@@ -290,8 +292,8 @@ class ProductServiceTest {
     @DisplayName("[Service]품목 삭제 테스트(품목 없음) - Fail")
     void deleteProductTestProductNotFoundFail(){
         //given
-        given(productRepository.existsById(anyLong()))
-                .willReturn(false);
+        given(productRepository.findById(anyLong()))
+                .willReturn(Optional.empty());
         //when
         ProductException exception = assertThrows(ProductException.class,
                 () -> productService.deleteProduct(1L));
@@ -303,9 +305,13 @@ class ProductServiceTest {
     @DisplayName("[Service]품목 삭제 테스트(BOM 존재) - Fail")
     void deleteProductTestBomHasProductFail(){
         //given
-        given(productRepository.existsById(anyLong()))
-                .willReturn(true);
-        given(bomRepository.existsByPidOrCid(anyLong(), anyLong()))
+        given(productRepository.findById(anyLong()))
+                .willReturn(Optional.of(ProductEntity.builder()
+                        .id(1L)
+                        .name("T")
+                        .price(1D)
+                        .build()));
+        given(bomRepository.existsByParentProductOrChildProduct(any(), any()))
                 .willReturn(true);
         //when
         ProductException exception = assertThrows(ProductException.class,

@@ -38,6 +38,7 @@ public class PlanDto {
     public static class PlanResponse{
         private Long id;
         private Long productId;
+        private String productName;
         private LocalDate due;
         private String destination;
         private Double amount;

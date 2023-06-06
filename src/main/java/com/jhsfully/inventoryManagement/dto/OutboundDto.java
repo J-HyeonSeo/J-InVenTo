@@ -3,6 +3,7 @@ package com.jhsfully.inventoryManagement.dto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class OutboundDto {
 
@@ -17,7 +18,13 @@ public class OutboundDto {
         private String destination;
         private Double amount;
         private String note;
+        private List<stock> stocks;
 
+    }
+
+    public static class stock{
+        private Long stockId;
+        private Long amount;
     }
 
     @Getter
@@ -41,7 +48,7 @@ public class OutboundDto {
     public static class OutboundResponse{
 
         private Long id;
-        private String productName; //join
+        private String productName;
         private String destination;
         private Double amount;
         private LocalDateTime at;
@@ -58,7 +65,8 @@ public class OutboundDto {
 
         private Long id;
         private Long stockId;
-        private String productName; //join
+        private String productName;
+        private String company;
         private Double amount;
 
     }
