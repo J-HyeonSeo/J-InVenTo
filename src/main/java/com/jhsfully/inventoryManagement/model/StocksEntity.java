@@ -1,6 +1,8 @@
 package com.jhsfully.inventoryManagement.model;
 
 import com.jhsfully.inventoryManagement.dto.StocksDto;
+import com.jhsfully.inventoryManagement.exception.StocksException;
+import com.jhsfully.inventoryManagement.type.StocksErrorType;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -45,9 +47,16 @@ public class StocksEntity {
 
     public void spendAmount(double amount){
         if(this.amount < amount){
-            throw new RuntimeException("임시 오류!");
+            throw new StocksException(StocksErrorType.STOCKS_CANT_SPEND_OR_LESS_ZERO);
         }
         this.amount -= amount;
+    }
+
+    public void cancelSpendAmount(double amount){
+        if(this.amount < amount){
+            throw new StocksException(StocksErrorType.STOCKS_CANT_CANCEL_SPEND);
+        }
+        this.amount += amount;
     }
 
 }

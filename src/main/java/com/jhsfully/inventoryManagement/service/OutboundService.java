@@ -1,7 +1,6 @@
 package com.jhsfully.inventoryManagement.service;
 
 import com.jhsfully.inventoryManagement.dto.OutboundDto;
-import com.jhsfully.inventoryManagement.dto.StocksDto;
 import com.jhsfully.inventoryManagement.exception.OutboundException;
 import com.jhsfully.inventoryManagement.exception.ProductException;
 import com.jhsfully.inventoryManagement.exception.StocksException;
@@ -13,9 +12,6 @@ import com.jhsfully.inventoryManagement.repository.OutboundDetailRepository;
 import com.jhsfully.inventoryManagement.repository.OutboundRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
 import com.jhsfully.inventoryManagement.repository.StocksRepository;
-import com.jhsfully.inventoryManagement.type.OutboundErrorType;
-import com.jhsfully.inventoryManagement.type.ProductErrorType;
-import com.jhsfully.inventoryManagement.type.StocksErrorType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +22,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.jhsfully.inventoryManagement.type.OutboundErrorType.*;
-import static com.jhsfully.inventoryManagement.type.ProductErrorType.*;
-import static com.jhsfully.inventoryManagement.type.StocksErrorType.*;
+import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NOT_FOUND;
+import static com.jhsfully.inventoryManagement.type.StocksErrorType.STOCKS_NOT_FOUND;
 
 @Service
 @AllArgsConstructor
@@ -57,6 +53,8 @@ public class OutboundService implements OutboundInterface{
 
     @Override
     public OutboundDto.OutboundResponse addOutbound(OutboundDto.OutboundAddRequest request) {
+
+        validateAddOutbound(request);
 
         ProductEntity product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
@@ -95,12 +93,22 @@ public class OutboundService implements OutboundInterface{
 
     @Override
     public void deleteOutbound(Long outboundId) {
+        OutboundEntity outbound = outboundRepository.findById(outboundId)
+                .orElseThrow(() -> new OutboundException(OUTBOUND_NOT_FOUND));
 
+        outboundRepository.delete(outbound);
     }
 
     @Override
-    public void deleteOutboundDetail(Long detailId) {
+    public OutboundDto.OutboundDetailResponse deleteOutboundDetail(Long detailId) {
+        OutboundDetailsEntity outboundDetail = outboundDetailRepository.findById(detailId)
+                .orElseThrow(() -> new OutboundException(OUTBOUND_DETAILS_NOT_FOUND));
 
+        OutboundDto.OutboundDetailResponse response = OutboundDetailsEntity.toDto(outboundDetail);
+
+        outboundDetailRepository.delete(outboundDetail);
+
+        return response;
     }
 
     //======================== Validates===================================

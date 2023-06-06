@@ -34,18 +34,20 @@ public class OutboundController {
             @RequestBody OutboundDto.OutboundAddRequest request
             ){
         outboundFacade.executeOutbound(request);
-        return null;
+        return ResponseEntity.ok(null);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteOutbound(@PathVariable Long id){
-        return null;
+    public ResponseEntity<?> cancelOutbound(@PathVariable Long id){
+        outboundFacade.cancelOutbound(id);
+        return ResponseEntity.ok(null);
     }
 
     //출고 상세 삭제 기능은 일단 보류함.
     @DeleteMapping("/detail/{id}")
-    public ResponseEntity<?> deleteOutboundDetail(@PathVariable Long detailId){
-        return null;
+    public ResponseEntity<?> cancelOutboundDetail(@PathVariable Long detailId){
+        outboundFacade.cancelOutboundDetail(detailId);
+        return ResponseEntity.ok(null);
     }
 
 }

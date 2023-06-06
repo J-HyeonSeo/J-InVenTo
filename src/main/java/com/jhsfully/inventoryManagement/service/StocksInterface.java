@@ -18,6 +18,8 @@ public interface StocksInterface {
 
     public void spendStockById(Long id, Double amount);
 
+    public void cancelSpendStockById(Long id, Double amount);
+
     public void deleteStock(Long id);
 
 }

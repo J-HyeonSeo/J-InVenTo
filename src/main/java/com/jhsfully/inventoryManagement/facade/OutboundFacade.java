@@ -59,6 +59,22 @@ public class OutboundFacade {
 
     }
 
+    //출고 전체 단위로 취소
+    public void cancelOutbound(Long outboundId){
+        List<OutboundDto.OutboundDetailResponse> outboundDetails = outboundService
+                .getOutboundDetails(outboundId);
+        for(var outboundDetail : outboundDetails){
+            cancelOutboundDetail(outboundDetail.getId());
+        }
+        outboundService.deleteOutbound(outboundId);
+    }
+
+    //출고 상세 단위로 취소
+    public void cancelOutboundDetail(Long detailId){
+        OutboundDto.OutboundDetailResponse detailResponse = outboundService.deleteOutboundDetail(detailId);
+        stocksService.cancelSpendStockById(detailResponse.getStockId(), detailResponse.getAmount());
+    }
+
     //=========================== validates ==================================
 
     private void validateExecute(OutboundDto.OutboundAddRequest request){

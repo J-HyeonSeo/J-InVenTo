@@ -99,6 +99,16 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
+    public void cancelSpendStockById(Long id, Double amount){
+        StocksEntity stocksEntity = stocksRepository.findById(id)
+                .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
+
+        stocksEntity.cancelSpendAmount(amount);
+
+        stocksRepository.save(stocksEntity);
+    }
+
+    @Override
     public void deleteStock(Long id) {
         //구현 보류(출고 서비스가 발생하여야 구현 가능)
     }

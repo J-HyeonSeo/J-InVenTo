@@ -18,6 +18,6 @@ public interface OutboundInterface {
 
     public void deleteOutbound(Long outboundId);
 
-    public void deleteOutboundDetail(Long detailId);
+    public OutboundDto.OutboundDetailResponse deleteOutboundDetail(Long detailId);
 
 }
