@@ -44,7 +44,6 @@ public class InboundFacade {
                         .productId(purchase.getProductId())
                         .amount(request.getAmount())
                         .lot(LocalDate.now())
-                        .company(request.getCompany())
                         .build()
         );
 
@@ -54,7 +53,6 @@ public class InboundFacade {
                         .purchaseId(purchase.getId())
                         .stockId(stock.getId())
                         .amount(request.getAmount())
-                        .company(request.getCompany())
                         .note(request.getNote())
                         .build()
         );
@@ -77,8 +75,12 @@ public class InboundFacade {
             throw new StocksException(StocksErrorType.STOCKS_OCCURRED_OUTBOUND);
         }
 
+        //cascade옵션을 지정하지 않았기에, 수동 할당해제 후 삭제해야함.
+        stocksService.releaseInbound(stockResponse.getId());
+
         inboundService.deleteInbound(inboundResponse.getId());
         stocksService.deleteStock(stockResponse.getId());
+
     }
     //========================= Validates ==================================
     public PurchaseDto.PurchaseResponse validateExecute(InboundDto.InboundOuterAddRequest request){
@@ -98,7 +100,7 @@ public class InboundFacade {
         //현재 입고수량을 더했을 경우, 구매량을 초과하는지 검증해야함.
         inboundSum += request.getAmount();
 
-        if(purchase.getAmount() > inboundSum){
+        if(purchase.getAmount() < inboundSum){
             throw new InboundException(InboundErrorType.INBOUND_EXCEED_PURCHASE_AMOUNT);
         }
         return purchase;

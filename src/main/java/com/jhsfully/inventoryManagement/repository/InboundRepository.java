@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface InboundRepository extends JpaRepository<InboundEntity, Long> {
 
-    List<InboundDto.InboundResponse> findByAtBetween(LocalDateTime start, LocalDateTime end);
+    List<InboundEntity> findByAtBetween(LocalDateTime start, LocalDateTime end);
 
     List<InboundEntity> findByPurchase(PurchaseEntity purchase);
 

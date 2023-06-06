@@ -100,8 +100,8 @@ public class OutboundFacade {
             Double realSum = realStockSum.getOrDefault(stockResponse.getId(), 0D);
             realStockSum.put(stockResponse.getId(), realSum + stockResponse.getAmount());
 
-            Double productSum = productStockSum.getOrDefault(stockResponse.getId(), 0D);
-            productStockSum.put(productResponse.getId(), productSum + stockResponse.getAmount());
+            Double productSum = productStockSum.getOrDefault(stockResponse.getProductId(), 0D);
+            productStockSum.put(productResponse.getId(), productSum + stockRequest.getAmount());
         }
 
         //요청 수량이 재고 수량을 넘는지 검증함.
@@ -125,7 +125,7 @@ public class OutboundFacade {
             Double requestAmount = productStockSum.getOrDefault(product.getProductId(), 0D);
 
             if(!requestAmount.equals(requiredAmount)){
-                throw new OutboundException(OUTBOUND_EXCEED_REQUIRES);
+                throw new OutboundException(OUTBOUND_DIFFERENT_REQUIRES);
             }
 
         }

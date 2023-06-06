@@ -5,6 +5,7 @@ import com.jhsfully.inventoryManagement.exception.ProductException;
 import com.jhsfully.inventoryManagement.exception.PurchaseException;
 import com.jhsfully.inventoryManagement.model.ProductEntity;
 import com.jhsfully.inventoryManagement.model.PurchaseEntity;
+import com.jhsfully.inventoryManagement.repository.BomRepository;
 import com.jhsfully.inventoryManagement.repository.InboundRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
 import com.jhsfully.inventoryManagement.repository.PurchaseRepository;
@@ -26,6 +27,7 @@ public class PurchaseService implements PurchaseInterface{
     private final PurchaseRepository purchaseRepository;
     private final ProductRepository productRepository;
     private final InboundRepository inboundRepository;
+    private final BomRepository bomRepository;
 
     @Override
     public PurchaseDto.PurchaseResponse getPurchase(Long id){
@@ -79,6 +81,10 @@ public class PurchaseService implements PurchaseInterface{
 
         ProductEntity product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+        //bom의 부모에 존재하면 안됨.
+        if(bomRepository.existsByParentProduct(product)){
+            throw new PurchaseException(PURCHASE_CANT_PARENT_PRODUCT);
+        }
 
         //amount가 존재해야함.
         if(request.getAmount() == null){

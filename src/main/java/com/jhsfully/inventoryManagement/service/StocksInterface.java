@@ -16,6 +16,8 @@ public interface StocksInterface {
 
     public void addInbound(Long stockId, Long inboundId);
 
+    public void releaseInbound(Long stockId);
+
     public void spendStockById(Long id, Double amount);
 
     public void cancelSpendStockById(Long id, Double amount);

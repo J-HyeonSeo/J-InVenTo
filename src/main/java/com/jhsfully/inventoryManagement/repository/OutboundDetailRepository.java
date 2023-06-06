@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface OutboundDetailRepository extends JpaRepository<OutboundDetailsEntity, Long> {
-    List<OutboundDto.OutboundDetailResponse> findByOutbound(OutboundEntity outbound);
+    List<OutboundDetailsEntity> findByOutbound(OutboundEntity outbound);
 
     Long countByStock(StocksEntity stocksEntity);
 }

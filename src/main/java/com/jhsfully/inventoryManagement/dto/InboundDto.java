@@ -14,7 +14,6 @@ public class InboundDto {
     public static class InboundOuterAddRequest{
         private Long purchaseId;
         private Double amount;
-        private String company;
         private String note;
 
     }
@@ -28,7 +27,6 @@ public class InboundDto {
         private Long purchaseId;
         private Long stockId;
         private Double amount;
-        private String company;
         private String note;
 
     }

@@ -41,7 +41,8 @@ public class StocksEntity {
                 .productName(s.getProduct().getName())
                 .amount(s.getAmount())
                 .lot(s.getLot())
-                .company(s.getInbound().getPurchase().getCompany())
+                .company(s.getInbound() != null ? s.getInbound().getPurchase().getCompany()
+                        : null)
                 .build();
     }
 

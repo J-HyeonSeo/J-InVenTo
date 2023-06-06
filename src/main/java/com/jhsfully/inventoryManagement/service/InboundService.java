@@ -53,7 +53,10 @@ public class InboundService implements InboundInterface{
     public List<InboundDto.InboundResponse> getInbounds(LocalDate startDate, LocalDate endDate) {
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
-        return inboundRepository.findByAtBetween(startDateTime, endDateTime);
+        return inboundRepository.findByAtBetween(startDateTime, endDateTime)
+                .stream()
+                .map(InboundEntity::toDto)
+                .collect(Collectors.toList());
     }
 
 

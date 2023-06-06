@@ -55,7 +55,10 @@ public class OutboundService implements OutboundInterface{
     public List<OutboundDto.OutboundDetailResponse> getOutboundDetails(Long outboundId) {
         OutboundEntity outbound = outboundRepository.findById(outboundId)
                 .orElseThrow(() -> new OutboundException(OUTBOUND_NOT_FOUND));
-        return outboundDetailRepository.findByOutbound(outbound);
+        return outboundDetailRepository.findByOutbound(outbound)
+                .stream()
+                .map(OutboundDetailsEntity::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override

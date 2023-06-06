@@ -81,6 +81,13 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
+    public void releaseInbound(Long stockId){
+        StocksEntity stock = stocksRepository.findById(stockId)
+                .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
+        stock.setInbound(null);
+    }
+
+    @Override
     public void spendStockById(Long id, Double amount) {
         StocksEntity stocksEntity = stocksRepository.findById(id)
                 .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));

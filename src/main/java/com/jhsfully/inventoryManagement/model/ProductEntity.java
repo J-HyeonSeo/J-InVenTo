@@ -22,8 +22,8 @@ public class ProductEntity {
     private String company;
     @NotNull
     private Double price;
-    @Column(columnDefinition = "BIT default true")
-    private boolean enabled;
+    @Builder.Default()
+    private boolean enabled = true;
     private String spec;
 
     public static ProductDto.ProductResponse toDto(ProductEntity p){
