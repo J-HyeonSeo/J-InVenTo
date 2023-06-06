@@ -11,6 +11,7 @@ import com.jhsfully.inventoryManagement.repository.ProductRepository;
 import com.jhsfully.inventoryManagement.repository.PurchaseRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,6 +47,7 @@ public class PurchaseService implements PurchaseInterface{
     }
 
     @Override
+    @Transactional
     public PurchaseDto.PurchaseResponse addPurchase(PurchaseDto.PurchaseAddRequest request) {
 
         ProductEntity product = validateAddPurchase(request);
@@ -63,6 +65,7 @@ public class PurchaseService implements PurchaseInterface{
     }
 
     @Override
+    @Transactional
     public void deletePurchase(Long id) {
         //입고단에서 해당 ID를 참조하지 않을 경우에만 삭제 가능!!
         PurchaseEntity purchase = purchaseRepository.findById(id)

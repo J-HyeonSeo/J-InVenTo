@@ -54,6 +54,7 @@ public class BomService implements BomInterface{
     }
 
     @Override
+    @Transactional
     public BomDto.BomResponse addBom(BomDto.BomAddRequest request) {
 
         validateAddBom(request); //밸리데이션 검사 수행.
@@ -75,6 +76,7 @@ public class BomService implements BomInterface{
 
     //하나의 BOM Node를 제거합니다.
     @Override
+    @Transactional
     public void deleteBomNode(Long bid) {
         if(!bomRepository.existsById(bid)){
             throw new BomException(BomErrorType.BOM_NOT_FOUND);
@@ -84,6 +86,7 @@ public class BomService implements BomInterface{
 
     //선택된 BOM의 구성요소를 전부 제거합니다.
     @Override
+    @Transactional
     public void deleteBomTree(Long pid){
         ProductEntity product = productRepository.findById(pid)
                         .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
@@ -92,6 +95,7 @@ public class BomService implements BomInterface{
     }
 
     //======================== Validates =============================
+    @Transactional
     private void validateAddBom(BomDto.BomAddRequest request) {
         //순환참조 검증.
         if(!validateCirculation(request)){

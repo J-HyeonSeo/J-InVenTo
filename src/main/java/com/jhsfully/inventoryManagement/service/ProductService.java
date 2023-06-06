@@ -17,7 +17,6 @@ import static com.jhsfully.inventoryManagement.type.ProductErrorType.*;
 
 @Service
 @AllArgsConstructor
-@Transactional
 public class ProductService implements ProductInterface{
 
     private final ProductRepository productRepository;
@@ -38,6 +37,7 @@ public class ProductService implements ProductInterface{
     }
 
     @Override
+    @Transactional
     public ProductDto.ProductResponse addProduct(ProductDto.ProductAddRequest request) {
 
         validateAddProduct(request);
@@ -53,6 +53,7 @@ public class ProductService implements ProductInterface{
     }
 
     @Override
+    @Transactional
     public ProductDto.ProductResponse updateProduct(ProductDto.ProductUpdateRequest request) {
         ProductEntity productEntity = productRepository.findById(request.getId())
                 .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
@@ -78,12 +79,14 @@ public class ProductService implements ProductInterface{
 
     //가장 BOM의 구성에서 종속적인 경우 삭제 불가능함.
     @Override
+    @Transactional
     public void deleteProduct(Long id) {
         ProductEntity product = validateDeleteProduct(id);
         product.setEnabled(false); //소프트 삭제.
         productRepository.save(product);
     }
 
+    //매일 자정에 필요없는 품목을 검사해서 지워버림.
     @Scheduled(cron = "0 0 0 * * *")
     public void hardDeleteProducts(){
 

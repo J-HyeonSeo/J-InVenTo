@@ -15,6 +15,7 @@ import com.jhsfully.inventoryManagement.type.PurchaseErrorType;
 import com.jhsfully.inventoryManagement.type.StocksErrorType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -61,6 +62,7 @@ public class InboundService implements InboundInterface{
 
 
     @Override
+    @Transactional
     public InboundDto.InboundResponse addInbound(InboundDto.InboundAddRequest request) {
         //Stock을 추가할 때, 이미 밸리데이션 검증이 완료됨.
 
@@ -82,6 +84,7 @@ public class InboundService implements InboundInterface{
 
 
     @Override
+    @Transactional
     public void deleteInbound(Long id) {
         //파서드 => 밸리데이션 => 서비스 => 삭제(즉, 그냥 삭제만 하면 됨)
         InboundEntity inboundEntity = inboundRepository.findById(id)

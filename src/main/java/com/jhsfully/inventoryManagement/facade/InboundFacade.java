@@ -63,6 +63,7 @@ public class InboundFacade {
         return inbound.getId();
     }
 
+    @Transactional
     public void cancelInbound(Long id){
         //입고를 지운다. => 재고를 지운다. (조건 : 출고 이력이 없어야 함)
         InboundDto.InboundResponse inboundResponse = inboundService.getInbound(id);
@@ -83,6 +84,7 @@ public class InboundFacade {
 
     }
     //========================= Validates ==================================
+    @Transactional
     public PurchaseDto.PurchaseResponse validateExecute(InboundDto.InboundOuterAddRequest request){
         //구매번호에대한 입고된 합이, 구매수량 이하여야 함. (구매 수량을 가져옴)
         PurchaseDto.PurchaseResponse purchase =

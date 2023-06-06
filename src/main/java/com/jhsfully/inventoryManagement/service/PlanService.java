@@ -12,6 +12,7 @@ import com.jhsfully.inventoryManagement.type.ProductErrorType;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -41,6 +42,7 @@ public class PlanService implements PlanInterface{
     }
 
     @Override
+    @Transactional
     public PlanDto.PlanResponse addPlan(PlanDto.PlanAddRequest request) {
 
         ProductEntity product = validateAddPlan(request);
@@ -55,12 +57,14 @@ public class PlanService implements PlanInterface{
     }
 
     @Override
+    @Transactional
     public PlanDto.PlanResponse updatePlan(PlanDto.PlanUpdateRequest request) {
         PlanEntity updated = validateAndUpdatePlan(request);
         return PlanEntity.toDto(planRepository.save(updated));
     }
 
     @Override
+    @Transactional
     public void deletePlan(Long id) {
         if(!planRepository.existsById(id)){
             throw new PlanException(PlanErrorType.PLAN_NOT_FOUND);

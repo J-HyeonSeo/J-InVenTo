@@ -10,8 +10,6 @@ import com.jhsfully.inventoryManagement.model.StocksEntity;
 import com.jhsfully.inventoryManagement.repository.InboundRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
 import com.jhsfully.inventoryManagement.repository.StocksRepository;
-import com.jhsfully.inventoryManagement.type.InboundErrorType;
-import com.jhsfully.inventoryManagement.type.StocksErrorType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,13 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.jhsfully.inventoryManagement.type.InboundErrorType.*;
+import static com.jhsfully.inventoryManagement.type.InboundErrorType.INBOUND_NOT_FOUND;
 import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NOT_FOUND;
 import static com.jhsfully.inventoryManagement.type.StocksErrorType.*;
 
 @Service
 @AllArgsConstructor
-@Transactional
 public class StocksService implements StocksInterface {
     private final StocksRepository stocksRepository;
     private final ProductRepository productRepository;
@@ -55,6 +52,7 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
+    @Transactional
     public StocksDto.StockResponseLot addStock(StocksDto.StockAddRequest request) {
 
         ProductEntity productEntity = validateAddStock(request);
@@ -69,6 +67,7 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
+    @Transactional
     public void addInbound(Long stockId, Long inboundId){
         StocksEntity stock = stocksRepository.findById(stockId)
                 .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
@@ -81,6 +80,7 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
+    @Transactional
     public void releaseInbound(Long stockId){
         StocksEntity stock = stocksRepository.findById(stockId)
                 .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
@@ -88,6 +88,7 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
+    @Transactional
     public void spendStockById(Long id, Double amount) {
         StocksEntity stocksEntity = stocksRepository.findById(id)
                 .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
@@ -106,6 +107,7 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
+    @Transactional
     public void cancelSpendStockById(Long id, Double amount){
         StocksEntity stocksEntity = stocksRepository.findById(id)
                 .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
@@ -116,6 +118,7 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
+    @Transactional
     public void deleteStock(Long id) {
         //파서드단에서 밸리데이션을 수행했을거임.
         StocksEntity stocksEntity = stocksRepository.findById(id)

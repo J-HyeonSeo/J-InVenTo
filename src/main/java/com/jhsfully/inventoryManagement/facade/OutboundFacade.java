@@ -11,6 +11,7 @@ import com.jhsfully.inventoryManagement.service.ProductInterface;
 import com.jhsfully.inventoryManagement.service.StocksInterface;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ public class OutboundFacade {
         return outboundService.getOutboundDetails(outboundId);
     }
 
+    @Transactional
     public void executeOutbound(OutboundDto.OutboundAddRequest request){
 
         validateExecute(request); //밸리데이션 수행
@@ -59,7 +61,9 @@ public class OutboundFacade {
 
     }
 
+
     //출고 전체 단위로 취소
+    @Transactional
     public void cancelOutbound(Long outboundId){
         List<OutboundDto.OutboundDetailResponse> outboundDetails = outboundService
                 .getOutboundDetails(outboundId);
@@ -70,6 +74,7 @@ public class OutboundFacade {
     }
 
     //출고 상세 단위로 취소
+    @Transactional
     public void cancelOutboundDetail(Long detailId){
         OutboundDto.OutboundDetailResponse detailResponse = outboundService.deleteOutboundDetail(detailId);
         stocksService.cancelSpendStockById(detailResponse.getStockId(), detailResponse.getAmount());
@@ -77,6 +82,7 @@ public class OutboundFacade {
 
     //=========================== validates ==================================
 
+    @Transactional
     private void validateExecute(OutboundDto.OutboundAddRequest request){
         if(request.getAmount() <= 0){
             throw new OutboundException(OUTBOUND_AMOUNT_OR_LESS_ZERO);

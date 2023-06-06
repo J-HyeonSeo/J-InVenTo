@@ -14,6 +14,7 @@ import com.jhsfully.inventoryManagement.repository.ProductRepository;
 import com.jhsfully.inventoryManagement.repository.StocksRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -62,6 +63,7 @@ public class OutboundService implements OutboundInterface{
     }
 
     @Override
+    @Transactional
     public OutboundDto.OutboundResponse addOutbound(OutboundDto.OutboundAddRequest request) {
 
         validateAddOutbound(request);
@@ -81,6 +83,7 @@ public class OutboundService implements OutboundInterface{
     }
 
     @Override
+    @Transactional
     public void addOutboundDetail(OutboundDto.OutboundDetailAddRequest request) {
 
         validateAddOutboundDetail(request);
@@ -102,6 +105,7 @@ public class OutboundService implements OutboundInterface{
     }
 
     @Override
+    @Transactional
     public void deleteOutbound(Long outboundId) {
         OutboundEntity outbound = outboundRepository.findById(outboundId)
                 .orElseThrow(() -> new OutboundException(OUTBOUND_NOT_FOUND));
@@ -110,6 +114,7 @@ public class OutboundService implements OutboundInterface{
     }
 
     @Override
+    @Transactional
     public OutboundDto.OutboundDetailResponse deleteOutboundDetail(Long detailId) {
         OutboundDetailsEntity outboundDetail = outboundDetailRepository.findById(detailId)
                 .orElseThrow(() -> new OutboundException(OUTBOUND_DETAILS_NOT_FOUND));
