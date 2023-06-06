@@ -22,6 +22,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.jhsfully.inventoryManagement.type.InboundErrorType.*;
+
 @Service
 @AllArgsConstructor
 public class InboundService implements InboundInterface{
@@ -39,6 +41,12 @@ public class InboundService implements InboundInterface{
                 .stream()
                 .map(InboundEntity::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public InboundDto.InboundResponse getInbound(Long id){
+        return InboundEntity.toDto(inboundRepository.findById(id)
+                .orElseThrow(() -> new InboundException(INBOUND_NOT_FOUND)));
     }
 
     @Override
@@ -74,7 +82,7 @@ public class InboundService implements InboundInterface{
     public void deleteInbound(Long id) {
         //파서드 => 밸리데이션 => 서비스 => 삭제(즉, 그냥 삭제만 하면 됨)
         InboundEntity inboundEntity = inboundRepository.findById(id)
-                .orElseThrow(() -> new InboundException(InboundErrorType.INBOUND_NOT_FOUND));
+                .orElseThrow(() -> new InboundException(INBOUND_NOT_FOUND));
 
         inboundRepository.delete(inboundEntity);
     }

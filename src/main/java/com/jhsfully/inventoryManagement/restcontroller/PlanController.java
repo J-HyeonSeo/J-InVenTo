@@ -27,17 +27,18 @@ public class PlanController {
 
     @PostMapping("")
     public ResponseEntity<?> addPlan(@RequestBody PlanDto.PlanAddRequest request){
-        return null;
+        return ResponseEntity.ok(planService.addPlan(request));
     }
 
     @PutMapping("")
     public ResponseEntity<?> updatePlan(@RequestBody PlanDto.PlanUpdateRequest request){
-        return null;
+        return ResponseEntity.ok(planService.updatePlan(request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePlan(@PathVariable Long id){
-        return null;
+        planService.deletePlan(id);
+        return ResponseEntity.ok(null);
     }
 
 }

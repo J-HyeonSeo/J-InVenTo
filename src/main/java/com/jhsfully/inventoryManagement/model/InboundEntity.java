@@ -37,6 +37,7 @@ public class InboundEntity {
     public static InboundDto.InboundResponse toDto(InboundEntity i){
         return InboundDto.InboundResponse.builder()
                 .id(i.getId())
+                .stockId(i.getStock().getId())
                 .purchaseId(i.getPurchase().getId())
                 .productName(i.getStock().getProduct().getName())
                 .inboundAt(i.getAt())

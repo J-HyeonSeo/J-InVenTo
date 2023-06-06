@@ -23,9 +23,9 @@ public class StocksController {
         return ResponseEntity.ok(stocksFacade.getAllStocks());
     }
 
-    @GetMapping("/{productid}")
-    public ResponseEntity<?> getLotByPid(@PathVariable Long productid){
-        return ResponseEntity.ok(stocksService.getLotByPid(productid));
+    @GetMapping("/{productId}")
+    public ResponseEntity<?> getLotByPid(@PathVariable Long productId){
+        return ResponseEntity.ok(stocksService.getLotByPid(productId));
     }
 
 }

@@ -9,6 +9,8 @@ public interface InboundInterface {
 
     public List<InboundDto.InboundResponse> getInboundsByPurchase(Long purchaseId);
 
+    public InboundDto.InboundResponse getInbound(Long id);
+
     public List<InboundDto.InboundResponse> getInbounds(LocalDate startDate, LocalDate endDate);
 
     public InboundDto.InboundResponse addInbound(InboundDto.InboundAddRequest request);

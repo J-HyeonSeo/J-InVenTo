@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface OutboundInterface {
+    public Long countByStock(Long stockId);
 
     public List<OutboundDto.OutboundResponse> getOutbounds(LocalDate startDate,
                                                            LocalDate endDate);

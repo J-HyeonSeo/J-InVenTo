@@ -4,10 +4,7 @@ import com.jhsfully.inventoryManagement.dto.ProductDto;
 import com.sun.istack.NotNull;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -25,6 +22,8 @@ public class ProductEntity {
     private String company;
     @NotNull
     private Double price;
+    @Column(columnDefinition = "BIT default true")
+    private boolean enabled;
     private String spec;
 
     public static ProductDto.ProductResponse toDto(ProductEntity p){

@@ -6,6 +6,7 @@ import com.jhsfully.inventoryManagement.model.ProductEntity;
 import com.jhsfully.inventoryManagement.repository.BomRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,7 @@ public class ProductService implements ProductInterface{
 
     @Override
     public List<ProductDto.ProductResponse> getProducts(){
-        List<ProductEntity> productEntities = productRepository.findAll();
+        List<ProductEntity> productEntities = productRepository.findByEnabledIsTrue();
         return productEntities.stream()
                 .map(ProductEntity::toDto)
                 .collect(Collectors.toList());
@@ -78,9 +79,26 @@ public class ProductService implements ProductInterface{
     //가장 BOM의 구성에서 종속적인 경우 삭제 불가능함.
     @Override
     public void deleteProduct(Long id) {
-        validateDeleteProduct(id);
-        productRepository.deleteById(id);
+        ProductEntity product = validateDeleteProduct(id);
+        product.setEnabled(false); //소프트 삭제.
+        productRepository.save(product);
     }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void hardDeleteProducts(){
+
+        List<ProductEntity> products = productRepository.findByEnabledIsFalse();
+
+        for(var product : products){
+            if(!bomRepository.existsByParentProductOrChildProduct(product, product)) {
+                if (!productRepository.isProductReferenced(product)) {
+                    productRepository.delete(product);
+                }
+            }
+        }
+
+    }
+
 
     //============================ Validates ===================================
     private void validateAddProduct(ProductDto.ProductAddRequest request){
@@ -99,7 +117,7 @@ public class ProductService implements ProductInterface{
 
     }
 
-    private void validateDeleteProduct(Long id){
+    private ProductEntity validateDeleteProduct(Long id){
 
         ProductEntity product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
@@ -107,6 +125,7 @@ public class ProductService implements ProductInterface{
         if(bomRepository.existsByParentProductOrChildProduct(product, product)){
             throw new ProductException(PRODUCT_HAS_BOM);
         }
+        return product;
     }
 
 }

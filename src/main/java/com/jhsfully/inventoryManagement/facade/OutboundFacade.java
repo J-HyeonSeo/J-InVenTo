@@ -5,10 +5,10 @@ import com.jhsfully.inventoryManagement.dto.OutboundDto;
 import com.jhsfully.inventoryManagement.dto.ProductDto;
 import com.jhsfully.inventoryManagement.dto.StocksDto;
 import com.jhsfully.inventoryManagement.exception.OutboundException;
-import com.jhsfully.inventoryManagement.model.ProductEntity;
-import com.jhsfully.inventoryManagement.model.StocksEntity;
-import com.jhsfully.inventoryManagement.service.*;
-import com.jhsfully.inventoryManagement.type.OutboundErrorType;
+import com.jhsfully.inventoryManagement.service.BomInterface;
+import com.jhsfully.inventoryManagement.service.OutboundInterface;
+import com.jhsfully.inventoryManagement.service.ProductInterface;
+import com.jhsfully.inventoryManagement.service.StocksInterface;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -124,7 +124,7 @@ public class OutboundFacade {
 
             Double requestAmount = productStockSum.getOrDefault(product.getProductId(), 0D);
 
-            if(requestAmount != requiredAmount){
+            if(!requestAmount.equals(requiredAmount)){
                 throw new OutboundException(OUTBOUND_EXCEED_REQUIRES);
             }
 

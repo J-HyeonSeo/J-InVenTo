@@ -30,8 +30,8 @@ public class InboundController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteInbound(@PathVariable Long id){
-        inboundFacade.deleteInbound(id);
+    public ResponseEntity<?> cancelInbound(@PathVariable Long id){
+        inboundFacade.cancelInbound(id);
         return ResponseEntity.ok(id);
     }
 

@@ -40,10 +40,11 @@ public class InboundDto {
     @Builder
     public static class InboundResponse{
         private Long id;
+        private Long stockId;
         private Long purchaseId;
-        private String productName; //join으로 가져옴.
+        private String productName;
         private LocalDateTime inboundAt;
-        private LocalDateTime purchasedAt; //join으로 가져옴.
+        private LocalDateTime purchasedAt;
         private Double amount;
         private String company;
         private String note;

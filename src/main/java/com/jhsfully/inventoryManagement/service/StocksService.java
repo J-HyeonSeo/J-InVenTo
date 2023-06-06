@@ -110,7 +110,10 @@ public class StocksService implements StocksInterface {
 
     @Override
     public void deleteStock(Long id) {
-        //구현 보류(출고 서비스가 발생하여야 구현 가능)
+        //파서드단에서 밸리데이션을 수행했을거임.
+        StocksEntity stocksEntity = stocksRepository.findById(id)
+                .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
+        stocksRepository.delete(stocksEntity);
     }
 
     //======================== Validates ======================================

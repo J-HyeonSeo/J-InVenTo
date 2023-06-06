@@ -35,6 +35,13 @@ public class OutboundService implements OutboundInterface{
     private final StocksRepository stocksRepository;
 
     @Override
+    public Long countByStock(Long stockId){
+        StocksEntity stocksEntity = stocksRepository.findById(stockId)
+                .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
+        return outboundDetailRepository.countByStock(stocksEntity);
+    }
+
+    @Override
     public List<OutboundDto.OutboundResponse> getOutbounds(LocalDate startDate, LocalDate endDate) {
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
