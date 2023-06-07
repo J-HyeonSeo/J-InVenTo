@@ -1,7 +1,10 @@
 package com.jhsfully.inventoryManagement.restcontroller;
 
+import com.jhsfully.inventoryManagement.exception.StocksException;
 import com.jhsfully.inventoryManagement.facade.StocksFacade;
+import com.jhsfully.inventoryManagement.lock.ProcessLock;
 import com.jhsfully.inventoryManagement.service.StocksInterface;
+import com.jhsfully.inventoryManagement.type.StocksErrorType;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +22,13 @@ public class StocksController {
 
     //파서드에서 가져옴.
     @GetMapping("")
+    @ProcessLock(key = "process")
     public ResponseEntity<?> getAllStocks(){
+        try{
+            Thread.sleep(5000);
+        }catch (Exception e){
+            throw new StocksException(StocksErrorType.STOCKS_NOT_FOUND);
+        }
         return ResponseEntity.ok(stocksFacade.getAllStocks());
     }
 

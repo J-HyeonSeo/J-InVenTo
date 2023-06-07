@@ -1,8 +1,11 @@
 package com.jhsfully.inventoryManagement.restcontroller;
 
 import com.jhsfully.inventoryManagement.dto.ProductDto;
+import com.jhsfully.inventoryManagement.exception.ProductException;
+import com.jhsfully.inventoryManagement.lock.ProcessLock;
 import com.jhsfully.inventoryManagement.service.ProductInterface;
 import com.jhsfully.inventoryManagement.service.ProductService;
+import com.jhsfully.inventoryManagement.type.ProductErrorType;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +18,15 @@ public class ProductController {
     private final ProductInterface productService;
 
     //전체 품목 데이터를 리턴합니다.
+    //@ProcessLock(key = "getProduct")
     @GetMapping("")
+    @ProcessLock(key = "process")
     public ResponseEntity<?> getProducts(){
+        try {
+            Thread.sleep(5000);
+        }catch (Exception e){
+            throw new ProductException(ProductErrorType.PRODUCT_NOT_FOUND);
+        }
         return ResponseEntity.ok(productService.getProducts());
     }
 
