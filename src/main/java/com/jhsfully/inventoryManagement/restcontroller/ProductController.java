@@ -20,14 +20,8 @@ public class ProductController {
     //전체 품목 데이터를 리턴합니다.
     //@ProcessLock(key = "getProduct")
     @GetMapping("")
-    @ProcessLock(key = "process")
     public ResponseEntity<?> getProducts(){
-        try {
-            Thread.sleep(5000);
-        }catch (Exception e){
-            throw new ProductException(ProductErrorType.PRODUCT_NOT_FOUND);
-        }
-        return ResponseEntity.ok(productService.getProducts());
+        return ResponseEntity.ok(productService.getAllProducts());
     }
 
     //품목 데이터를 만듭니다. 응답결과를 리턴합니다.

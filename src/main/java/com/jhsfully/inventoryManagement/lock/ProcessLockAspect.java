@@ -1,6 +1,5 @@
 package com.jhsfully.inventoryManagement.lock;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -21,21 +20,38 @@ public class ProcessLockAspect {
         String keyString = processLock.key();
         String lockKey = "lock:" + keyString;
         boolean acquired = false;
-        Object result = null;
 
         try{
-            acquired = redisTemplate.opsForValue().setIfAbsent(lockKey, "locked", Duration.ofMillis(1_000L));
+            acquired = getLock(lockKey, 2_000L);
             if(acquired){
-                result = joinPoint.proceed();
+                return joinPoint.proceed();
             }else{
                 throw new IllegalStateException("Process is Locked!!");
             }
         }finally {
             if(acquired){
-                redisTemplate.delete(lockKey);
+                releaseLock(lockKey);
             }
-            return result;
         }
+    }
+
+    private boolean getLock(String lockKey, Long timeout) throws InterruptedException {
+        Long startTime = System.currentTimeMillis();
+        Long endTime = startTime + timeout;
+        boolean result = false;
+
+        while(System.currentTimeMillis() < endTime){
+            result = redisTemplate.opsForValue().setIfAbsent(lockKey, "locked", Duration.ofMillis(15_000L));
+            if(result){
+                break;
+            }
+            Thread.sleep(100);
+        }
+        return result;
+    }
+
+    private void releaseLock(String lockKey){
+        redisTemplate.delete(lockKey);
     }
 
 }

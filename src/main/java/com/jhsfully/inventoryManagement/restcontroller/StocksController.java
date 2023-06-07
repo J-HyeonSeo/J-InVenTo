@@ -22,13 +22,7 @@ public class StocksController {
 
     //파서드에서 가져옴.
     @GetMapping("")
-    @ProcessLock(key = "process")
     public ResponseEntity<?> getAllStocks(){
-        try{
-            Thread.sleep(5000);
-        }catch (Exception e){
-            throw new StocksException(StocksErrorType.STOCKS_NOT_FOUND);
-        }
         return ResponseEntity.ok(stocksFacade.getAllStocks());
     }
 

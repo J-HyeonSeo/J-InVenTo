@@ -25,12 +25,13 @@ public class InboundController {
         return ResponseEntity.ok(inboundFacade.getInbounds(startDate, endDate));
     }
 
-    @ProcessLock(key = "process")
+    @ProcessLock(key = "cancelPurchase-inbound")
     @PostMapping("")
     public ResponseEntity<?> executeInbound(@RequestBody InboundDto.InboundOuterAddRequest request){
         return ResponseEntity.ok(inboundFacade.executeInbound(request));
     }
 
+    @ProcessLock(key = "cancelInbound-outbound")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> cancelInbound(@PathVariable Long id){
         inboundFacade.cancelInbound(id);

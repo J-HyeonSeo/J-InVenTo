@@ -23,26 +23,31 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PurchaseException.class)
     public ResponseEntity<ErrorResponse> handlePurchaseException(PurchaseException e){
-        return ResponseEntity.badRequest().body(new ErrorResponse(e.getPurchaseErrorType(), e.getMessage()));
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getPurchaseErrorType(), e.getErrorMessage()));
     }
 
     @ExceptionHandler(StocksException.class)
     public ResponseEntity<ErrorResponse> handleStocksException(StocksException e){
-        return ResponseEntity.badRequest().body(new ErrorResponse(e.getStocksErrorType(), e.getMessage()));
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getStocksErrorType(), e.getErrorMessage()));
     }
 
     @ExceptionHandler(PlanException.class)
     public ResponseEntity<ErrorResponse> handlePlanException(PlanException e){
-        return ResponseEntity.badRequest().body(new ErrorResponse(e.getPlanErrorType(), e.getMessage()));
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getPlanErrorType(), e.getErrorMessage()));
     }
 
     @ExceptionHandler(InboundException.class)
     public ResponseEntity<ErrorResponse> handleInboundException(InboundException e){
-        return ResponseEntity.badRequest().body(new ErrorResponse(e.getInboundErrorType(), e.getMessage()));
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getInboundErrorType(), e.getErrorMessage()));
     }
 
     @ExceptionHandler(OutboundException.class)
     public ResponseEntity<ErrorResponse> handleOutboundException(OutboundException e){
-        return ResponseEntity.badRequest().body(new ErrorResponse(e.getOutboundErrorType(), e.getMessage()));
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getOutboundErrorType(), e.getErrorMessage()));
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<?> handleIllegalStateException(IllegalStateException e){
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }

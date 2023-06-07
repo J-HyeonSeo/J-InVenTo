@@ -8,11 +8,11 @@ import lombok.Getter;
 public class PurchaseException extends RuntimeException{
 
     private ErrorTypeInterface purchaseErrorType;
-    private String message;
+    private String errorMessage;
 
     public PurchaseException(PurchaseErrorType purchaseErrorType){
         this.purchaseErrorType = purchaseErrorType;
-        this.message = purchaseErrorType.getMessage();
+        this.errorMessage = purchaseErrorType.getMessage();
     }
 
 }

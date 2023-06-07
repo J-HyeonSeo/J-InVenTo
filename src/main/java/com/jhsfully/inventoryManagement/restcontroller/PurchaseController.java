@@ -1,6 +1,7 @@
 package com.jhsfully.inventoryManagement.restcontroller;
 
 import com.jhsfully.inventoryManagement.dto.PurchaseDto;
+import com.jhsfully.inventoryManagement.lock.ProcessLock;
 import com.jhsfully.inventoryManagement.service.PurchaseInterface;
 import com.jhsfully.inventoryManagement.service.PurchaseService;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ public class PurchaseController {
         return ResponseEntity.ok(purchaseService.addPurchase(request));
     }
 
+    @ProcessLock(key = "cancelPurchase-inbound")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePurchase(@PathVariable Long id){
         purchaseService.deletePurchase(id);
