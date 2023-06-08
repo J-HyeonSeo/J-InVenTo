@@ -5,7 +5,9 @@ import com.jhsfully.inventoryManagement.exception.ProductException;
 import com.jhsfully.inventoryManagement.model.ProductEntity;
 import com.jhsfully.inventoryManagement.repository.BomRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
+import com.jhsfully.inventoryManagement.type.CacheType;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,7 @@ public class ProductService implements ProductInterface{
 
     //Enabled 여부에 상관없이 모두 가져옴.(클라이언트 단에서 기본적으로 활성화된 품목만 보여줌)
     @Override
+    @Cacheable(value = CacheType.PRODUCTS_CACHE, cacheManager = "redisCacheManager")
     public List<ProductDto.ProductResponse> getAllProducts(){
         return productRepository.findAll()
                 .stream()

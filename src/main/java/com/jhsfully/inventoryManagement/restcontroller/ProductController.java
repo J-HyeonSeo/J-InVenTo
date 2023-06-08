@@ -18,7 +18,6 @@ public class ProductController {
     private final ProductInterface productService;
 
     //전체 품목 데이터를 리턴합니다.
-    //@ProcessLock(key = "getProduct")
     @GetMapping("")
     public ResponseEntity<?> getAllProducts(){
         return ResponseEntity.ok(productService.getAllProducts());

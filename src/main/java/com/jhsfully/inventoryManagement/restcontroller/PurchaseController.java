@@ -4,6 +4,7 @@ import com.jhsfully.inventoryManagement.dto.PurchaseDto;
 import com.jhsfully.inventoryManagement.lock.ProcessLock;
 import com.jhsfully.inventoryManagement.service.PurchaseInterface;
 import com.jhsfully.inventoryManagement.service.PurchaseService;
+import com.jhsfully.inventoryManagement.type.LockType;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,7 +32,7 @@ public class PurchaseController {
         return ResponseEntity.ok(purchaseService.addPurchase(request));
     }
 
-    @ProcessLock(key = "cancelPurchase-inbound")
+    @ProcessLock(key = LockType.PURCHASE_INBOUND)
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePurchase(@PathVariable Long id){
         purchaseService.deletePurchase(id);

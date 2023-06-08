@@ -3,6 +3,7 @@ package com.jhsfully.inventoryManagement.restcontroller;
 import com.jhsfully.inventoryManagement.dto.OutboundDto;
 import com.jhsfully.inventoryManagement.facade.OutboundFacade;
 import com.jhsfully.inventoryManagement.lock.ProcessLock;
+import com.jhsfully.inventoryManagement.type.LockType;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class OutboundController {
         return ResponseEntity.ok(outboundFacade.getOutboundDetails(id));
     }
 
-    @ProcessLock(key = "cancelInbound-outbound")
+    @ProcessLock(key = LockType.INBOUND_OUTBOUND)
     @PostMapping("")
     public ResponseEntity<?> executeOutbound(
             @RequestBody OutboundDto.OutboundAddRequest request
