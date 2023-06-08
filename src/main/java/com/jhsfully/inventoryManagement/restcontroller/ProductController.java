@@ -20,7 +20,7 @@ public class ProductController {
     //전체 품목 데이터를 리턴합니다.
     //@ProcessLock(key = "getProduct")
     @GetMapping("")
-    public ResponseEntity<?> getProducts(){
+    public ResponseEntity<?> getAllProducts(){
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
@@ -34,6 +34,13 @@ public class ProductController {
     @PutMapping("")
     public ResponseEntity<?> updateProduct(@RequestBody ProductDto.ProductUpdateRequest request){
         return ResponseEntity.ok(productService.updateProduct(request));
+    }
+
+    //비활성화 하도록함.
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> disableProduct(@PathVariable Long id){
+        productService.disableProduct(id);
+        return ResponseEntity.ok(id);
     }
 
     //품목 데이터를 삭제합니다. 응답결과를 리턴합니다.

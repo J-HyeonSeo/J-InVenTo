@@ -103,7 +103,7 @@ public class PurchaseService implements PurchaseInterface{
         }
         //price가 0보다 커야함.
         if(request.getPrice() <= 0){
-            throw new PurchaseException(PURCHASE_AMOUNT_LESS_ZERO);
+            throw new PurchaseException(PURCHASE_PRICE_LESS_ZERO);
         }
 
         return product;

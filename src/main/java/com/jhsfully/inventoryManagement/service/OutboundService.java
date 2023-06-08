@@ -66,10 +66,7 @@ public class OutboundService implements OutboundInterface{
     @Transactional
     public OutboundDto.OutboundResponse addOutbound(OutboundDto.OutboundAddRequest request) {
 
-        validateAddOutbound(request);
-
-        ProductEntity product = productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+        ProductEntity product = validateAddOutbound(request);
 
         OutboundEntity outbound = OutboundEntity.builder()
                 .product(product)
@@ -128,7 +125,7 @@ public class OutboundService implements OutboundInterface{
 
     //======================== Validates===================================
 
-    public void validateAddOutbound(OutboundDto.OutboundAddRequest request){
+    public ProductEntity validateAddOutbound(OutboundDto.OutboundAddRequest request){
 
         if(request.getAmount() == null){
             throw new OutboundException(OUTBOUND_AMOUNT_NULL);
@@ -137,7 +134,9 @@ public class OutboundService implements OutboundInterface{
         if(request.getAmount() <= 0){
             throw new OutboundException(OUTBOUND_AMOUNT_OR_LESS_ZERO);
         }
-
+        ProductEntity product = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+        return product;
     }
 
     public void validateAddOutboundDetail(OutboundDto.OutboundDetailAddRequest request){

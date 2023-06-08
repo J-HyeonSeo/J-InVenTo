@@ -14,7 +14,7 @@ public interface StocksInterface {
 
     public StocksDto.StockResponseLot addStock(StocksDto.StockAddRequest request);
 
-    public void addInbound(Long stockId, Long inboundId);
+    public void setInbound(Long stockId, Long inboundId);
 
     public void releaseInbound(Long stockId);
 

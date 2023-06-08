@@ -58,7 +58,7 @@ public class InboundFacade {
         );
 
         //만들어진 inbound를 stock에 할당해주어야함.
-        stocksService.addInbound(stock.getId(), inbound.getId());
+        stocksService.setInbound(stock.getId(), inbound.getId());
 
         return inbound.getId();
     }

@@ -8,16 +8,16 @@ import com.jhsfully.inventoryManagement.model.ProductEntity;
 import com.jhsfully.inventoryManagement.repository.BomRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
 import com.jhsfully.inventoryManagement.type.BomErrorType;
-import com.jhsfully.inventoryManagement.type.ProductErrorType;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.jhsfully.inventoryManagement.type.ProductErrorType.*;
+import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NOT_FOUND;
 
 @Service
 @AllArgsConstructor
@@ -53,21 +53,21 @@ public class BomService implements BomInterface{
         return leafs;
     }
 
+    @Getter
+    @Setter
+    class ProductSet{ //명시적인 지정을 위해 만들어진 클래스임.
+        private ProductEntity parent;
+        private ProductEntity child;
+    }
     @Override
     @Transactional
     public BomDto.BomResponse addBom(BomDto.BomAddRequest request) {
 
-        validateAddBom(request); //밸리데이션 검사 수행.
-
-        ProductEntity parentProduct = productRepository.findById(request.getPid())
-                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
-
-        ProductEntity childProduct = productRepository.findById(request.getCid())
-                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+        ProductSet productSet = validateAddBom(request); //밸리데이션 검사 수행.
 
         BOMEntity bomEntity = BOMEntity.builder()
-                .parentProduct(parentProduct)
-                .childProduct(childProduct)
+                .parentProduct(productSet.getParent())
+                .childProduct(productSet.getChild())
                 .cost(request.getCost())
                 .build();
 
@@ -96,37 +96,37 @@ public class BomService implements BomInterface{
 
     //======================== Validates =============================
     @Transactional
-    private void validateAddBom(BomDto.BomAddRequest request) {
-        //순환참조 검증.
-        if(!validateCirculation(request)){
-            throw new BomException(BomErrorType.HAS_SAME_PARENT);
-        }
-        //pid가 productinfo에 존재하여야함.
-        if(!productRepository.existsById(request.getPid())){
-            throw new ProductException(PRODUCT_NOT_FOUND);
-        }
-        //cid가 productinfo에 존재하여야함.
-        if(!productRepository.existsById(request.getCid())){
-            throw new ProductException(PRODUCT_NOT_FOUND);
-        }
+    private ProductSet validateAddBom(BomDto.BomAddRequest request) {
+
         //0이하의 코스트는 허용하지 않음.
         if(request.getCost() <= 0){
             throw new BomException(BomErrorType.COST_MINUS);
         }
+
+        ProductEntity parentProduct = productRepository.findById(request.getPid())
+                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+
+        ProductEntity childProduct = productRepository.findById(request.getCid())
+                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+        //순환참조 검증.
+        if(!validateCirculation(parentProduct, childProduct)){
+            throw new BomException(BomErrorType.HAS_SAME_PARENT);
+        }
+
+        ProductSet productSet = new ProductSet();
+        productSet.setParent(parentProduct);
+        productSet.setChild(childProduct);
+
+        return productSet;
     }
 
     //순환 참조 체크
-    private boolean validateCirculation(BomDto.BomAddRequest request){
+    private boolean validateCirculation(ProductEntity parentProduct,
+                                        ProductEntity childProduct){
 
         //1:N 참조가 가능하기에, 부모는 여러개가 발생함.
         ArrayList<Long> parents1 = new ArrayList<>();
         ArrayList<Long> parents2 = new ArrayList<>();
-
-        ProductEntity parentProduct = productRepository.findById(request.getPid())
-                        .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
-
-        ProductEntity childProduct = productRepository.findById(request.getCid())
-                        .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
 
         findParents(parentProduct, parents1);
         findParents(childProduct, parents2);

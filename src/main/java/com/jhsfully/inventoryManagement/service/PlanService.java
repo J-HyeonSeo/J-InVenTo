@@ -75,9 +75,6 @@ public class PlanService implements PlanInterface{
     //======================== Validates ===========================
     public ProductEntity validateAddPlan(PlanDto.PlanAddRequest request){
 
-        ProductEntity product = productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new ProductException(ProductErrorType.PRODUCT_NOT_FOUND));
-
         if(request.getDue() == null){
             throw new PlanException(PlanErrorType.PLAN_DUE_IS_NULL);
         }
@@ -94,34 +91,42 @@ public class PlanService implements PlanInterface{
             throw new PlanException(PlanErrorType.PLAN_AMOUNT_HAS_NOT_OR_LESS_ZERO);
         }
 
+        ProductEntity product = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new ProductException(ProductErrorType.PRODUCT_NOT_FOUND));
+
         return product;
     }
 
     public PlanEntity validateAndUpdatePlan(PlanDto.PlanUpdateRequest request){
 
-        PlanEntity planEntity = planRepository.findById(request.getId())
-                .orElseThrow(() -> new PlanException(PlanErrorType.PLAN_NOT_FOUND));
+        boolean dueUpdate = false;
+        boolean desUpdate = false;
+        boolean amtUpdate = false;
 
         if(request.getDue() != null){
-
             if(request.getDue().isBefore(LocalDate.now())){
                 throw new PlanException(PlanErrorType.PLAN_DUE_BEFORE_TODAY);
             }
-
-            planEntity.setDue(request.getDue());
-
+            dueUpdate = true;
         }
 
         if(request.getDestination() != null){
-            planEntity.setDestination(request.getDestination());
+            desUpdate = true;
         }
 
         if(request.getAmount() != null){
             if(request.getAmount() <= 0){
                 throw new PlanException(PlanErrorType.PLAN_AMOUNT_HAS_NOT_OR_LESS_ZERO);
             }
-            planEntity.setAmount(request.getAmount());
+            amtUpdate = true;
         }
+
+        PlanEntity planEntity = planRepository.findById(request.getId())
+                .orElseThrow(() -> new PlanException(PlanErrorType.PLAN_NOT_FOUND));
+
+        if(dueUpdate)planEntity.setDue(request.getDue());
+        if(desUpdate)planEntity.setDestination(request.getDestination());
+        if(amtUpdate)planEntity.setAmount(request.getAmount());
 
         return planEntity;
     }

@@ -68,7 +68,7 @@ public class StocksService implements StocksInterface {
 
     @Override
     @Transactional
-    public void addInbound(Long stockId, Long inboundId){
+    public void setInbound(Long stockId, Long inboundId){
         StocksEntity stock = stocksRepository.findById(stockId)
                 .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
 
@@ -90,16 +90,7 @@ public class StocksService implements StocksInterface {
     @Override
     @Transactional
     public void spendStockById(Long id, Double amount) {
-        StocksEntity stocksEntity = stocksRepository.findById(id)
-                .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
-
-        if(amount == null){
-            throw new StocksException(STOCKS_AMOUNT_NULL);
-        }
-
-        if(amount <= 0){
-            throw new StocksException(STOCKS_CANT_SPEND_OR_LESS_ZERO);
-        }
+        StocksEntity stocksEntity = validateSpendStock(id, amount);
 
         stocksEntity.spendAmount(amount);
 
@@ -141,5 +132,19 @@ public class StocksService implements StocksInterface {
         }
 
         return product;
+    }
+
+    public StocksEntity validateSpendStock(Long id, Double amount){
+        StocksEntity stocksEntity = stocksRepository.findById(id)
+                .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
+
+        if(amount == null){
+            throw new StocksException(STOCKS_AMOUNT_NULL);
+        }
+
+        if(amount <= 0){
+            throw new StocksException(STOCKS_CANT_SPEND_OR_LESS_ZERO);
+        }
+        return stocksEntity;
     }
 }
