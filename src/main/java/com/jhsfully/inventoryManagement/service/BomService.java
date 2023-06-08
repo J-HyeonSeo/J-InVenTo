@@ -8,15 +8,19 @@ import com.jhsfully.inventoryManagement.model.ProductEntity;
 import com.jhsfully.inventoryManagement.repository.BomRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
 import com.jhsfully.inventoryManagement.type.BomErrorType;
+import com.jhsfully.inventoryManagement.type.CacheType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.jhsfully.inventoryManagement.type.CacheType.*;
 import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NOT_FOUND;
 
 @Service
@@ -29,12 +33,14 @@ public class BomService implements BomInterface{
     
     //BOM 전체 리스트 리턴
     @Override
+    @Cacheable(value = BOM_TOP, cacheManager = "redisCacheManager")
     public List<BomDto.BomTopResponse> getBoms() {
         return bomRepository.findByGroupParentProduct();
     }
     
     //해당 품목을 기준으로하는, BOM TREE 리턴
     @Override
+    @Cacheable(value = BOM_TREE, cacheManager = "redisCacheManager")
     public BomDto.BomTreeResponse getBom(Long productid){
         ProductEntity product = productRepository.findById(productid)
                 .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
@@ -43,6 +49,7 @@ public class BomService implements BomInterface{
 
     //해당 품목을 기준으로하는, 최하단 품목 및 코스트 리턴.
     @Override
+    @Cacheable(value = BOM_LEAF, cacheManager = "redisCacheManager")
     public List<BomDto.BomLeaf> getLeafProducts(Long productId){
         List<BomDto.BomLeaf> leafs = new ArrayList<>();
 
@@ -61,6 +68,7 @@ public class BomService implements BomInterface{
     }
     @Override
     @Transactional
+    @CacheEvict(cacheNames = {BOM_TOP, BOM_TREE, BOM_LEAF}, allEntries = true)
     public BomDto.BomResponse addBom(BomDto.BomAddRequest request) {
 
         ProductSet productSet = validateAddBom(request); //밸리데이션 검사 수행.
@@ -77,6 +85,7 @@ public class BomService implements BomInterface{
     //하나의 BOM Node를 제거합니다.
     @Override
     @Transactional
+    @CacheEvict(cacheNames = {BOM_TOP, BOM_TREE, BOM_LEAF}, allEntries = true)
     public void deleteBomNode(Long bid) {
         if(!bomRepository.existsById(bid)){
             throw new BomException(BomErrorType.BOM_NOT_FOUND);
@@ -87,6 +96,7 @@ public class BomService implements BomInterface{
     //선택된 BOM의 구성요소를 전부 제거합니다.
     @Override
     @Transactional
+    @CacheEvict(cacheNames = {BOM_TOP, BOM_TREE, BOM_LEAF}, allEntries = true)
     public void deleteBomTree(Long pid){
         ProductEntity product = productRepository.findById(pid)
                         .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));

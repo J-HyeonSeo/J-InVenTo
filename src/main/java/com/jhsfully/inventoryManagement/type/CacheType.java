@@ -2,7 +2,10 @@ package com.jhsfully.inventoryManagement.type;
 
 public class CacheType {
 
-    public static final String PRODUCTS_CACHE = "products";
-    public static final String BOM_CACHE = "bom";
+    public static final String ALL_PRODUCTS = "allProducts";
+    public static final String ENABLE_PRODUCTS = "enableProducts";
+    public static final String BOM_TOP = "bomTop";
+    public static final String BOM_TREE = "bomTree";
+    public static final String BOM_LEAF = "bomLeaf";
 
 }
