@@ -1,6 +1,7 @@
 package com.jhsfully.inventoryManagement.restcontroller;
 
 import com.jhsfully.inventoryManagement.dto.AuthDto;
+import com.jhsfully.inventoryManagement.dto.TokenDto;
 import com.jhsfully.inventoryManagement.model.MemberEntity;
 import com.jhsfully.inventoryManagement.security.TokenProvider;
 import com.jhsfully.inventoryManagement.service.MemberService;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -28,11 +32,29 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@RequestBody AuthDto.SignIn request){
+    public ResponseEntity<?> signin(HttpServletRequest httpRequest, @RequestBody AuthDto.SignIn request){
         MemberEntity member = memberService.authenticate(request);
-        log.info("user login -> " + request.getUsername());
-        return ResponseEntity.ok(tokenProvider.generateToken(
-                member.getUsername(), member.getRoles()));
+        return ResponseEntity.ok(
+                new TokenDto(tokenProvider.generateAccessToken(member.getUsername(), member.getRoles()),
+                tokenProvider.generateRefreshToken(member.getUsername(), httpRequest)
+                ));
+    }
+
+    @PostMapping("/refreshToken") //refresh Token 으로 Access Token 재발급 함.
+    public ResponseEntity<?> refreshToken(HttpServletRequest httpRequest, @RequestBody TokenDto token){
+
+        if(tokenProvider.validateRefreshToken(token, httpRequest)){
+            String username = tokenProvider.getUsername(token.getRefreshToken());
+
+            @SuppressWarnings("unchecked")
+            List<String> roles = (List<String>)tokenProvider.getRoles(token.getRefreshToken());
+
+            String newAccessToken = tokenProvider.generateAccessToken(username, roles);
+
+            return ResponseEntity.ok(new TokenDto(newAccessToken, null));
+        }
+
+        return null;
     }
 
 }
