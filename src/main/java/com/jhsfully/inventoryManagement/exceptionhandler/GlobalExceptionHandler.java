@@ -11,6 +11,11 @@ import java.sql.SQLException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<?> handleAuthException(AuthException e){
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getAuthErrorType(), e.getErrorMessage()));
+    }
+
     @ExceptionHandler(ProductException.class)
     public ResponseEntity<ErrorResponse> handleProductException(ProductException e){
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getProductErrorType(), e.getErrorMessage()));
@@ -50,4 +55,5 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleIllegalStateException(IllegalStateException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
+
 }

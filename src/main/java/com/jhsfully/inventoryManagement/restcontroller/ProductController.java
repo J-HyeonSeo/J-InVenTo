@@ -9,6 +9,7 @@ import com.jhsfully.inventoryManagement.type.ProductErrorType;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,6 +21,7 @@ public class ProductController {
 
     //전체 품목 데이터를 리턴합니다.
     @GetMapping("")
+    @PreAuthorize("hasRole('PRODUCT_READ')")
     public ResponseEntity<?> getAllProducts(){
         return ResponseEntity.ok(productService.getAllProducts());
     }
