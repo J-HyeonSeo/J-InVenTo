@@ -6,29 +6,37 @@ import com.jhsfully.inventoryManagement.model.RefreshToken;
 import com.jhsfully.inventoryManagement.repository.RefreshTokenRepository;
 import com.jhsfully.inventoryManagement.service.MemberService;
 import com.jhsfully.inventoryManagement.type.AuthErrorType;
+import com.jhsfully.inventoryManagement.type.RoleType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static com.jhsfully.inventoryManagement.type.RoleType.*;
+
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TokenProvider {
 
     //Access Token 기한 = 30분
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 20;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000;// * 60 * 20;
     //Refresh Token 기한 = 2주
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14;
 
@@ -56,7 +64,7 @@ public class TokenProvider {
 
     public String generateRefreshToken(String username, HttpServletRequest request){
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put(KEY_ROLES, new ArrayList<String>());
+        claims.put(KEY_ROLES, new ArrayList<String>(Arrays.asList(REFRESH)));
 
         Date now = new Date();
         Date refreshExpiredDate = new Date(now.getTime() + REFRESH_TOKEN_EXPIRE_TIME);
@@ -75,17 +83,24 @@ public class TokenProvider {
     }
 
 
-    public Authentication getAuthentication(String jwt){
-        UserDetails userDetails = memberService.loadUserByUsername(getUsername(jwt));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    public Authentication getAuthentication(List<String> roles){
+
+        List<SimpleGrantedAuthority> grantedAuthorities = roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+
+        return new UsernamePasswordAuthenticationToken("", "", grantedAuthorities);
     }
 
     public String getUsername(String token){
         return this.parseClaims(token).getSubject();
     }
 
-    public Object getRoles(String token){
-        return this.parseClaims(token).get(KEY_ROLES);
+    public List<String> getRoles(String token){
+        Claims claims = parseClaims(token);
+        String rolesString = claims.get(KEY_ROLES).toString();
+        rolesString = rolesString.substring(1, rolesString.length() - 1);
+        return Arrays.stream(rolesString.split(",")).collect(Collectors.toList());
     }
 
     public boolean validateToken(String token){

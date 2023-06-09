@@ -40,21 +40,4 @@ public class AuthController {
                 ));
     }
 
-    @PostMapping("/refreshToken") //refresh Token 으로 Access Token 재발급 함.
-    public ResponseEntity<?> refreshToken(HttpServletRequest httpRequest, @RequestBody TokenDto token){
-
-        if(tokenProvider.validateRefreshToken(token, httpRequest)){
-            String username = tokenProvider.getUsername(token.getRefreshToken());
-
-            @SuppressWarnings("unchecked")
-            List<String> roles = (List<String>)tokenProvider.getRoles(token.getRefreshToken());
-
-            String newAccessToken = tokenProvider.generateAccessToken(username, roles);
-
-            return ResponseEntity.ok(new TokenDto(newAccessToken, null));
-        }
-
-        return null;
-    }
-
 }

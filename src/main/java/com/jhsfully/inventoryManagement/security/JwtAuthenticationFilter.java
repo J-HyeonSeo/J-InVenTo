@@ -1,5 +1,9 @@
 package com.jhsfully.inventoryManagement.security;
 
+import com.jhsfully.inventoryManagement.dto.TokenDto;
+import com.jhsfully.inventoryManagement.exception.AuthException;
+import com.jhsfully.inventoryManagement.type.AuthErrorType;
+import com.jhsfully.inventoryManagement.type.RoleType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -14,42 +18,61 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+
+import static com.jhsfully.inventoryManagement.type.AuthErrorType.*;
+import static com.jhsfully.inventoryManagement.type.RoleType.*;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    public static final String TOKEN_HEADER = "Authorization";
+    public static final String ACCESS_TOKEN_HEADER = "AccessToken";
+    public static final String REFRESH_TOKEN_HEADER = "RefreshToken";
     public static final String TOKEN_PREFIX = "Bearer ";
     private final TokenProvider tokenProvider;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String token = resolveTokenFromRequest(request);
+        String accessToken = resolveTokenFromRequest(request, ACCESS_TOKEN_HEADER);
+        String refreshToken = resolveTokenFromRequest(request, REFRESH_TOKEN_HEADER);
 
-        if(StringUtils.hasText(token) && tokenProvider.validateToken(token)){
-            //토큰 유효성 검증
-            Authentication auth = tokenProvider.getAuthentication(token);
+        if(StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)){
+            //권한 확인 및 부여
+            List<String> roles = tokenProvider.getRoles(accessToken);
+
+            for(String role : roles){
+                if(role.equals(REFRESH)){
+                    throw new AuthException(AUTH_SECURITY_ERROR);
+                }
+            }
+
+            Authentication auth = tokenProvider.getAuthentication(roles);
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-            log.info(String.format("[%s] -> %s", tokenProvider.getUsername(token), request.getRequestURI()));
+        }else if(StringUtils.hasText(accessToken) &&
+                    StringUtils.hasText(refreshToken)){
+
+            TokenDto tokenDto = new TokenDto(accessToken, refreshToken);
+            if(tokenProvider.validateRefreshToken(tokenDto, request)){
+
+                String username = tokenProvider.getUsername(accessToken);
+                List<String> roles = tokenProvider.getRoles(accessToken);
+
+                String newAccessToken = tokenProvider.generateAccessToken(username, roles);
+                response.addHeader("accessToken", newAccessToken);
+
+                Authentication auth = tokenProvider.getAuthentication(roles);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+
         }
-
-//        String userAgent = request.getHeader("User-Agent");
-//        log.info("User-Agent: " + userAgent);
-//
-//        String acceptLanguage = request.getHeader("Accept-Language");
-//        log.info("Accept-Language: " + acceptLanguage);
-//
-//        String referer = request.getHeader("Referer");
-//        log.info("Referer: " + referer);
-
         filterChain.doFilter(request, response);
     }
 
-    private String resolveTokenFromRequest(HttpServletRequest request){
-        String token = request.getHeader(TOKEN_HEADER);
+    private String resolveTokenFromRequest(HttpServletRequest request, String tokenHeader){
+        String token = request.getHeader(tokenHeader);
 
         if(!ObjectUtils.isEmpty(token) && token.startsWith(TOKEN_PREFIX)){
             return token.substring(TOKEN_PREFIX.length());
