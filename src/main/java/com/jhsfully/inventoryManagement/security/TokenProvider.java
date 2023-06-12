@@ -34,7 +34,7 @@ import static com.jhsfully.inventoryManagement.type.RoleType.*;
 public class TokenProvider {
 
     //Access Token 기한 = 30분
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000;// * 60 * 20;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;
     //Refresh Token 기한 = 2주
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14;
 

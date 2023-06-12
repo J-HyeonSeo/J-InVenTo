@@ -28,18 +28,21 @@ public class ProductController {
 
     //품목 데이터를 만듭니다. 응답결과를 리턴합니다.
     @PostMapping("")
+    @PreAuthorize("hasRole('PRODUCT_MANAGE')")
     public ResponseEntity<?> addProduct(@RequestBody ProductDto.ProductAddRequest request){
         return ResponseEntity.ok(productService.addProduct(request));
     }
 
     //품목 데이터를 수정합니다. 응답결과를 리턴합니다.
     @PutMapping("")
+    @PreAuthorize("hasRole('PRODUCT_MANAGE')")
     public ResponseEntity<?> updateProduct(@RequestBody ProductDto.ProductUpdateRequest request){
         return ResponseEntity.ok(productService.updateProduct(request));
     }
 
     //비활성화 하도록함.
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('PRODUCT_MANAGE')")
     public ResponseEntity<?> disableProduct(@PathVariable Long id){
         productService.disableProduct(id);
         return ResponseEntity.ok(id);
@@ -47,6 +50,7 @@ public class ProductController {
 
     //품목 데이터를 삭제합니다. 응답결과를 리턴합니다.
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('PRODUCT_MANAGE')")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id){
         productService.deleteProduct(id);
         return ResponseEntity.ok(id);
