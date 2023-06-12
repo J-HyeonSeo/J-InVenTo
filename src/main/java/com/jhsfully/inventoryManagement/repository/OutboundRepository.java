@@ -1,9 +1,7 @@
 package com.jhsfully.inventoryManagement.repository;
 
-import com.jhsfully.inventoryManagement.dto.OutboundDto;
-import com.jhsfully.inventoryManagement.model.OutboundEntity;
+import com.jhsfully.inventoryManagement.entity.OutboundEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;

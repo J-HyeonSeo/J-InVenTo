@@ -1,7 +1,6 @@
 package com.jhsfully.inventoryManagement.dto;
 
-import com.jhsfully.inventoryManagement.model.MemberEntity;
-import com.sun.istack.NotNull;
+import com.jhsfully.inventoryManagement.entity.MemberEntity;
 import lombok.Data;
 
 import java.util.List;

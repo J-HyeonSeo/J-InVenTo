@@ -1,4 +1,4 @@
-package com.jhsfully.inventoryManagement.model;
+package com.jhsfully.inventoryManagement.entity;
 
 import com.jhsfully.inventoryManagement.dto.ProductDto;
 import com.sun.istack.NotNull;
@@ -33,6 +33,7 @@ public class ProductEntity {
                 .company(p.getCompany())
                 .price(p.getPrice())
                 .spec(p.getSpec())
+                .enabled(p.isEnabled())
                 .build();
     }
 

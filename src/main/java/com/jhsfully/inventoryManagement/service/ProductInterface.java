@@ -1,7 +1,6 @@
 package com.jhsfully.inventoryManagement.service;
 
 import com.jhsfully.inventoryManagement.dto.ProductDto;
-import com.jhsfully.inventoryManagement.model.ProductEntity;
 
 import java.util.List;
 

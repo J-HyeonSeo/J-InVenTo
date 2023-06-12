@@ -1,4 +1,4 @@
-package com.jhsfully.inventoryManagement.model;
+package com.jhsfully.inventoryManagement.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

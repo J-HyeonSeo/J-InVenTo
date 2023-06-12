@@ -1,4 +1,4 @@
-package com.jhsfully.inventoryManagement.model;
+package com.jhsfully.inventoryManagement.entity;
 
 import com.sun.istack.NotNull;
 import lombok.*;

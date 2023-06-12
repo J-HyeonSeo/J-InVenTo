@@ -2,207 +2,194 @@ package com.jhsfully.inventoryManagement.service;
 
 import com.jhsfully.inventoryManagement.dto.ProductDto;
 import com.jhsfully.inventoryManagement.exception.ProductException;
-import com.jhsfully.inventoryManagement.model.ProductEntity;
-import com.jhsfully.inventoryManagement.repository.BomRepository;
-import com.jhsfully.inventoryManagement.repository.ProductRepository;
-import com.jhsfully.inventoryManagement.type.ProductErrorType;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import com.jhsfully.inventoryManagement.type.CacheType;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static com.jhsfully.inventoryManagement.type.ProductErrorType.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class ProductServiceTest {
-    //Mocking and Inject
-    @Mock
-    private ProductRepository productRepository;
 
-    @Mock
-    private BomRepository bomRepository;
+    @BeforeAll
+    public static void setup(@Autowired DataSource dataSource) {
+        try (Connection conn = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/product.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/bom.sql"));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    @InjectMocks
+    @Autowired
+    private CacheManager redisCacheManager;
+
+    private Cache redisCache; // 특정 Cache를 지우기 위한 변수
+
+    @BeforeEach
+    public void clearCache() {
+        redisCacheManager.getCache(CacheType.ALL_PRODUCTS).clear();
+        redisCacheManager.getCache(CacheType.ENABLE_PRODUCTS).clear();
+    }
+
+    @Autowired
     private ProductService productService;
 
     //======= Success Tests =======
     @Test
-    @DisplayName("[Service]전품목 가져오기 테스트 - Success")
-    void getProductsTestSuccess(){
-        //given
-        List<ProductEntity> responses =
-                new ArrayList<>(Arrays.asList(
-                        ProductEntity.builder()
-                                .id(1L)
-                                .name("TestName1")
-                                .company("TestCompany1")
-                                .price(1D)
-                                .spec("TestSpec1")
-                                .build()
-                        ,ProductEntity.builder()
-                                .id(2L)
-                                .name("TestName2")
-                                .company("TestCompany2")
-                                .price(2D)
-                                .spec("TestSpec2")
-                                .build()
-                ));
-        given(productRepository.findAll())
-                .willReturn(responses);
+    @DisplayName("[Service]품목 가져오기 테스트 - Success")
+    void getProductTestSuccess(){
         //when
-
-        List<ProductDto.ProductResponse> products = productService.getProducts();
+        ProductDto.ProductResponse response = productService.getProduct(1L);
 
         //then
-        verify(productRepository, times(1)).findAll();
+        assertEquals(1L, response.getId());
+    }
 
-        assertEquals(2, products.size());
-        assertEquals(1L, products.get(0).getId());
-        assertEquals("TestName1", products.get(0).getName());
-        assertEquals("TestCompany1", products.get(0).getCompany());
-        assertEquals(1, products.get(0).getPrice());
-        assertEquals("TestSpec1", products.get(0).getSpec());
+    @Test
+    @Order(1)
+    @DisplayName("[Service]전품목(All types) 가져오기 테스트 - Success")
+    void getAllProductsTestSuccess(){
+        //when
+        List<ProductDto.ProductResponse> products = productService.getAllProducts();
+        //then
+        assertEquals(10, products.size());
+    }
 
-        assertEquals(2L, products.get(1).getId());
-        assertEquals("TestName2", products.get(1).getName());
-        assertEquals("TestCompany2", products.get(1).getCompany());
-        assertEquals(2, products.get(1).getPrice());
-        assertEquals("TestSpec2", products.get(1).getSpec());
+    @Test
+    @Order(2)
+    @DisplayName("[Service]전품목(Only True) 가져오기 테스트 - Success")
+    void getAllProductsOnlyTrueTestSuccess(){
+        //when
+        List<ProductDto.ProductResponse> products = productService.getProducts();
+        //then
+        assertEquals(9, products.size());
     }
 
     @Test
     @DisplayName("[Service]품목 추가 테스트 - Success")
+    @Transactional
     void addProductTestSuccess(){
-        //given
-        given(productRepository.save(any()))
-                .willReturn(ProductEntity.builder()
-                        .id(1L)
-                        .name("TestName1")
-                        .company("TestCompany1")
-                        .price(1D)
-                        .spec("TestSpec1")
-                        .build());
 
-        //캡터를 사용해야, 진짜 Repository에 저장시키려는 값을 확인할 수 있음.
-        ArgumentCaptor<ProductEntity> captor = ArgumentCaptor.forClass(ProductEntity.class);
+        //given
+        ProductDto.ProductAddRequest request = ProductDto.ProductAddRequest.builder()
+                .name("테스트품목")
+                .company("테스트회사")
+                .price(1000D)
+                .spec("테스트규격")
+                .build();
 
         //when
-        ProductDto.ProductResponse productResponse = productService.addProduct(ProductDto.ProductAddRequest.builder()
-                .name("TestName1")
-                .company("TestCompany1")
-                .price(1D)
-                .spec("TestSpec1")
-                .build());
+        ProductDto.ProductResponse response = productService.addProduct(request);
 
         //then
+        ProductDto.ProductResponse productResponse = productService.getProduct(response.getId());
 
-        verify(productRepository, times(1)).save(captor.capture());
-        assertEquals(1L, productResponse.getId());
-        assertEquals("TestName1", captor.getValue().getName());
-        assertEquals("TestCompany1", captor.getValue().getCompany());
-        assertEquals(1, captor.getValue().getPrice());
-        assertEquals("TestSpec1", captor.getValue().getSpec());
+        assertAll(
+                () -> assertEquals(response.getId(), productResponse.getId()),
+                () -> assertEquals(response.getName(), productResponse.getName()),
+                () -> assertEquals(response.getCompany(), productResponse.getCompany()),
+                () -> assertEquals(response.getPrice(), productResponse.getPrice()),
+                () -> assertEquals(response.getSpec(), productResponse.getSpec())
+        );
 
     }
 
     @Test
     @DisplayName("[Service]품목 수정 테스트 - Success")
+    @Transactional
     void updateProductTestSuccess(){
         //given
-        given(productRepository.findById(anyLong()))
-                .willReturn(Optional.of(
-                        ProductEntity.builder()
-                                .id(10L)
-                                .name("testName")
-                                .company("testCompany")
-                                .price(1000D)
-                                .spec("testSpec")
-                                .build()
-                ));
-        given(productRepository.save(any()))
-                .willReturn(
-                        ProductEntity.builder()
-                                .id(10L)
-                                .name("testName")
-                                .company("testCompany")
-                                .price(1000D)
-                                .spec("testSpec")
-                                .build()
-                );
-        ArgumentCaptor<ProductEntity> captor = ArgumentCaptor.forClass(ProductEntity.class);
-
+        ProductDto.ProductUpdateRequest request = ProductDto.ProductUpdateRequest
+                .builder()
+                .id(1L)
+                .name("테스트수정이름")
+                .company("테스트수정회사")
+                .price(100D)
+                .spec("테스트수정규격")
+                .build();
         //when
-        productService.updateProduct(ProductDto.ProductUpdateRequest.builder()
-                        .id(10L)
-                        .name("newName")
-                        .company("newCompany")
-                        .price(2000D)
-                        .spec("newSpec")
-                        .build());
+        productService.updateProduct(request);
 
         //then
-        verify(productRepository, times(1)).save(captor.capture());
+        ProductDto.ProductResponse product = productService.getProduct(1L);
 
-        assertEquals(10L, captor.getValue().getId());
-        assertEquals("newName", captor.getValue().getName());
-        assertEquals("newCompany", captor.getValue().getCompany());
-        assertEquals(2000, captor.getValue().getPrice());
-        assertEquals("newSpec", captor.getValue().getSpec());
+        assertAll(
+                () -> assertEquals(1L, product.getId()),
+                () -> assertEquals("테스트수정이름", product.getName()),
+                () -> assertEquals("테스트수정회사", product.getCompany()),
+                () -> assertEquals(100D, product.getPrice()),
+                () -> assertEquals("테스트수정규격", product.getSpec())
+        );
     }
 
     @Test
-    @DisplayName("[Service]품목 삭제 테스트 - Success")
-    void deleteProductTestSuccess(){
-        //given
-        given(productRepository.findById(anyLong()))
-                .willReturn(Optional.of(ProductEntity.builder()
-                                .id(1L)
-                                .name("T")
-                                .price(1D)
-                        .build()));
-        given(bomRepository.existsByParentProductOrChildProduct(any(), any()))
-                .willReturn(false);
-
+    @DisplayName("[Service]품목 비활성화 테스트 - Success")
+    @Transactional
+    void disableProductTestSuccess(){
         //when
-        productService.deleteProduct(123L);
+        productService.disableProduct(1L);
 
         //then
-        verify(productRepository, times(1)).deleteById(123L);
+        ProductDto.ProductResponse product = productService.getProduct(1L);
+        assertEquals(false, product.isEnabled());
+    }
+    @Test
+    @DisplayName("[Service]품목 삭제 테스트 - Success")
+    @Transactional
+    void deleteProductTestSuccess(){
+        //when
+        productService.deleteProduct(1L);
+
+        //then
+        ProductException exception = assertThrows(ProductException.class,
+                () -> productService.getProduct(1L));
+        assertEquals(PRODUCT_NOT_FOUND, exception.getProductErrorType());
     }
 
 
     //======= Fail Tests =======
 
     @Test
-    @DisplayName("[Service]품목 추가 테스트(이름 누락) - Fail")
-    void addProductTestNameNullFail(){
+    @DisplayName("[Service]품목 가져오기 테스트(품목X) - Fail")
+    void getProductTestProductNotFoundFail(){
+
         //when
         ProductException exception = assertThrows(ProductException.class,
-                () -> productService.addProduct(
-                        ProductDto.ProductAddRequest.builder()
-                                .name(null)
-                                .company("com")
-                                .price(1D)
-                                .spec("spec")
-                                .build()
-                ));
+            () -> productService.getProduct(10000L));
 
         //then
-        assertEquals(ProductErrorType.PRODUCT_NAME_NULL, exception.getProductErrorType());
+        assertEquals(PRODUCT_NOT_FOUND, exception.getProductErrorType());
+
+    }
+
+    @Test
+    @DisplayName("[Service]품목 추가 테스트(이름 누락) - Fail")
+    void addProductTestNameNullFail(){
+
+        //when
+        ProductException exception = assertThrows(ProductException.class,
+                () -> productService.addProduct(ProductDto.ProductAddRequest
+                                .builder()
+                                .name(null)
+                                .company("컴퍼니")
+                                .price(1D)
+                                .spec("스펙")
+                                .build()));
+        //then
+        assertEquals(PRODUCT_NAME_NULL, exception.getProductErrorType());
     }
 
     @Test
@@ -210,16 +197,15 @@ class ProductServiceTest {
     void addProductTestPriceNullFail(){
         //when
         ProductException exception = assertThrows(ProductException.class,
-                () -> productService.addProduct(
-                        ProductDto.ProductAddRequest.builder()
-                                .name("name")
-                                .company("com")
-                                .spec("spec")
-                                .build()
-                ));
-
+                () -> productService.addProduct(ProductDto.ProductAddRequest
+                        .builder()
+                        .name("이름")
+                        .company("컴퍼니")
+                        .price(null)
+                        .spec("스펙")
+                        .build()));
         //then
-        assertEquals(ProductErrorType.PRODUCT_PRICE_NULL, exception.getProductErrorType());
+        assertEquals(PRODUCT_PRICE_NULL, exception.getProductErrorType());
     }
 
     @Test
@@ -227,96 +213,99 @@ class ProductServiceTest {
     void addProductTestPriceMinusFail(){
         //when
         ProductException exception = assertThrows(ProductException.class,
-                () -> productService.addProduct(
-                        ProductDto.ProductAddRequest.builder()
-                                .name("name")
-                                .company("com")
-                                .price(-0.1)
-                                .spec("spec")
-                                .build()
-                ));
-
+                () -> productService.addProduct(ProductDto.ProductAddRequest
+                        .builder()
+                        .name("이름")
+                        .company("컴퍼니")
+                        .price(-1D)
+                        .spec("스펙")
+                        .build()));
         //then
-        assertEquals(ProductErrorType.PRODUCT_PRICE_MINUS, exception.getProductErrorType());
+        assertEquals(PRODUCT_PRICE_MINUS, exception.getProductErrorType());
     }
 
     @Test
     @DisplayName("[Service]품목 수정 테스트(품목 X) - Fail")
     void updateProductTestProductNotFoundFail(){
-        //given
-        given(productRepository.findById(anyLong()))
-                .willReturn(Optional.empty());
-
         //when
         ProductException exception = assertThrows(ProductException.class,
-                () -> productService.updateProduct(
-                        ProductDto.ProductUpdateRequest.builder()
-                                .id(1L)
-                                .build()
-                ));
-
+                () -> productService.updateProduct(ProductDto.ProductUpdateRequest
+                        .builder()
+                        .id(10000L)
+                        .name("이름")
+                        .company("컴퍼니")
+                        .price(1D)
+                        .spec("스펙")
+                        .build()));
         //then
-        assertEquals(ProductErrorType.PRODUCT_NOT_FOUND, exception.getProductErrorType());
+        assertEquals(PRODUCT_NOT_FOUND, exception.getProductErrorType());
     }
 
     @Test
     @DisplayName("[Service]품목 수정 테스트(음수 단가) - Fail")
     void updateProductTestPriceMinusFail(){
-        //given
-        given(productRepository.findById(any()))
-                .willReturn(Optional.of(
-                        ProductEntity.builder()
-                                .id(10L)
-                                .name("testName")
-                                .company("testCompany")
-                                .price(100D)
-                                .spec("testSpec")
-                                .build()
-                ));
         //when
-        ProductException exception = assertThrows(ProductException.class, () ->
-                productService.updateProduct(ProductDto.ProductUpdateRequest.builder()
-                        .id(10L)
-                        .name("testName")
-                        .company("testCompany")
-                        .price(-0.1)
-                        .spec("testSpec")
-                        .build())
-        );
+        ProductException exception = assertThrows(ProductException.class,
+                () -> productService.updateProduct(ProductDto.ProductUpdateRequest
+                        .builder()
+                        .id(1L)
+                        .name("이름")
+                        .company("컴퍼니")
+                        .price(-1D)
+                        .spec("스펙")
+                        .build()));
+        //then
+        assertEquals(PRODUCT_PRICE_MINUS, exception.getProductErrorType());
+    }
+
+    @Test
+    @DisplayName("[Service]품목 비활성화 테스트(품목 없음) - Fail")
+    void disableProductTestProductNotFoundFail(){
+        //when
+        ProductException exception = assertThrows(ProductException.class,
+                () -> productService.deleteProduct(10000L));
 
         //then
-        assertEquals(ProductErrorType.PRODUCT_PRICE_MINUS, exception.getProductErrorType());
+        assertEquals(PRODUCT_NOT_FOUND, exception.getProductErrorType());
+    }
+
+    @Test
+    @DisplayName("[Service]품목 비활성화 테스트(BOM 종속) - Fail")
+    void disableProductTestProductHasBomFail(){
+        //when
+        ProductException exception = assertThrows(ProductException.class,
+                () -> productService.deleteProduct(7L));
+
+        //then
+        assertEquals(PRODUCT_HAS_BOM, exception.getProductErrorType());
     }
 
     @Test
     @DisplayName("[Service]품목 삭제 테스트(품목 없음) - Fail")
     void deleteProductTestProductNotFoundFail(){
-        //given
-        given(productRepository.findById(anyLong()))
-                .willReturn(Optional.empty());
         //when
         ProductException exception = assertThrows(ProductException.class,
-                () -> productService.deleteProduct(1L));
+                () -> productService.deleteProduct(10000L));
+
         //then
-        assertEquals(ProductErrorType.PRODUCT_NOT_FOUND, exception.getProductErrorType());
+        assertEquals(PRODUCT_NOT_FOUND, exception.getProductErrorType());
     }
 
     @Test
     @DisplayName("[Service]품목 삭제 테스트(BOM 존재) - Fail")
     void deleteProductTestBomHasProductFail(){
-        //given
-        given(productRepository.findById(anyLong()))
-                .willReturn(Optional.of(ProductEntity.builder()
-                        .id(1L)
-                        .name("T")
-                        .price(1D)
-                        .build()));
-        given(bomRepository.existsByParentProductOrChildProduct(any(), any()))
-                .willReturn(true);
         //when
         ProductException exception = assertThrows(ProductException.class,
-                () -> productService.deleteProduct(1L));
+                () -> productService.deleteProduct(7L));
+
         //then
-        assertEquals(ProductErrorType.PRODUCT_HAS_BOM, exception.getProductErrorType());
+        assertEquals(PRODUCT_HAS_BOM, exception.getProductErrorType());
+    }
+
+    @Test //일단 구현 보류
+    @Disabled
+    @DisplayName("[Service]품목 삭제 테스트(테이블 연관) - Fail")
+    void deleteProductTestIsReferencedFail(){
+
     }
 }

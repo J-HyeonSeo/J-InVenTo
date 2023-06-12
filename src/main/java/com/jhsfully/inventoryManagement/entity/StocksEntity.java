@@ -1,4 +1,4 @@
-package com.jhsfully.inventoryManagement.model;
+package com.jhsfully.inventoryManagement.entity;
 
 import com.jhsfully.inventoryManagement.dto.StocksDto;
 import com.jhsfully.inventoryManagement.exception.StocksException;

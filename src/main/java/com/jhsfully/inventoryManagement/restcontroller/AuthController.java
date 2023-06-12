@@ -2,7 +2,7 @@ package com.jhsfully.inventoryManagement.restcontroller;
 
 import com.jhsfully.inventoryManagement.dto.AuthDto;
 import com.jhsfully.inventoryManagement.dto.TokenDto;
-import com.jhsfully.inventoryManagement.model.MemberEntity;
+import com.jhsfully.inventoryManagement.entity.MemberEntity;
 import com.jhsfully.inventoryManagement.security.TokenProvider;
 import com.jhsfully.inventoryManagement.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Slf4j
 @RestController

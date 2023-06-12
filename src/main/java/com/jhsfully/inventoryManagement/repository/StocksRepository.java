@@ -1,8 +1,8 @@
 package com.jhsfully.inventoryManagement.repository;
 
 import com.jhsfully.inventoryManagement.dto.StocksDto;
-import com.jhsfully.inventoryManagement.model.ProductEntity;
-import com.jhsfully.inventoryManagement.model.StocksEntity;
+import com.jhsfully.inventoryManagement.entity.ProductEntity;
+import com.jhsfully.inventoryManagement.entity.StocksEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

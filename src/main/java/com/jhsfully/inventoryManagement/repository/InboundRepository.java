@@ -1,10 +1,8 @@
 package com.jhsfully.inventoryManagement.repository;
 
-import com.jhsfully.inventoryManagement.dto.InboundDto;
-import com.jhsfully.inventoryManagement.model.InboundEntity;
-import com.jhsfully.inventoryManagement.model.PurchaseEntity;
+import com.jhsfully.inventoryManagement.entity.InboundEntity;
+import com.jhsfully.inventoryManagement.entity.PurchaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;

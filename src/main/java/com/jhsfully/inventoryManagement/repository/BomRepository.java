@@ -1,8 +1,8 @@
 package com.jhsfully.inventoryManagement.repository;
 
 import com.jhsfully.inventoryManagement.dto.BomDto;
-import com.jhsfully.inventoryManagement.model.BOMEntity;
-import com.jhsfully.inventoryManagement.model.ProductEntity;
+import com.jhsfully.inventoryManagement.entity.BOMEntity;
+import com.jhsfully.inventoryManagement.entity.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

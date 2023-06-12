@@ -2,11 +2,10 @@ package com.jhsfully.inventoryManagement.security;
 
 import com.jhsfully.inventoryManagement.dto.TokenDto;
 import com.jhsfully.inventoryManagement.exception.AuthException;
-import com.jhsfully.inventoryManagement.model.RefreshToken;
+import com.jhsfully.inventoryManagement.entity.RefreshToken;
 import com.jhsfully.inventoryManagement.repository.RefreshTokenRepository;
 import com.jhsfully.inventoryManagement.service.MemberService;
 import com.jhsfully.inventoryManagement.type.AuthErrorType;
-import com.jhsfully.inventoryManagement.type.RoleType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 

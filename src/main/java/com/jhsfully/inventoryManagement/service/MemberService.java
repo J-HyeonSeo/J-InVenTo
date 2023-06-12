@@ -2,7 +2,7 @@ package com.jhsfully.inventoryManagement.service;
 
 import com.jhsfully.inventoryManagement.dto.AuthDto;
 import com.jhsfully.inventoryManagement.exception.AuthException;
-import com.jhsfully.inventoryManagement.model.MemberEntity;
+import com.jhsfully.inventoryManagement.entity.MemberEntity;
 import com.jhsfully.inventoryManagement.repository.MemberRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
