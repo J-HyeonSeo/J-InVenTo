@@ -82,13 +82,6 @@ public class PurchaseService implements PurchaseInterface{
     //============================ Validates ==================================
     public ProductEntity validateAddPurchase(PurchaseDto.PurchaseAddRequest request){
 
-        ProductEntity product = productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
-        //bom의 부모에 존재하면 안됨.
-        if(bomRepository.existsByParentProduct(product)){
-            throw new PurchaseException(PURCHASE_CANT_PARENT_PRODUCT);
-        }
-
         //amount가 존재해야함.
         if(request.getAmount() == null){
             throw new PurchaseException(PURCHASE_AMOUNT_NULL);
@@ -104,6 +97,13 @@ public class PurchaseService implements PurchaseInterface{
         //price가 0보다 커야함.
         if(request.getPrice() <= 0){
             throw new PurchaseException(PURCHASE_PRICE_LESS_ZERO);
+        }
+
+        ProductEntity product = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+        //bom의 부모에 존재하면 안됨.
+        if(bomRepository.existsByParentProduct(product)){
+            throw new PurchaseException(PURCHASE_CANT_PARENT_PRODUCT);
         }
 
         return product;
