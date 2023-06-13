@@ -13,7 +13,8 @@ import java.util.List;
 public interface StocksRepository extends JpaRepository<StocksEntity, Long> {
 
     @Query(
-            "SELECT new com.jhsfully.inventoryManagement.dto.StocksDto$StockGroupResponse(s.product.id, SUM(s.amount)) " +
+            "SELECT new com.jhsfully.inventoryManagement.dto.StocksDto$StockGroupResponse" +
+                    "(s.product.id, SUM(amount), SUM(s.amount * s.inbound.purchase.price)) " +
                     "FROM stocks s " +
                     "GROUP BY s.product"
     )

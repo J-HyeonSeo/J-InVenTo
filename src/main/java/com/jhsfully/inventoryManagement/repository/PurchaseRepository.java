@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface PurchaseRepository extends JpaRepository<PurchaseEntity, Long> {
 
+
+
     List<PurchaseEntity> findByAtBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
 
 }

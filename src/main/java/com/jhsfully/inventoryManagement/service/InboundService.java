@@ -32,15 +32,12 @@ public class InboundService implements InboundInterface{
     private final PurchaseRepository purchaseRepository;
     private final StocksRepository stocksRepository;
 
-    public List<InboundDto.InboundResponse> getInboundsByPurchase(Long purchaseId){
+    public Double getInboundsByPurchase(Long purchaseId){
 
         PurchaseEntity purchase = purchaseRepository.findById(purchaseId)
                 .orElseThrow(() -> new PurchaseException(PurchaseErrorType.PURCHASE_NOT_FOUND));
 
-        return inboundRepository.findByPurchase(purchase)
-                .stream()
-                .map(InboundEntity::toDto)
-                .collect(Collectors.toList());
+        return inboundRepository.findByPurchase(purchase);
     }
 
     @Override

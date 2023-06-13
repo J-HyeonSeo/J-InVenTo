@@ -40,6 +40,8 @@ public class StocksEntity {
                 .productId(s.getProduct().getId())
                 .productName(s.getProduct().getName())
                 .amount(s.getAmount())
+                .price(s.getInbound() != null ? s.getInbound().getPurchase().getPrice()
+                        : null)
                 .lot(s.getLot())
                 .company(s.getInbound() != null ? s.getInbound().getPurchase().getCompany()
                         : null)

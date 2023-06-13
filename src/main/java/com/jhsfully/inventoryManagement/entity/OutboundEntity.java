@@ -35,6 +35,7 @@ public class OutboundEntity {
                 .productName(o.getProduct().getName())
                 .destination(o.getDestination())
                 .amount(o.getAmount())
+                .price(o.getProduct().getPrice())
                 .at(o.getAt())
                 .note(o.getNote())
                 .build();

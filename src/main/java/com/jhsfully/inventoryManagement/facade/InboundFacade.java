@@ -29,10 +29,6 @@ public class InboundFacade {
     private final PurchaseInterface purchaseService;
     private final StocksInterface stocksService;
 
-    public List<InboundDto.InboundResponse> getInbounds(LocalDate startDate, LocalDate endDate){
-        return inboundService.getInbounds(startDate, endDate);
-    }
-
     @Transactional
     public Long executeInbound(InboundDto.InboundOuterAddRequest request){
 
@@ -91,13 +87,7 @@ public class InboundFacade {
                 purchaseService.getPurchase(request.getPurchaseId());
 
         //해당 되는 구매ID의 입고합을 가져와야함. (inboundService)
-        List<InboundDto.InboundResponse> inbounds = inboundService.getInboundsByPurchase(
-                purchase.getId()
-        );
-
-        double inboundSum = inbounds.stream()
-                .mapToDouble(InboundDto.InboundResponse::getAmount)
-                .sum();
+        Double inboundSum = inboundService.getInboundsByPurchase(purchase.getId());
 
         //현재 입고수량을 더했을 경우, 구매량을 초과하는지 검증해야함.
         inboundSum += request.getAmount();

@@ -9,13 +9,14 @@ import com.jhsfully.inventoryManagement.service.PlanInterface;
 import com.jhsfully.inventoryManagement.service.ProductInterface;
 import com.jhsfully.inventoryManagement.service.StocksInterface;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 //부족자재파악을 위한 파서드.
 @Slf4j
@@ -30,14 +31,21 @@ public class StocksFacade {
 
     public List<StocksDto.StockResponse> getAllStocks(){
 
+        @Getter
+        @AllArgsConstructor
+        class stockInfo{
+            private Double amount;
+            private Double price;
+        }
+
         //모든 품목 정보들을 가져와야함.
         List<ProductDto.ProductResponse> products = productService.getProducts();
 
         //모든 재고 정보들을 가져옴.
-        HashMap<Long, Double> stocks = new HashMap<>();
+        HashMap<Long, stockInfo> stocks = new HashMap<>();
 
         stocksService.getAllStocks().stream()
-                .forEach(x -> stocks.put(x.getProductId(), x.getAmount()));
+                .forEach(x -> stocks.put(x.getProductId(), new stockInfo(x.getAmount(), x.getPrice())));
 
         //반환할 데이터
         HashMap<Long, StocksDto.StockResponse> responses = new HashMap<>();
@@ -47,8 +55,10 @@ public class StocksFacade {
                             .productId(product.getId())
                             .productName(product.getName())
                             .spec(product.getSpec())
-                            .amount(stocks.containsKey(product.getId()) ?
-                                    stocks.get(product.getId()) : 0D)
+                            .amount(stocks.getOrDefault(product.getId(),
+                                    new stockInfo(0D, 0D)).getAmount())
+                            .price(stocks.getOrDefault(product.getId(),
+                                    new stockInfo(0D, 0D)).getPrice())
                             .build());
         }
 
@@ -83,11 +93,11 @@ public class StocksFacade {
             if(response.getAmount() <= 0){
                 response.setLackAmount(Math.abs(response.getAmount()));
             }
-            response.setAmount(stocks.containsKey(response.getProductId()) ?
-                    stocks.get(response.getProductId()) : 0D);
+            response.setAmount(stocks.getOrDefault(response.getProductId(),
+                    new stockInfo(0D, 0D)).getAmount());
         }
 
-        return responses.values().stream().collect(Collectors.toList());
+        return new ArrayList<>(responses.values());
     }
 
 }

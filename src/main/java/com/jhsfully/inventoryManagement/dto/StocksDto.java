@@ -24,6 +24,7 @@ public class StocksDto{
     public static class StockGroupResponse{ //Use Inner Dto
         private Long productId;
         private Double amount;
+        private Double price;
     }
 
     @Getter
@@ -36,6 +37,7 @@ public class StocksDto{
         private String productName;
         private String spec;
         private Double amount;
+        private Double price;
         private LocalDate lackDate;
         private Double lackAmount;
 
@@ -51,6 +53,7 @@ public class StocksDto{
         private Long productId;
         private String productName;
         private Double amount;
+        private Double price;
         private LocalDate lot;
         private String company;
     }

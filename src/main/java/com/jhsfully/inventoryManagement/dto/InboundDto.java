@@ -44,6 +44,7 @@ public class InboundDto {
         private LocalDateTime inboundAt;
         private LocalDateTime purchasedAt;
         private Double amount;
+        private Double price;
         private String company;
         private String note;
 

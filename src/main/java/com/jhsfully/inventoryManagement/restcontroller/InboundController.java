@@ -3,6 +3,7 @@ package com.jhsfully.inventoryManagement.restcontroller;
 import com.jhsfully.inventoryManagement.dto.InboundDto;
 import com.jhsfully.inventoryManagement.facade.InboundFacade;
 import com.jhsfully.inventoryManagement.lock.ProcessLock;
+import com.jhsfully.inventoryManagement.service.InboundInterface;
 import com.jhsfully.inventoryManagement.type.LockType;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,13 +19,19 @@ import java.util.concurrent.locks.Lock;
 public class InboundController {
 
     private final InboundFacade inboundFacade;
+    private final InboundInterface inboundService;
 
     @GetMapping("")
     public ResponseEntity<?> getInbounds(
             @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate)
     {
-        return ResponseEntity.ok(inboundFacade.getInbounds(startDate, endDate));
+        return ResponseEntity.ok(inboundService.getInbounds(startDate, endDate));
+    }
+
+    @GetMapping("/{purchaseId}")
+    public ResponseEntity<?> getSumInboundsByPurchase(@PathVariable Long purchaseId){
+        return ResponseEntity.ok(inboundService.getInboundsByPurchase(purchaseId));
     }
 
     @ProcessLock(key = LockType.PURCHASE_INBOUND)

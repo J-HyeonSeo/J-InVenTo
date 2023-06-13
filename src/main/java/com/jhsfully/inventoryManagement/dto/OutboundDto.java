@@ -53,6 +53,7 @@ public class OutboundDto {
         private String productName;
         private String destination;
         private Double amount;
+        private Double price;
         private LocalDateTime at;
         private String note;
 
@@ -70,6 +71,7 @@ public class OutboundDto {
         private String productName;
         private String company;
         private Double amount;
+        private Double price;
 
     }
 }

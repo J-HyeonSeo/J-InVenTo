@@ -43,6 +43,7 @@ public class InboundEntity {
                 .inboundAt(i.getAt())
                 .purchasedAt(i.getPurchase().getAt())
                 .amount(i.getAmount())
+                .price(i.getPurchase().getPrice())
                 .company(i.getPurchase().getCompany())
                 .note(i.getNote())
                 .build();

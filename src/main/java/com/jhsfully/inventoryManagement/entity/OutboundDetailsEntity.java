@@ -35,6 +35,7 @@ public class OutboundDetailsEntity {
                 .productName(o.getStock().getProduct().getName())
                 .company(o.getStock().getInbound().getPurchase().getCompany())
                 .amount(o.getAmount())
+                .price(o.getStock().getInbound().getPurchase().getPrice())
                 .build();
     }
 
