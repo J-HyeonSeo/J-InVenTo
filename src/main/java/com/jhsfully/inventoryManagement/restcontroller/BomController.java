@@ -34,6 +34,12 @@ public class BomController {
         return ResponseEntity.ok(bomService.addBom(request));
     }
 
+    @PutMapping("")
+    public ResponseEntity<?> updateBom(@RequestBody BomDto.BomUpdateRequest request){
+        bomService.updateBomNode(request);
+        return ResponseEntity.ok(request.getCost());
+    }
+
     @DeleteMapping("/node/{bid}")
     public ResponseEntity<?> deleteBomNode(@PathVariable Long bid){
         bomService.deleteBomNode(bid);

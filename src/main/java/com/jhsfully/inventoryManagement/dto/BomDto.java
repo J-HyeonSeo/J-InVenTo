@@ -24,8 +24,6 @@ public class BomDto {
     @Builder
     public static class BomUpdateRequest{
         private Long id;
-        private Long pid;
-        private Long cid;
         private Double cost;
     }
 

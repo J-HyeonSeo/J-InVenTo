@@ -81,6 +81,15 @@ public class BomService implements BomInterface{
         return BOMEntity.toDto(bomRepository.save(bomEntity));
     }
 
+    @Override
+    @Transactional
+    @CacheEvict(cacheNames = {BOM_TOP, BOM_TREE, BOM_LEAF}, allEntries = true)
+    public void updateBomNode(BomDto.BomUpdateRequest request){
+        BOMEntity bom = validateUpdateBom(request);
+        bom.setCost(request.getCost());
+        bomRepository.save(bom);
+    }
+
     //하나의 BOM Node를 제거합니다.
     @Override
     @Transactional
@@ -106,6 +115,11 @@ public class BomService implements BomInterface{
     //======================== Validates =============================
     @Transactional
     private ProductSet validateAddBom(BomDto.BomAddRequest request) {
+
+        //cost는 비어있으면 안되요.
+        if(request.getCost() == null){
+            throw new BomException(BomErrorType.COST_NULL);
+        }
 
         //0이하의 코스트는 허용하지 않음.
         if(request.getCost() <= 0){
@@ -143,6 +157,22 @@ public class BomService implements BomInterface{
         parents1.retainAll(parents2);
 
         return parents1.size() == 0;
+    }
+
+    private BOMEntity validateUpdateBom(BomDto.BomUpdateRequest request){
+
+        if(request.getCost() == null){
+            throw new BomException(BomErrorType.COST_NULL);
+        }
+
+        if(request.getCost() <= 0){
+            throw new BomException(BomErrorType.COST_MINUS);
+        }
+
+        BOMEntity bomEntity = bomRepository.findById(request.getId())
+                .orElseThrow(() -> new BomException(BomErrorType.BOM_NOT_FOUND));
+
+        return bomEntity;
     }
 
     //========================== Utils ========================================
