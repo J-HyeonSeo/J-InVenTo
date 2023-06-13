@@ -32,11 +32,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/**/signup", "/**/signin").permitAll()
                 .and()
-                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
-//                .headers()
-//                .xssProtection()
-//                .and()
-//                .contentSecurityPolicy("script-src 'self'");
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .headers()
+                .xssProtection()
+                .and()
+                .contentSecurityPolicy("script-src 'self'");
     }
 
     @Override

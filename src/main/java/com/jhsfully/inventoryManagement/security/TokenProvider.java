@@ -98,7 +98,9 @@ public class TokenProvider {
         Claims claims = parseClaims(token);
         String rolesString = claims.get(KEY_ROLES).toString();
         rolesString = rolesString.substring(1, rolesString.length() - 1);
-        return Arrays.stream(rolesString.split(",")).collect(Collectors.toList());
+        return Arrays.stream(rolesString.split(","))
+                .map(String::trim)
+                .collect(Collectors.toList());
     }
 
     public boolean validateToken(String token){

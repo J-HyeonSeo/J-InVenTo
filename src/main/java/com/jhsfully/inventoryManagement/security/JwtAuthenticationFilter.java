@@ -42,6 +42,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //권한 확인 및 부여
             List<String> roles = tokenProvider.getRoles(accessToken);
 
+            System.out.println(roles);
+
             for(String role : roles){
                 if(role.equals(REFRESH)){
                     throw new AuthException(AUTH_SECURITY_ERROR);

@@ -1,0 +1,6 @@
+DELETE FROM plan;
+TRUNCATE TABLE plan;
+DELETE FROM bom;
+TRUNCATE TABLE bom;
+DELETE FROM productinfo;
+TRUNCATE TABLE productinfo;

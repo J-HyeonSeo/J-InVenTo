@@ -16,7 +16,10 @@ public enum RoleType {
     ROLE_INBOUND_MANAGE,
     ROLE_STOCKS_MANAGE,
     ROLE_OUTBOUND_MANAGE,
-    ROLE_PLAN_MANAGE;
+    ROLE_PLAN_MANAGE,
+
+
+    ROLE_ADMIN; //Administrator permission
 
     public static String REFRESH = "refresh";
 }
