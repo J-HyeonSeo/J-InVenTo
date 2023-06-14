@@ -26,12 +26,12 @@ import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NOT
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class PlanServiceTest {
 
     @BeforeAll
     static void setup(@Autowired DataSource dataSource){
         try(Connection conn = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/clean.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/product.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/plan.sql"));
         } catch (SQLException e) {

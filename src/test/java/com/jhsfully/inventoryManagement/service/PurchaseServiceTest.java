@@ -25,13 +25,13 @@ import static com.jhsfully.inventoryManagement.type.PurchaseErrorType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PurchaseServiceTest {
 
     @BeforeAll
     static void setup(@Autowired DataSource dataSource){
         try(Connection conn = dataSource.getConnection()){
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/clean.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/product.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/bom.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/purchase.sql"));
