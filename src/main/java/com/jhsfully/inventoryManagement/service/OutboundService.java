@@ -36,7 +36,7 @@ public class OutboundService implements OutboundInterface{
     private final StocksRepository stocksRepository;
 
     @Override
-    public Long countByStock(Long stockId){
+    public Double countByStock(Long stockId){
         StocksEntity stocksEntity = stocksRepository.findById(stockId)
                 .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
         return outboundDetailRepository.countByStock(stocksEntity);

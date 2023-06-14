@@ -24,6 +24,7 @@ public class OutboundDto {
 
     @Getter
     @Setter
+    @AllArgsConstructor
     public static class stock{
         private Long stockId;
         private Double amount;
