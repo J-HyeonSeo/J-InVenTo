@@ -100,8 +100,7 @@ public class StocksService implements StocksInterface {
     @Override
     @Transactional
     public void cancelSpendStockById(Long id, Double amount){
-        StocksEntity stocksEntity = stocksRepository.findById(id)
-                .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
+        StocksEntity stocksEntity = validateCancelSpendStock(id, amount);
 
         stocksEntity.cancelSpendAmount(amount);
 
@@ -120,9 +119,6 @@ public class StocksService implements StocksInterface {
     //======================== Validates ======================================
     public ProductEntity validateAddStock(StocksDto.StockAddRequest request){
 
-        ProductEntity product = productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
-
         if(request.getAmount() == null){
             throw new StocksException(STOCKS_AMOUNT_NULL);
         }
@@ -131,12 +127,13 @@ public class StocksService implements StocksInterface {
             throw new StocksException(STOCKS_NOT_CREATE_OR_LESS_ZERO);
         }
 
+        ProductEntity product = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+
         return product;
     }
 
     public StocksEntity validateSpendStock(Long id, Double amount){
-        StocksEntity stocksEntity = stocksRepository.findById(id)
-                .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
 
         if(amount == null){
             throw new StocksException(STOCKS_AMOUNT_NULL);
@@ -145,6 +142,26 @@ public class StocksService implements StocksInterface {
         if(amount <= 0){
             throw new StocksException(STOCKS_CANT_SPEND_OR_LESS_ZERO);
         }
+
+        StocksEntity stocksEntity = stocksRepository.findById(id)
+                .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
+
+        return stocksEntity;
+    }
+
+    public StocksEntity validateCancelSpendStock(Long id, Double amount){
+
+        if(amount == null){
+            throw new StocksException(STOCKS_AMOUNT_NULL);
+        }
+
+        if(amount <= 0){
+            throw new StocksException(STOCKS_CANT_CANCEL_OR_LESS_ZERO);
+        }
+
+        StocksEntity stocksEntity = stocksRepository.findById(id)
+                .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
+
         return stocksEntity;
     }
 }

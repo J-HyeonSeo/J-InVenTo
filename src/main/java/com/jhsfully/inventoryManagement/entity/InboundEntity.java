@@ -22,7 +22,7 @@ public class InboundEntity {
     @ManyToOne
     @JoinColumn(name = "purchaseid")
     private PurchaseEntity purchase;
-    @NotNull
+
     @OneToOne
     @JoinColumn(name = "stockid")
     private StocksEntity stock;

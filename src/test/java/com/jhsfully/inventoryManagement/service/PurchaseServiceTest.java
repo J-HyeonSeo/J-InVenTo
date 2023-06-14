@@ -5,8 +5,6 @@ import com.jhsfully.inventoryManagement.entity.PurchaseEntity;
 import com.jhsfully.inventoryManagement.exception.ProductException;
 import com.jhsfully.inventoryManagement.exception.PurchaseException;
 import com.jhsfully.inventoryManagement.repository.PurchaseRepository;
-import com.jhsfully.inventoryManagement.type.ProductErrorType;
-import com.jhsfully.inventoryManagement.type.PurchaseErrorType;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,15 +14,13 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
-import static com.jhsfully.inventoryManagement.type.ProductErrorType.*;
+import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NOT_FOUND;
 import static com.jhsfully.inventoryManagement.type.PurchaseErrorType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,6 +35,8 @@ class PurchaseServiceTest {
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/product.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/bom.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/purchase.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/stocks.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/inbound.sql"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -113,10 +111,10 @@ class PurchaseServiceTest {
     @Transactional
     void deletePurchaseSuccess(){
         //when
-        purchaseService.deletePurchase(1L);
+        purchaseService.deletePurchase(3L);
         //then
         PurchaseException exception = assertThrows(PurchaseException.class,
-                () -> purchaseService.deletePurchase(1L));
+                () -> purchaseService.deletePurchase(3L));
         assertEquals(PURCHASE_NOT_FOUND, exception.getPurchaseErrorType());
     }
 
@@ -265,11 +263,12 @@ class PurchaseServiceTest {
         assertEquals(PURCHASE_NOT_FOUND, exception.getPurchaseErrorType());
     }
     @Test
-    @Disabled
     @DisplayName("[Service]구매 삭제 실패 - (입고 잡혀있음 X)")
     void deletePurchaseHasInboundFail(){
-        //given
         //when
+        PurchaseException exception = assertThrows(PurchaseException.class,
+                () -> purchaseService.deletePurchase(1L));
         //then
+        assertEquals(PURCHASE_HAS_INBOUND, exception.getPurchaseErrorType());
     }
 }

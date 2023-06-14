@@ -50,14 +50,14 @@ public class StocksEntity {
 
     public void spendAmount(double amount){
         if(this.amount < amount){
-            throw new StocksException(StocksErrorType.STOCKS_CANT_SPEND_OR_LESS_ZERO);
+            throw new StocksException(StocksErrorType.STOCKS_SPEND_AMOUNT_EXCEED);
         }
         this.amount -= amount;
     }
 
     public void cancelSpendAmount(double amount){
-        if(this.amount < amount){
-            throw new StocksException(StocksErrorType.STOCKS_CANT_CANCEL_SPEND);
+        if(amount <= 0){
+            throw new StocksException(StocksErrorType.STOCKS_CANT_CANCEL_OR_LESS_ZERO);
         }
         this.amount += amount;
     }
