@@ -67,6 +67,7 @@ public class BomDto {
 
     @Getter
     @Setter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class BomLeaf{
         private Long productId;
