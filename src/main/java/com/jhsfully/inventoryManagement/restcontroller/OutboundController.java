@@ -28,9 +28,9 @@ public class OutboundController {
         return ResponseEntity.ok(outboundService.getOutbounds(startDate, endDate));
     }
 
-    @GetMapping("/details/{id}")
-    public ResponseEntity<?> getOutboundDetails(@PathVariable Long id){
-        return ResponseEntity.ok(outboundService.getOutboundDetails(id));
+    @GetMapping("/{outboundId}")
+    public ResponseEntity<?> getOutboundDetails(@PathVariable Long outboundId){
+        return ResponseEntity.ok(outboundService.getOutboundDetails(outboundId));
     }
 
     @ProcessLock(key = LockType.INBOUND_OUTBOUND)
@@ -48,7 +48,7 @@ public class OutboundController {
     }
 
     //출고 상세 삭제 기능은 일단 보류함.
-    @DeleteMapping("/detail/{id}")
+    @DeleteMapping("/detail/{detailId}")
     public ResponseEntity<?> cancelOutboundDetail(@PathVariable Long detailId){
         outboundFacade.cancelOutboundDetail(detailId);
         return ResponseEntity.ok(detailId);
