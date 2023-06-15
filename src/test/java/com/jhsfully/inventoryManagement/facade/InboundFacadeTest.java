@@ -3,13 +3,9 @@ package com.jhsfully.inventoryManagement.facade;
 import com.jhsfully.inventoryManagement.dto.InboundDto;
 import com.jhsfully.inventoryManagement.dto.StocksDto;
 import com.jhsfully.inventoryManagement.exception.InboundException;
-import com.jhsfully.inventoryManagement.exception.OutboundException;
 import com.jhsfully.inventoryManagement.exception.StocksException;
 import com.jhsfully.inventoryManagement.service.InboundInterface;
 import com.jhsfully.inventoryManagement.service.StocksInterface;
-import com.jhsfully.inventoryManagement.service.StocksService;
-import com.jhsfully.inventoryManagement.type.InboundErrorType;
-import com.jhsfully.inventoryManagement.type.StocksErrorType;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,12 +13,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 
 import javax.sql.DataSource;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static com.jhsfully.inventoryManagement.type.InboundErrorType.*;
-import static com.jhsfully.inventoryManagement.type.StocksErrorType.*;
+import static com.jhsfully.inventoryManagement.type.InboundErrorType.INBOUND_EXCEED_PURCHASE_AMOUNT;
+import static com.jhsfully.inventoryManagement.type.InboundErrorType.INBOUND_NOT_FOUND;
+import static com.jhsfully.inventoryManagement.type.StocksErrorType.STOCKS_NOT_FOUND;
+import static com.jhsfully.inventoryManagement.type.StocksErrorType.STOCKS_OCCURRED_OUTBOUND;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -38,7 +35,8 @@ class InboundFacadeTest {
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/purchase.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/stocks.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/inbound.sql"));
-            //ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/outbound.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/outbound.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/outbounddetails.sql"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -121,7 +119,6 @@ class InboundFacadeTest {
     }
 
     @Test
-    @Disabled
     @DisplayName("[Facade] 입고 취소 실패 - (출고 발생)")
     void cancelInboundFail(){
         //when

@@ -10,7 +10,6 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
@@ -30,6 +29,11 @@ class ProductServiceTest {
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/clean.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/product.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/bom.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/purchase.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/stocks.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/inbound.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/outbound.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("/testdatas/outbounddetails.sql"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -153,11 +157,11 @@ class ProductServiceTest {
     @Transactional
     void deleteProductTestSuccess(){
         //when
-        productService.deleteProduct(1L);
+        productService.deleteProduct(10L);
 
         //then
         ProductException exception = assertThrows(ProductException.class,
-                () -> productService.getProduct(1L));
+                () -> productService.getProduct(10L));
         assertEquals(PRODUCT_NOT_FOUND, exception.getProductErrorType());
     }
 
@@ -305,9 +309,13 @@ class ProductServiceTest {
     }
 
     @Test //일단 구현 보류
-    @Disabled
     @DisplayName("[Service]품목 삭제 테스트(테이블 연관) - Fail")
     void deleteProductTestIsReferencedFail(){
+        //when
+        ProductException exception = assertThrows(ProductException.class,
+                () -> productService.deleteProduct(1L));
 
+        //then
+        assertEquals(PRODUCT_IS_REFERENCED, exception.getProductErrorType());
     }
 }
