@@ -20,10 +20,7 @@ import java.util.stream.Collectors;
 public class MemberEntity implements UserDetails {
 
     @Id
-    @GeneratedValue
-    private Long id;
-    @NotNull
-    private String username;
+    private String username; //username is unique.
     @NotNull
     private String password;
     @NotNull

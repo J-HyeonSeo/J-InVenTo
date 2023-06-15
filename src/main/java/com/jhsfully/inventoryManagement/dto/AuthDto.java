@@ -31,4 +31,20 @@ public class AuthDto {
         }
     }
 
+    @Data
+    public static class PasswordChangeRequest{
+        private String username;
+        private String originPassword;
+        private String newPassword;
+
+    }
+
+    @Data
+    public static class UserChangeRequest{
+        private String username;
+        private String name;
+        private String department;
+        private List<String> roles;
+    }
+
 }
