@@ -31,16 +31,8 @@ public class OutboundFacade {
     private final StocksInterface stocksService;
     private final ProductInterface productService;
 
-    public List<OutboundDto.OutboundResponse> getOutbounds(LocalDate startDate, LocalDate endDate){
-        return outboundService.getOutbounds(startDate, endDate);
-    }
-
-    public List<OutboundDto.OutboundDetailResponse> getOutboundDetails(Long outboundId){
-        return outboundService.getOutboundDetails(outboundId);
-    }
-
     @Transactional
-    public void executeOutbound(OutboundDto.OutboundAddRequest request){
+    public Long executeOutbound(OutboundDto.OutboundAddRequest request){
 
         validateExecute(request); //밸리데이션 수행
 
@@ -58,7 +50,7 @@ public class OutboundFacade {
                             .build());
             stocksService.spendStockById(stock.getStockId(), stock.getAmount());
         }
-
+        return outboundResponse.getId();
     }
 
 
@@ -84,6 +76,10 @@ public class OutboundFacade {
 
     @Transactional
     private void validateExecute(OutboundDto.OutboundAddRequest request){
+        if(request.getAmount() == null){
+            throw new OutboundException(OUTBOUND_AMOUNT_NULL);
+        }
+
         if(request.getAmount() <= 0){
             throw new OutboundException(OUTBOUND_AMOUNT_OR_LESS_ZERO);
         }
@@ -93,6 +89,10 @@ public class OutboundFacade {
         HashMap<Long, Double> productStockSum = new HashMap<>(); //품목별 Stock 합계
 
         for(var stockRequest : request.getStocks()){
+            if(stockRequest.getAmount() == null){
+                throw new OutboundException(OUTBOUND_AMOUNT_NULL);
+            }
+
             if(stockRequest.getAmount() <= 0){
                 throw new OutboundException(OUTBOUND_AMOUNT_OR_LESS_ZERO);
             }

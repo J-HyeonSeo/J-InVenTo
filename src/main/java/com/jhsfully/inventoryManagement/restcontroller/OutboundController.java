@@ -3,6 +3,7 @@ package com.jhsfully.inventoryManagement.restcontroller;
 import com.jhsfully.inventoryManagement.dto.OutboundDto;
 import com.jhsfully.inventoryManagement.facade.OutboundFacade;
 import com.jhsfully.inventoryManagement.lock.ProcessLock;
+import com.jhsfully.inventoryManagement.service.OutboundInterface;
 import com.jhsfully.inventoryManagement.type.LockType;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,18 +18,19 @@ import java.time.LocalDate;
 public class OutboundController {
 
     private final OutboundFacade outboundFacade;
+    private final OutboundInterface outboundService;
 
     @GetMapping("")
     public ResponseEntity<?> getOutbounds(
             @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate
     ){
-        return ResponseEntity.ok(outboundFacade.getOutbounds(startDate, endDate));
+        return ResponseEntity.ok(outboundService.getOutbounds(startDate, endDate));
     }
 
     @GetMapping("/details/{id}")
     public ResponseEntity<?> getOutboundDetails(@PathVariable Long id){
-        return ResponseEntity.ok(outboundFacade.getOutboundDetails(id));
+        return ResponseEntity.ok(outboundService.getOutboundDetails(id));
     }
 
     @ProcessLock(key = LockType.INBOUND_OUTBOUND)
@@ -36,21 +38,20 @@ public class OutboundController {
     public ResponseEntity<?> executeOutbound(
             @RequestBody OutboundDto.OutboundAddRequest request
             ){
-        outboundFacade.executeOutbound(request);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(outboundFacade.executeOutbound(request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> cancelOutbound(@PathVariable Long id){
         outboundFacade.cancelOutbound(id);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(id);
     }
 
     //출고 상세 삭제 기능은 일단 보류함.
     @DeleteMapping("/detail/{id}")
     public ResponseEntity<?> cancelOutboundDetail(@PathVariable Long detailId){
         outboundFacade.cancelOutboundDetail(detailId);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(detailId);
     }
 
 }
