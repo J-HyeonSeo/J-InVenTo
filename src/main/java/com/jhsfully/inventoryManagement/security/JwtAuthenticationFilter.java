@@ -54,10 +54,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(auth);
 
         }else if(StringUtils.hasText(accessToken) &&
-                    StringUtils.hasText(refreshToken)){
-
-            TokenDto tokenDto = new TokenDto(accessToken, refreshToken);
-            if(tokenProvider.validateRefreshToken(tokenDto, request)){
+                    StringUtils.hasText(refreshToken) &&
+                tokenProvider.validateRefreshToken(new TokenDto(accessToken, refreshToken), request)){
 
                 String username = tokenProvider.getUsername(accessToken);
                 List<String> roles = tokenProvider.getRoles(accessToken);
@@ -67,8 +65,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 Authentication auth = tokenProvider.getAuthentication(roles);
                 SecurityContextHolder.getContext().setAuthentication(auth);
-            }
-
+        }else{
+            HttpServletResponse httpResponse = (HttpServletResponse) response;
+            httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "UnAuthorized");
+            return;
         }
         filterChain.doFilter(request, response);
     }
