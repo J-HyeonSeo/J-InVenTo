@@ -1,9 +1,9 @@
 const tbody = document.getElementById("product-content");
+const colNames = ["id", "name", "company", "price", "spec"];
+table_initiallize(["품목 ID" , "품목명", "거래처명", "단가", "규격"]);
 
 function addProductsFromDatas(datas){
     tbody.innerHTML = "";
-
-    var manageHTML = "";
 
     if(is_loaded){
 
@@ -23,20 +23,19 @@ function addProductsFromDatas(datas){
     }
 }
 
-//검색 필터링
+//필터링 동작을 인식하여, 데이터를 필터링 -> 테이블매니저로 데이터 표시 요청.
 
 const filter = document.getElementById("filter");
 const searchElement = document.getElementById("search");
 
-searchElement.addEventListener("input", function(event){
-
+function filterByInput(){
     if(!is_loaded){
         alert("불러온 데이터가 없습니다.");
         return;
     }
 
     //console.log(event.target.value);
-    const searchVal = event.target.value;
+    const searchVal = document.getElementById("search").value;
     const filterName = filter.value;
 
     var filteredDatas = [];
@@ -55,5 +54,7 @@ searchElement.addEventListener("input", function(event){
                 break;
         }
     }
-    addProductsFromDatas(filteredDatas);
-});
+    set_table_content(colNames.length, filteredDatas);
+}
+
+searchElement.addEventListener("input", filterByInput);

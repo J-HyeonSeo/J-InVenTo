@@ -1,4 +1,5 @@
 const tableElement = document.getElementById("table");
+const EMPTY_COLS = 30;
 
 function table_initiallize(cols){
 
@@ -9,23 +10,37 @@ function table_initiallize(cols){
         headerTemp.textContent = cols[i];
         tableHeader.appendChild(headerTemp);
     }
-    set_table_content(cols.length);
+    set_table_content(cols.length, null);
 }
 
-function set_table_content(colSize){
+function set_table_content(colSize, setDatas, colNames){
 
     const tableBody = tableElement.children[1];
 
-    //일단 빈공간이라도 채워야함.
-    for(let row = 0; row < 30; row++){
-        const trTemp = document.createElement("tr");
-        for(let col = 0; col < colSize; col++){
-            const tdTemp = document.createElement("td");
-            tdTemp.innerHTML = "&nbsp;";
-            trTemp.appendChild(tdTemp);
+    if(setDatas != null){
+        for(let row = 0; row < setDatas.length; row++){
+            for(let col = 0; col < colSize; col++){
+                for(let col = 0; col < colSize; col++){
+                    const tdTemp = document.createElement("td");
+                    tdTemp.innerHTML = setDatas[row][colNames[col]];
+                    trTemp.appendChild(tdTemp);
+                }
+                tableBody.appendChild(trTemp);
+            }
         }
-        tableBody.appendChild(trTemp);
+    }
+
+    //데이터가 30개 미만이면, 나머지는 공백으로 채움.
+    if(setDatas == null || EMPTY_COLS - setDatas.length > 0){
+        diff = setDatas == null ? 0 : setDatas.length;
+        for(let row = 0; row < EMPTY_COLS - diff; row++){
+            const trTemp = document.createElement("tr");
+            for(let col = 0; col < colSize; col++){
+                const tdTemp = document.createElement("td");
+                tdTemp.innerHTML = "&nbsp;";
+                trTemp.appendChild(tdTemp);
+            }
+            tableBody.appendChild(trTemp);
+        }
     }
 }
-
-table_initiallize(["품목 ID" , "품목명", "거래처명", "단가", "규격"]);

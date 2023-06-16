@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/mainstyle.css">
+    <link rel="stylesheet" href="css/mainpage.css">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/login.css">
+    <title>재고관리</title>
+</head>
+<body>
+    
+    <header>
+        <nav>
+            <ul id="nav-ul">
+                <li class="main-menu"><a>회원가입</a>
+                    <ul class="additional-list">
+                        <li><a href="">회원가입</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>회원수정</a>
+                    <ul class="additional-list">
+                        <li><a href="">회원수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>사용로그</a>
+                    <ul class="additional-list">
+                        <li><a href="">시스템로그</a></li>
+                        <li><a href="">유저로그</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <br>
+    <br>
+    <main>
+
+        <section id="main-section">
+
+            <!--회원 가입-->
+            <h1>회원 가입 페이지</h1>
+            <form class="form-style" id="register-form" action="">
+                <p>
+                    <label for="">아이디</label>
+                    <br>
+                    <input type="text">
+                </p>
+                <br>
+                <p>
+                    <label for="">비밀번호</label>
+                    <br>
+                    <input type="password">
+                </p>
+                <br>
+                <p>
+                    <label for="">성명</label>
+                    <br>
+                    <input type="text">
+                </p>
+                <br>
+                <p>
+                    <label for="">소속</label>
+                    <br>
+                    <input type="text">
+                </p>
+                <br>
+                <label for="">권한 (권한 목록 -> 적용 권한)</label>
+                <div class="permission-area">
+                    
+                    <div class="permission-list-wrapper">
+                        <div class="permission-list">
+                            <ul>
+                                <li>품목 조회</li>
+                                <li>BOM 조회</li>
+                                <li>구매 조회</li>
+                                <li>입고 조회</li>
+                                <li>재고 조회</li>
+                                <li>출고 조회</li>
+                                <li>출고 계획 조회</li>
+                                <li>품목 관리</li>
+                                <li>BOM 관리</li>
+                                <li>구매 관리</li>
+                                <li>입고 관리</li>
+                                <li>재고 관리</li>
+                                <li>출고 관리</li>
+                                <li>출고 계획 관리</li>
+                            </ul>
+                        </div>
+                        ->
+                        <div class="permission-list">
+                            <ul>
+                                <li>품목 조회</li>
+                                <li>BOM 조회</li>
+                                <li>구매 조회</li>
+                                <li>입고 조회</li>
+                                <li>재고 조회</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+                <button>회원 가입</button>
+            </form>
+
+            <br>
+            <br>
+        </section>
+    </main>
+    <footer>
+        <p class="context">
+            오픈소스프로젝트이며, 코드 수정 및 상업적이용으로써 사용이 가능합니다.
+        </p>
+        <p class="context">
+            단, 해당 프로그램을 개조하여, 판매의 목적으로 사용하는 것을 금지합니다.
+        </p>
+        <p class="context">
+            Copyright 2023. J-HYEONSEO. All right reserved.
+        </p>
+    </footer>
+</body>
+</html>
