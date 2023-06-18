@@ -8,7 +8,7 @@ requestExecute("/product", "get", null)
   productDatas = response;
   is_loaded = true;
   filterByInput();
-}).catch(error => {
+  }).catch(error => {
   alert(error);
   alert("데이터를 가져오는 중에 오류가 발생하였습니다.");
 });

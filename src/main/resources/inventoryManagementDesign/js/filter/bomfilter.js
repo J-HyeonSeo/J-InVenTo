@@ -1,7 +1,13 @@
-const tbody = document.getElementById("product-content");
-const colNames = ["productId", "productName"];
-const displayColNames = ["품목 번호" , "품목명"];
-table_initiallize(displayColNames);
+const bomTable = document.getElementById("bomTable");
+
+const bomTableManager = new TableManager(
+    bomTable,
+    ["productId", "productName"],
+    ["품목 번호" , "품목명"],
+    []
+);
+
+bomTableManager.table_initiallize('bomTableManager');
 
 const filter = document.getElementById("filter");
 const searchElement = document.getElementById("search");
@@ -28,7 +34,7 @@ function filterByInput(){
         }
     });
 
-    set_table_content(colNames.length, filteredDatas, colNames, []);
+    bomTableManager.set_table_content(filteredDatas);
 }
 
 searchElement.addEventListener("input", filterByInput);

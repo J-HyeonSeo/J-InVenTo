@@ -1,7 +1,11 @@
-const tbody = document.getElementById("product-content");
-const colNames = ["id", "name", "company", "price", "spec", "enabled"];
-const displayColNames = ["품목 ID" , "품목명", "거래처명", "단가", "규격", "사용여부"];
-table_initiallize(displayColNames);
+const productTable = document.getElementById("product-table");
+
+const productTableManager = new TableManager(productTable, 
+    ["id", "name", "company", "price", "spec", "enabled"], 
+    ["품목 ID" , "품목명", "거래처명", "단가", "규격", "사용여부"], 
+    [3]);
+
+productTableManager.table_initiallize("productTableManager");
 
 //필터링 동작을 인식하여, 데이터를 필터링 -> 테이블매니저로 데이터 표시 요청.
 
@@ -35,7 +39,7 @@ function filterByInput(){
         }
     });
 
-    set_table_content(colNames.length, filteredDatas, colNames, [3]);
+    productTableManager.set_table_content(filteredDatas);
 }
 
 searchElement.addEventListener("input", filterByInput);

@@ -1,132 +1,144 @@
-const tableElement = document.getElementById("table");
-const EMPTY_COLS = 30;
-var orderList = []; //해당 배열에 값이 쌓이면 들어온 데이터에 정렬을 수행함.
-
-function table_initiallize(cols){
-
-    const tableHeader = tableElement.firstElementChild.firstElementChild;
-    orderList = [];
-
-    for(let i = 0; i < cols.length; i++){
-        const headerTemp = document.createElement("th");
-        headerTemp.textContent = cols[i];
-        headerTemp.setAttribute('data-col', i);
-        headerTemp.setAttribute('onclick', 'addOrder(event)');
-        tableHeader.appendChild(headerTemp);
-    }
-    set_table_content(cols.length, null);
-}
-
-function resetOrder(){
-    const theads = tableElement.firstElementChild.firstElementChild;
-
-    for(let i = 0; i < theads.children.length; i++){
-        theads.children[i].textContent = displayColNames[i];
+class TableManager{
+    constructor(table, colNames, displayColNames, numCols){
+        this.tableElement = table;
+        this.colSize = colNames.length;
+        this.colNames = colNames;
+        this.displayColNames = displayColNames;
+        this.numCols = numCols;
+        this.orderList = [];
+        this.EMPTY_COLS = 30;
+        this.tableContents = null;
     }
 
-    orderList = [];
-    filterByInput();
-}
+    table_initiallize(managerString){
 
-function addOrder(event){
-
-    const nowName = event.target.textContent;
-    const nowCol = event.target.dataset.col;
-
-    // alert(event.target.dataset.col);
-    // alert(event.target.textContent);
-
-    //우선적으로 orderList에 존재하면 지울거임.
-    for(let i = 0; i < orderList.length; i++){
-        if(orderList[i][0] == nowCol){
-            orderList.splice(i, 1);
-            break;
+        const tableHeader = this.tableElement.firstElementChild.firstElementChild;
+        this.orderList = [];
+    
+        for(let i = 0; i < this.displayColNames.length; i++){
+            const headerTemp = document.createElement("th");
+            headerTemp.textContent = this.displayColNames[i];
+            headerTemp.setAttribute('data-col', i);
+            headerTemp.setAttribute('onclick', managerString +'.addOrder(event)');
+            tableHeader.appendChild(headerTemp);
         }
+        this.set_table_content(null);
     }
 
-    //끝에 ▲, ▼가 없다면, 오름차순 준비.
-
-    if(nowName == displayColNames[nowCol]){
-        event.target.textContent = displayColNames[nowCol] + "▲";
-        orderList.push([nowCol, 1]);
-    }else if(nowName == displayColNames[nowCol] + "▲"){
-        event.target.textContent = displayColNames[nowCol] + "▼";
-        orderList.push([nowCol, -1]);
-    }else{
-        event.target.textContent = displayColNames[nowCol];
-    }
-    filterByInput();
-}
-
-function dataOrdering(orderingDatas){
-    if(orderingDatas == null){
-        return;
+    resetOrder(){
+        const theads = this.tableElement.firstElementChild.firstElementChild;
+    
+        for(let i = 0; i < theads.children.length; i++){
+            theads.children[i].textContent = this.displayColNames[i];
+        }
+    
+        this.orderList = [];
+        this.set_table_content(null);
     }
 
-    if(orderList.length == 0){
-        return;
-    }
+    addOrder(event){
 
-    orderList.forEach(item =>{
-
-        //item[0] 정렬하려는 열, item[1] 은 정렬유형 1이면 오름차, -1이면 내림차
-
-        //자료형 파악
-        if(typeof orderingDatas[0][colNames[item[0]]] == "number" || 
-        typeof orderingDatas[0][colNames[item[0]]] == "boolean"){
-            if(item[1] == 1){
-                orderingDatas.sort((a, b) => a[colNames[item[0]]] - b[colNames[item[0]]]);
-            }else{
-                orderingDatas.sort((a, b) => b[colNames[item[0]]] - a[colNames[item[0]]]);
+        const nowName = event.target.textContent;
+        const nowCol = event.target.dataset.col;
+    
+        //우선적으로 orderList에 존재하면 지울거임.
+        for(let i = 0; i < this.orderList.length; i++){
+            if(this.orderList[i][0] == nowCol){
+                this.orderList.splice(i, 1);
+                break;
             }
+        }
+    
+        //끝에 ▲, ▼가 없다면, 오름차순 준비.
+    
+        if(nowName == this.displayColNames[nowCol]){
+            event.target.textContent = this.displayColNames[nowCol] + "▲";
+            this.orderList.push([nowCol, 1]);
+        }else if(nowName == this.displayColNames[nowCol] + "▲"){
+            event.target.textContent = this.displayColNames[nowCol] + "▼";
+            this.orderList.push([nowCol, -1]);
         }else{
-            if(item[1] == -1){
-                orderingDatas.sort((a, b) => a[colNames[item[0]]].localeCompare(b[colNames[item[0]]]));
-            }else{
-                orderingDatas.sort((a, b) => b[colNames[item[0]]].localeCompare(a[colNames[item[0]]]));
-            }
+            event.target.textContent = this.displayColNames[nowCol];
         }
-
-    });
-}
-
-function set_table_content(colSize, setDatas, colNames, numCols = []){
-
-    const tableBody = tableElement.children[1];
-    tableBody.innerHTML = "";
-
-    if(setDatas != null){
-
-        dataOrdering(setDatas);
-
-        for(let row = 0; row < setDatas.length; row++){
-            const trTemp = document.createElement("tr");
-            for(let col = 0; col < colSize; col++){
-                const tdTemp = document.createElement("td");
-                
-                nowData = setDatas[row][colNames[col]];
-
-                if(numCols.includes(col)){
-                    nowData = nowData.toLocaleString();
-                }
-                tdTemp.textContent = nowData;
-                trTemp.appendChild(tdTemp);
-            }
-            tableBody.appendChild(trTemp);
-        }
+        this.set_table_content(null);
     }
 
-    //데이터가 30개 미만이면, 나머지는 공백으로 채움.
-    if(setDatas == null || EMPTY_COLS - setDatas.length > 0){
-        diff = setDatas == null ? 0 : setDatas.length;
-        for(let row = 0; row < EMPTY_COLS - diff; row++){
-            const trTemp = document.createElement("tr");
-            for(let col = 0; col < colSize; col++){
-                const tdTemp = document.createElement("td");
-                tdTemp.innerHTML = "&nbsp;";
-                trTemp.appendChild(tdTemp);
+    dataOrdering(orderingDatas){
+        if(orderingDatas == null){
+            return;
+        }
+    
+        if(this.orderList.length == 0){
+            return;
+        }
+    
+        this.orderList.forEach(item =>{
+    
+            //item[0] 정렬하려는 열, item[1] 은 정렬유형 1이면 오름차, -1이면 내림차
+    
+            //자료형 파악
+            if(typeof orderingDatas[0][this.colNames[item[0]]] == "number" || 
+            typeof orderingDatas[0][this.colNames[item[0]]] == "boolean"){
+                if(item[1] == 1){
+                    orderingDatas.sort((a, b) => a[this.colNames[item[0]]] - b[this.colNames[item[0]]]);
+                }else{
+                    orderingDatas.sort((a, b) => b[this.colNames[item[0]]] - a[this.colNames[item[0]]]);
+                }
+            }else{
+                if(item[1] == -1){
+                    orderingDatas.sort((a, b) => a[this.colNames[item[0]]].localeCompare(b[this.colNames[item[0]]]));
+                }else{
+                    orderingDatas.sort((a, b) => b[this.colNames[item[0]]].localeCompare(a[this.colNames[item[0]]]));
+                }
             }
-            tableBody.appendChild(trTemp);
+    
+        });
+    }
+
+    set_table_content(setDatas){
+
+        const tableBody = this.tableElement.children[1];
+        tableBody.innerHTML = "";
+
+        if(setDatas == null){
+            setDatas = this.tableContents;
+        }else{
+            this.tableContents = setDatas;
+        }
+    
+        if(setDatas != null){
+    
+            this.dataOrdering(setDatas);
+    
+            for(let row = 0; row < setDatas.length; row++){
+                const trTemp = document.createElement("tr");
+                for(let col = 0; col < this.colSize; col++){
+                    const tdTemp = document.createElement("td");
+                    
+                    var nowData = setDatas[row][this.colNames[col]];
+    
+                    if(this.numCols.includes(col)){
+                        nowData = nowData.toLocaleString();
+                    }
+                    tdTemp.textContent = nowData;
+                    trTemp.appendChild(tdTemp);
+                }
+                tableBody.appendChild(trTemp);
+            }
+        }
+    
+        //데이터가 30개 미만이면, 나머지는 공백으로 채움.
+        if(setDatas == null || this.EMPTY_COLS - setDatas.length > 0){
+            var diff = setDatas == null ? 0 : setDatas.length;
+            for(let row = 0; row < this.EMPTY_COLS - diff; row++){
+                const trTemp = document.createElement("tr");
+                for(let col = 0; col < this.colSize; col++){
+                    const tdTemp = document.createElement("td");
+                    tdTemp.innerHTML = "&nbsp;";
+                    trTemp.appendChild(tdTemp);
+                }
+                tableBody.appendChild(trTemp);
+            }
         }
     }
 }

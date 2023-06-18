@@ -1,8 +1,11 @@
-const tbody = document.getElementById("product-content");
-const colNames = ["id", "productId", "productName", "at", "amount", "price", "purchasePrice", "company", "note"];
-const displayColNames = ["구매번호", "품목번호", "품목명", "구매일시", "수량", "단가", "구매금액", "거래처명", "비고"];
-const numCols = [4, 5, 6];
-table_initiallize(displayColNames);
+const purchaseTable = document.getElementById("purchaseTable");
+
+const purchaseTableManager = new TableManager(purchaseTable,
+    ["id", "productId", "productName", "at", "amount", "price", "purchasePrice", "company", "note"],
+    ["구매번호", "품목번호", "품목명", "구매일시", "수량", "단가", "구매금액", "거래처명", "비고"],
+    [4, 5, 6]);
+
+purchaseTableManager.table_initiallize("purchaseTable");
 
 const filter = document.getElementById("filter");
 const searchElement = document.getElementById("search");
@@ -30,7 +33,7 @@ function filterByInput(){
         }
     });
 
-    set_table_content(colNames.length, filteredDatas, colNames, numCols);
+    purchaseTableManager.set_table_content(filteredDatas);
 }
 
 searchElement.addEventListener("input", filterByInput);

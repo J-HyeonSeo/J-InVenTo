@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/mainstyle.css">
     <link rel="stylesheet" href="css/maintable.css">
     <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/modal.css">
     <script src="js/main.js" defer></script>
     <script src="js/authenticate/request.js" defer></script>
     <script src="js/manager/tablemanager.js" defer></script>
@@ -16,6 +17,97 @@
 </head>
 <body>
     <input id="page-type" type="hidden" value="show">
+
+    <aside class="modal-container">
+        <div class="modal-content">
+            <table style="width: 400px;">
+                <thead>
+                    <tr>
+                        <th style="width: 20px;"></th>
+                        <th>품목명</th>
+                        <th>수량</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>-</td>
+                        <td>타이어</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="border-right: none;">
+                        <table style="margin-left: 20px;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20px;"></th>
+                                    <th>품목명</th>
+                                    <th>수량</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>-</td>
+                                    <td>슬리퍼</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr style="display: table-row;">
+                                    <td colspan="3" style="border-right: none;">
+                                        <table style="margin-left: 20px;">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 20px;"></th>
+                                                    <th>품목명</th>
+                                                    <th>수량</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>나이스</td>
+                                                    <td>1</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>슬리퍼</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>슬리퍼</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>슬리퍼</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>슬리퍼</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>슬리퍼</td>
+                                    <td>1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>-</td>
+                        <td>타이어</td>
+                        <td>2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </aside>
 
     <br>
     <br>
@@ -88,12 +180,12 @@
     <main>
         <section id="main-section">
             <div class="table-wrapper">
-            <table id="table">
+            <table id="bomTable">
                 <thead>
                     <tr>
                     </tr>
                 </thead>
-                <tbody id="product-content">
+                <tbody>
                 </tbody>
             </table>
             </div>

@@ -46,4 +46,5 @@ tr:nth-child(even){
 tr:hover{
     color: white;
     background-color: rgb(155, 155, 155);
+    cursor: pointer;
 }
