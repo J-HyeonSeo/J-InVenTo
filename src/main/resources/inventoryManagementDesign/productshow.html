@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/maintable.css">
     <link rel="stylesheet" href="css/form.css">
     <script src="js/main.js" defer></script>
+    <script src="js/request.js"></script>
     <script src="js/tablemanager.js" defer></script>
     <script src="js/productfilter.js" defer></script>
     <script src="js/productloader.js" defer></script>
@@ -80,21 +81,21 @@
         </select>
         <input type="text" id="search">
         <label>
-            <input type="checkbox" name="option1" value="value1">
+            <input type="checkbox" name="option1" id="productAsc">
             품목명순
           </label>
       
           <label>
-            <input type="checkbox" name="option2" value="value2">
+            <input type="checkbox" name="option2" id="companyAsc">
             거래처명순
           </label>
       
           <label>
-            <input type="checkbox" name="option3" value="value3">
+            <input type="checkbox" name="option3" id="priceAsc">
             단가오름차순
           </label>
           <label>
-            <input type="checkbox" name="option3" value="value3">
+            <input type="checkbox" name="option3" id="priceDesc">
             단가내림차순
           </label>
     </section>

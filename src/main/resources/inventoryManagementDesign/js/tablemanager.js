@@ -13,20 +13,26 @@ function table_initiallize(cols){
     set_table_content(cols.length, null);
 }
 
-function set_table_content(colSize, setDatas, colNames){
+function set_table_content(colSize, setDatas, colNames, numCols = []){
 
     const tableBody = tableElement.children[1];
+    tableBody.innerHTML = "";
 
     if(setDatas != null){
         for(let row = 0; row < setDatas.length; row++){
+            const trTemp = document.createElement("tr");
             for(let col = 0; col < colSize; col++){
-                for(let col = 0; col < colSize; col++){
-                    const tdTemp = document.createElement("td");
-                    tdTemp.innerHTML = setDatas[row][colNames[col]];
-                    trTemp.appendChild(tdTemp);
+                const tdTemp = document.createElement("td");
+                
+                nowData = setDatas[row][colNames[col]];
+
+                if(numCols.includes(col)){
+                    nowData = nowData.toLocaleString();
                 }
-                tableBody.appendChild(trTemp);
+                tdTemp.textContent = nowData;
+                trTemp.appendChild(tdTemp);
             }
+            tableBody.appendChild(trTemp);
         }
     }
 

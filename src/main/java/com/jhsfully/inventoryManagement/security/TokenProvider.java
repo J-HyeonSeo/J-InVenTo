@@ -34,7 +34,7 @@ import static com.jhsfully.inventoryManagement.type.RoleType.*;
 public class TokenProvider {
 
     //Access Token 기한 = 30분
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30 * 24;
     //Refresh Token 기한 = 2주
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14;
 
@@ -138,7 +138,11 @@ public class TokenProvider {
 
         //redis에 접속해서 검증이 필요함.
         RefreshToken refreshToken = refreshTokenRepository.findById(token.getRefreshToken())
-                .orElseThrow(() -> new AuthException(AuthErrorType.AUTH_LOGIN_FAILED));
+                .orElse(null);
+
+        if(refreshToken == null){
+            return false;
+        }
 
         //로그인 할 때 접속했던 IP와 동일한지 체크.
         if(!refreshToken.getRemoteAddress().equals(request.getRemoteAddr())){

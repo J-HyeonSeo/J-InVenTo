@@ -17,7 +17,7 @@ function unSetRole(event){
 function getRoles(){
     var res = []
     for(var ele of settedPermissionList.children){
-        res.push(ele.getAttribute("role"));
+        res.push(ele.getAttribute("data-role"));
     }
     return res;
 }
@@ -46,18 +46,20 @@ function requestRegister(){
         return;
     }
 
+    roles = getRoles();
+
     body = {
         'username' : username,
         'password' : password,
         'name' : name,
         'department' : department,
-        'roles' : getRoles()
+        'roles' : roles
     };
 
     requestExecute("/auth/signup", "post", body).then(response => {
         alert("회원이 성공적으로 추가되었습니다.");
     }).catch(error =>{
-            alert(error);
+            alert(error.errorMessage);
         }
     )
 }

@@ -35,15 +35,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        String requestURI = request.getRequestURI();
+        System.out.println(requestURI);
+        if(isSkipUrl(requestURI)){
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
         String accessToken = resolveTokenFromRequest(request, ACCESS_TOKEN_HEADER);
         String refreshToken = resolveTokenFromRequest(request, REFRESH_TOKEN_HEADER);
+
+        System.out.println(accessToken);
+        System.out.println(refreshToken);
 
         if(StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)){
             //권한 확인 및 부여
             List<String> roles = tokenProvider.getRoles(accessToken);
 
             System.out.println(roles);
-
+            System.out.println("?????");
             for(String role : roles){
                 if(role.equals(REFRESH)){
                     throw new AuthException(AUTH_SECURITY_ERROR);
@@ -80,5 +91,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return token.substring(TOKEN_PREFIX.length());
         }
         return null;
+    }
+
+    private boolean isSkipUrl(String requestURI){
+        if(requestURI.equals("/auth/signin"))return true;
+        if(requestURI.equals("/auth/user/update/password"))return true;
+        if(requestURI.startsWith("/swagger"))return true;
+        if(requestURI.startsWith("/v2"))return true;
+        if(requestURI.startsWith("/h2-"))return true;
+        return false;
     }
 }
