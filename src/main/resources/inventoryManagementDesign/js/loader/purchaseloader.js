@@ -25,6 +25,12 @@ function loadPurchaseData(){
     .then(response => {
     purchaseDatas = response;
     is_loaded = true;
+
+    //구매 금액 추가
+    purchaseDatas.forEach(item => {
+        item.purchasePrice = item.price * item.amount;
+    });
+    
     filterByInput();
     }).catch(error => {
     alert(error);

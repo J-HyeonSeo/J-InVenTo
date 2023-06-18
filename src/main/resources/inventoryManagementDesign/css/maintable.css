@@ -25,6 +25,10 @@ th{
     border: 1px solid rgb(151, 151, 151);
 }
 
+th:hover{
+    background-color: #fa93ad;
+}
+
 td{
     border: 1px solid rgb(151, 151, 151);
     font-size: 1.1rem;

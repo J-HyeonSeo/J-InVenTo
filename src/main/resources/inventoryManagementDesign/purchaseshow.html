@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="css/maintable.css">
     <link rel="stylesheet" href="css/form.css">
     <script src="js/main.js" defer></script>
-    <script src="js/request.js"></script>
-    <script src="js/tablemanager.js" defer></script>
-    <script src="js/purchasefilter.js" defer></script>
-    <script src="js/purchaseloader.js" defer></script>
+    <script src="js/authenticate/request.js"></script>
+    <script src="js/manager/tablemanager.js" defer></script>
+    <script src="js/filter/purchasefilter.js" defer></script>
+    <script src="js/loader/purchaseloader.js" defer></script>
     <title>재고관리</title>
 </head>
 <body>
@@ -77,26 +77,10 @@
     <section class="form-wrapper-calendar">
         <select id="filter">
             <option value="productName">품목명</option>
+            <option value="companyName">거래처명</option>
         </select>
         <input type="text" id="search">
-        <label>
-            <input type="checkbox" name="option1" value="value1">
-            품목명순
-          </label>
-      
-          <label>
-            <input type="checkbox" name="option2" value="value2">
-            거래처명순
-          </label>
-      
-          <label>
-            <input type="checkbox" name="option3" value="value3">
-            단가오름차순
-          </label>
-          <label>
-            <input type="checkbox" name="option3" value="value3">
-            단가내림차순
-          </label>
+        <button type="button" onclick="resetOrder()">정렬 초기화</button>
           <label>
             시작일자
             <input type="date" id="startDate">

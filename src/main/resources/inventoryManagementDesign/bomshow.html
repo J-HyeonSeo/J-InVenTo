@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="css/maintable.css">
     <link rel="stylesheet" href="css/form.css">
     <script src="js/main.js" defer></script>
-    <script src="js/authenticate/request.js"></script>
+    <script src="js/authenticate/request.js" defer></script>
     <script src="js/manager/tablemanager.js" defer></script>
-    <script src="js/filter/productfilter.js" defer></script>
-    <script src="js/loader/productloader.js" defer></script>
-    <title>재고관리</title>
+    <script src="js/filter/bomfilter.js" defer></script>
+    <script src="js/loader/bomloader.js" defer></script>
+    <title>BOM조회</title>
 </head>
 <body>
     <input id="page-type" type="hidden" value="show">
@@ -80,9 +80,7 @@
             <option value="companyName">거래처명</option>
         </select>
         <input type="text" id="search">
-
         <button type="button" onclick="resetOrder()">정렬 초기화</button>
-
     </section>
 
     <br>
