@@ -20,10 +20,16 @@ public class ProductController {
     private final ProductInterface productService;
 
     //전체 품목 데이터를 리턴합니다.
-    @GetMapping("")
+    @GetMapping("/all")
     @PreAuthorize("hasRole('PRODUCT_READ')")
     public ResponseEntity<?> getAllProducts(){
         return ResponseEntity.ok(productService.getAllProducts());
+    }
+
+    @GetMapping("/enable")
+    @PreAuthorize("hasRole('PRODUCT_READ')")
+    public ResponseEntity<?> getProducts(){
+        return ResponseEntity.ok(productService.getProducts());
     }
 
     //품목 데이터를 만듭니다. 응답결과를 리턴합니다.

@@ -3,7 +3,7 @@
 var is_loaded = false;
 var productDatas;
 
-requestExecute("/product", "get", null)
+requestExecute("/product/all", "get", null)
 .then(response => {
   productDatas = response;
   is_loaded = true;

@@ -3,6 +3,8 @@ package com.jhsfully.inventoryManagement.restcontroller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jhsfully.inventoryManagement.dto.ProductDto;
 import com.jhsfully.inventoryManagement.repository.RefreshTokenRepository;
+import com.jhsfully.inventoryManagement.security.JwtAuthenticationFilter;
+import com.jhsfully.inventoryManagement.security.SecurityConfiguration;
 import com.jhsfully.inventoryManagement.security.TokenProvider;
 import com.jhsfully.inventoryManagement.service.MemberService;
 import com.jhsfully.inventoryManagement.service.ProductService;
@@ -11,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,23 +28,19 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest(value = ProductController.class)
-@Import({TokenProvider.class, BCryptPasswordEncoder.class})
+@WebMvcTest(value = ProductController.class, excludeFilters =
+    @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes =
+            {SecurityConfiguration.class, JwtAuthenticationFilter.class}))
 class ProductControllerTest {
 
     @MockBean
     private ProductService productService;
-
-    @MockBean
-    private MemberService memberService;
-
-    @MockBean
-    private RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
     private MockMvc mockMvc;
@@ -51,7 +51,7 @@ class ProductControllerTest {
     @Test
     @DisplayName("[Controller]전품목 가져오기 테스트")
     @WithMockUser(username = "user", roles = "PRODUCT_READ")
-    void getProductsTest() throws Exception {
+    void getAllProductsTest() throws Exception {
         //given
         given(productService.getAllProducts())
                 .willReturn(new ArrayList<>(Arrays.asList(
@@ -65,7 +65,7 @@ class ProductControllerTest {
                                 .build()
                 )));
         //when & then
-        mockMvc.perform(get("/product"))
+        mockMvc.perform(get("/product/all"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1))
@@ -73,6 +73,35 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$[0].company").value("testCompany"))
                 .andExpect(jsonPath("$[0].price").value(2500))
                 .andExpect(jsonPath("$[0].spec").value("testSpec"));
+    }
+
+    @Test
+    @DisplayName("[Controller]활성품목 가져오기 테스트")
+    @WithMockUser(username = "user", roles = "PRODUCT_READ")
+    void getEnableProductsTest() throws Exception {
+        //given
+        given(productService.getProducts())
+                .willReturn(new ArrayList<>(Arrays.asList(
+                        ProductDto.ProductResponse
+                                .builder()
+                                .id(1L)
+                                .name("testProduct")
+                                .company("testCompany")
+                                .price(2500D)
+                                .spec("testSpec")
+                                .enabled(true)
+                                .build()
+                )));
+        //when & then
+        mockMvc.perform(get("/product/enable"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].name").value("testProduct"))
+                .andExpect(jsonPath("$[0].company").value("testCompany"))
+                .andExpect(jsonPath("$[0].price").value(2500))
+                .andExpect(jsonPath("$[0].spec").value("testSpec"))
+                .andExpect(jsonPath("$[0].enabled").value("true"));
     }
 
     @Test
@@ -95,7 +124,8 @@ class ProductControllerTest {
         //when & then
         mockMvc.perform(post("/product")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(obj)))
+                        .content(objectMapper.writeValueAsString(obj))
+                        .with(csrf()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
@@ -125,7 +155,8 @@ class ProductControllerTest {
         //when & then
         mockMvc.perform(put("/product")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(obj)))
+                .content(objectMapper.writeValueAsString(obj))
+                        .with(csrf()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
@@ -141,7 +172,7 @@ class ProductControllerTest {
     void disableProductTest() throws Exception {
         //given
         //when & then
-        mockMvc.perform(patch("/product/123"))
+        mockMvc.perform(patch("/product/123").with(csrf()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("123"));
@@ -154,7 +185,7 @@ class ProductControllerTest {
     void deleteProductTest() throws Exception {
         //given
         //when & then
-        mockMvc.perform(delete("/product/123"))
+        mockMvc.perform(delete("/product/123").with(csrf()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("123"));

@@ -65,14 +65,6 @@ function showBomTree(bomTreeData, editMode){
 
     bomTreeContainer.appendChild(initailTable);
 
-    // if(editMode){
-    //     const applyButton = document.createElement('button');
-    //     applyButton.type = 'button';
-    //     applyButton.textContent = '적용';
-    //     applyButton.style.marginTop = '1rem';
-    //     applyButton.style.padding = '0.5rem 1rem';
-    //     bomTreeContainer.appendChild(applyButton);
-    // }
 }
 
 function displayRecursive(bomTreeData, treeTable, editMode){
@@ -137,10 +129,13 @@ function displayRecursive(bomTreeData, treeTable, editMode){
         const addTd = document.createElement('td');
         addTd.textContent = '+';
         addTd.className = 'bom-cursor-click';
+        //추가 메소드 셋팅.
+        addTd.setAttribute('onclick', 'clickAddBomBtn(event)');
 
         const deleteTd = document.createElement('td');
         deleteTd.textContent = '-';
         deleteTd.className = 'bom-cursor-click';
+        //삭제 메소드 셋팅. (단, 최상단 객체일 경우, tree를 지우는 걸로 셋팅해야함.)
 
         nowTr.appendChild(addTd);
         nowTr.appendChild(deleteTd);
@@ -212,6 +207,8 @@ function expandTree(event){
     event.target.setAttribute('onclick', 'collapseTree(event)');
 }
 
+//========================== 인풋 및 버튼 생성 ===========================================
+
 function createUpdateCostInput(event){
     const originText = event.target.textContent;
 
@@ -230,8 +227,16 @@ function createUpdateCostInput(event){
     applyButton.style.padding = '0 0.2rem';
     applyButton.setAttribute('onclick', 'clickUpdateBtn(event)');
 
+    const cancelButton = document.createElement('button');
+    cancelButton.type = 'button';
+    cancelButton.textContent = '취소';
+    cancelButton.style.padding = '0 0.2rem';
+    cancelButton.setAttribute('onclick', 'clickUpdateCancelBtn(event)');
+
     event.target.appendChild(costInput);
     event.target.appendChild(applyButton);
+    event.target.appendChild(cancelButton);
+
     event.target.setAttribute('onclick', '');
 }
 //==========================================================================
@@ -246,21 +251,40 @@ function clickUpdateBtn(event){ //bom id에 cost를 넣어 보내는거임.
     const id = targetTr.dataset.id;
     const cost = parseInt(inputElement.value);
 
-    //프라미스는 항상 제일 마지막에!! 약속 == Promise!
+    if(id == null || id == "null"){
+        alert("최상단 품목의 수량은 변경할 수 없습니다.");
+        return;
+    }
+
     updateBom(id, cost).then(res => {
         targetTd.innerHTML = '';
         targetTd.textContent = cost;
+        targetTd.setAttribute('onclick', 'createUpdateCostInput(event)');
     }).catch(error => {
         alert(error.errorMessage);
     })
 
 }
 
-//communication to backend server.
-function addBom(pid, cid, cost){
+function clickUpdateCancelBtn(event){
+    const targetTr = event.target.parentNode.parentNode;
+    const targetTd = event.target.parentNode;
+    targetTd.innerHTML = '';
+
+    targetTd.textContent = targetTr.dataset.cost;
+    targetTd.setAttribute('onclick', 'createUpdateCostInput(event)');
+
+}
+
+function clickAddBomBtn(event){
+    initalizeProductModal('product-modal');
+}
+
+//=========================== 실제 통신으로 넘어가는 메소드 ====================================
+async function addBom(pid, cid, cost){
     
     try{
-        new BomRequest('post', null, pid, cid, cost).request();
+        await new BomRequest('post', null, pid, cid, cost).request();
     }catch(error){
         throw error;
     }

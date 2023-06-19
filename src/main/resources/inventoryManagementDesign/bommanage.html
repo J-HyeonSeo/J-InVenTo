@@ -17,13 +17,30 @@
     <script src="js/loader/bomloader.js" defer></script>
     <script src="js/manager/bomtreemanager.js" defer></script>
     <script src="js/loader/bomtreeloader.js" defer></script>
+    <script src="js/loader/enableproductloader.js" defer></script>
+    <script src="js/manager/enableproductmanager.js" defer></script>
     <title>BOM관리</title>
 </head>
 <body>
     <input id="page-type" type="hidden" value="manage">
 
+    <!-- BOM 모달 폼 -->
     <aside id="bom-modal" class="modal-container" onclick="hideModal(event)">
         <div class="modal-content bom-container">
+        </div>
+    </aside>
+
+    <!-- PRODUCT 모달 폼 -->
+    <aside id="product-modal" class="modal-container" onclick="hideModal(event)">
+        <div class="modal-content table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </aside>
 

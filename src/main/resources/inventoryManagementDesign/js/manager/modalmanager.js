@@ -8,4 +8,5 @@ function hideModal(event){
 function openModal(modalID){
     const targetModal = document.getElementById(modalID);
     targetModal.style.display = 'block';
+    return targetModal;
 }

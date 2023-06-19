@@ -1,4 +1,3 @@
-
 const is_edit = document.getElementById('page-type').value == "manage" ? true : false;
 
 function loadBomTreeData(productId){
