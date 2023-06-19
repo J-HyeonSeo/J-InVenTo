@@ -6,6 +6,7 @@ function loadBomTreeData(productId){
     .then(response =>{
         bomTreeData = response;
         showBomTree(bomTreeData, false);
+        openModal('bom-modal');
     })/*.catch(error => {
         alert(error);
     });*/

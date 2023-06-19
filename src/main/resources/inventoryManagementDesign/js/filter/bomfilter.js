@@ -4,7 +4,8 @@ const bomTableManager = new TableManager(
     bomTable,
     ["productId", "productName"],
     ["품목 번호" , "품목명"],
-    []
+    [],
+    new TableOnClickSet('loadBomTreeData', 'productId')
 );
 
 bomTableManager.table_initiallize('bomTableManager');

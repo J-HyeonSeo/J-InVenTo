@@ -1,5 +1,12 @@
+class TableOnClickSet{
+    constructor(methodString, argsString){
+        this.methodString = methodString;
+        this.argsString = argsString;
+    }
+}
+
 class TableManager{
-    constructor(table, colNames, displayColNames, numCols){
+    constructor(table, colNames, displayColNames, numCols, tableOnClickSet = null){
         this.tableElement = table;
         this.colSize = colNames.length;
         this.colNames = colNames;
@@ -8,6 +15,7 @@ class TableManager{
         this.orderList = [];
         this.EMPTY_COLS = 30;
         this.tableContents = null;
+        this.tableOnClickSet = tableOnClickSet;
     }
 
     table_initiallize(managerString){
@@ -101,7 +109,14 @@ class TableManager{
         tableBody.innerHTML = "";
 
         if(setDatas == null){
-            setDatas = this.tableContents;
+            setDatas = []
+
+            if(this.tableContents != null){
+                this.tableContents.forEach(item => {
+                    setDatas.push(item);
+                });
+            }
+
         }else{
             this.tableContents = setDatas;
         }
@@ -111,7 +126,16 @@ class TableManager{
             this.dataOrdering(setDatas);
     
             for(let row = 0; row < setDatas.length; row++){
+
+                //tr태그에 onclick를 사용해야함.
                 const trTemp = document.createElement("tr");
+
+                if(this.tableOnClickSet != null){ //할당이 되었다.
+                    trTemp.setAttribute('onclick', 
+                        this.tableOnClickSet.methodString + '(' + setDatas[row][this.tableOnClickSet.argsString] + ')'
+                    );
+                }
+
                 for(let col = 0; col < this.colSize; col++){
                     const tdTemp = document.createElement("td");
                     

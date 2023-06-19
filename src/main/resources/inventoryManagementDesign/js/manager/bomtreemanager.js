@@ -1,8 +1,19 @@
-const bomTreeTable = document.querySelector(".bom-container").firstElementChild;
+const bomTreeContainer = document.querySelector(".bom-container");
 
 
 function showBomTree(bomTreeData, editMode){
-    displayRecursive(bomTreeData, bomTreeTable, editMode);
+    bomTreeContainer.innerHTML = "";
+
+    const initailTable = document.createElement('table');
+    const initailThead = document.createElement('thead');
+    const initailTbody = document.createElement('tbody');
+
+    initailTable.appendChild(initailThead);
+    initailTable.appendChild(initailTbody);
+
+    displayRecursive(bomTreeData, initailTable, editMode);
+
+    bomTreeContainer.appendChild(initailTable);
 }
 
 function displayRecursive(bomTreeData, treeTable, editMode){
