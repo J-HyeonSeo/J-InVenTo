@@ -7,16 +7,16 @@
     overflow: auto;
 }
 
-table{
+.table-wrapper table{
     width: 100%;
     border-collapse: collapse;
 }
 
-tbody{
+.table-wrapper tbody{
     overflow: hidden;
 }
 
-th{
+.table-wrapper th{
     position: sticky;
     top: 0;
     background-color: #FF1E56;
@@ -25,25 +25,25 @@ th{
     border: 1px solid rgb(151, 151, 151);
 }
 
-th:hover{
+.table-wrapper th:hover{
     background-color: #fa93ad;
 }
 
-td{
+.table-wrapper td{
     border: 1px solid rgb(151, 151, 151);
     font-size: 1.1rem;
 }
 
-tr{
+.table-wrapper tr{
     background-color: white;
     color: black;
 }
 
-tr:nth-child(even){
+.table-wrapper tr:nth-child(even){
     background-color: rgb(228, 228, 228);
 }
 
-tr:hover{
+.table-wrapper tr:hover{
     color: white;
     background-color: rgb(155, 155, 155);
     cursor: pointer;

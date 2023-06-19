@@ -8,102 +8,25 @@
     <link rel="stylesheet" href="css/maintable.css">
     <link rel="stylesheet" href="css/form.css">
     <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/bom.css">
     <script src="js/main.js" defer></script>
     <script src="js/authenticate/request.js" defer></script>
     <script src="js/manager/tablemanager.js" defer></script>
     <script src="js/filter/bomfilter.js" defer></script>
     <script src="js/loader/bomloader.js" defer></script>
+    <script src="js/manager/bomtreemanager.js" defer></script>
+    <script src="js/loader/bomtreeloader.js" defer></script>
     <title>BOM조회</title>
 </head>
 <body>
     <input id="page-type" type="hidden" value="show">
 
     <aside class="modal-container">
-        <div class="modal-content">
-            <table style="width: 400px;">
+        <div class="modal-content bom-container">
+            <table>
                 <thead>
-                    <tr>
-                        <th style="width: 20px;"></th>
-                        <th>품목명</th>
-                        <th>수량</th>
-                    </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>-</td>
-                        <td>타이어</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" style="border-right: none;">
-                        <table style="margin-left: 20px;">
-                            <thead>
-                                <tr>
-                                    <th style="width: 20px;"></th>
-                                    <th>품목명</th>
-                                    <th>수량</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>-</td>
-                                    <td>슬리퍼</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr style="display: table-row;">
-                                    <td colspan="3" style="border-right: none;">
-                                        <table style="margin-left: 20px;">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 20px;"></th>
-                                                    <th>품목명</th>
-                                                    <th>수량</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>나이스</td>
-                                                    <td>1</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>슬리퍼</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>슬리퍼</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>슬리퍼</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>슬리퍼</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>슬리퍼</td>
-                                    <td>1</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>타이어</td>
-                        <td>2</td>
-                    </tr>
                 </tbody>
             </table>
         </div>
@@ -206,3 +129,108 @@
     </footer>
 </body>
 </html>
+
+
+
+<!-- <aside class="modal-container">
+    <div class="modal-content bom-container">
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>품목명</th>
+                    <th>수량</th>
+                    <th>추가</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="bom-cursor-click">-</td>
+                    <td>타이어</td>
+                    <td>2</td>
+                    <td class="bom-cursor-click">+</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="bom-cover-border">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>품목명</th>
+                                <th>수량</th>
+                                <th>추가</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="bom-cursor-click">-</td>
+                                <td>슬리퍼</td>
+                                <td>1</td>
+                                <td class="bom-cursor-click">+</td>
+                            </tr>
+                            <tr style="display: table-row;">
+                                <td colspan="4" class="bom-cover-border">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>품목명</th>
+                                                <th>수량</th>
+                                                <th>추가</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td>나이스</td>
+                                                <td>1</td>
+                                                <td>+</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>슬리퍼</td>
+                                <td>1</td>
+                                <td class="bom-cursor-click">+</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>슬리퍼</td>
+                                <td>1</td>
+                                <td>+</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>슬리퍼</td>
+                                <td>1</td>
+                                <td>+</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>슬리퍼</td>
+                                <td>1</td>
+                                <td>+</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>슬리퍼</td>
+                                <td>1</td>
+                                <td>+</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>-</td>
+                    <td>타이어</td>
+                    <td>2</td>
+                    <td>+</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</aside> -->
