@@ -13,6 +13,7 @@
     <script src="js/manager/modalmanager.js" defer></script>
     <script src="js/authenticate/request.js" defer></script>
     <script src="js/manager/tablemanager.js" defer></script>
+    <script src="js/filter/mainfilter.js"></script>
     <script src="js/filter/bomfilter.js" defer></script>
     <script src="js/loader/bomloader.js" defer></script>
     <script src="js/manager/bomtreemanager.js" defer></script>
@@ -26,23 +27,34 @@
 
     <!-- BOM 모달 폼 -->
     <aside id="bom-modal" class="modal-container" onclick="hideModal(event)">
-        <div class="modal-content bom-container">
+        <div class="modal-content">
+            <div class="bom-container">
+            </div>
         </div>
     </aside>
 
     <!-- PRODUCT 모달 폼 -->
-    <aside id="product-modal" class="modal-container" onclick="hideModal(event)">
-        <div class="modal-content table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+    <div id="product-modal" class="modal-container" onclick="hideModal(event)">
+        <div class="modal-content">
+            <div style="margin: 10px 0;">
+                <select id="product-filter">
+                    <option value="productName">품목명</option>
+                    <option value="companyName">거래처명</option>
+                </select>
+                <input type="text" id="product-search">
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </aside>
+    </div>
 
     <br>
     <br>
@@ -107,7 +119,7 @@
         </select>
         <input type="text" id="search">
         <button type="button" onclick="bomTableManager.resetOrder()">정렬 초기화</button>
-        <button type="button">+ 새 BOM</button>
+        <button type="button" onclick="clickAddBomBtn(event)">+ 새 BOM</button>
     </section>
 
     <br>

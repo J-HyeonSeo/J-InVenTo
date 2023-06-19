@@ -21,23 +21,7 @@ function filterByInput(){
     const searchVal = document.getElementById("search").value;
     const filterName = filter.value;
 
-    var filteredDatas = [];
-
-    //input filtering
-    productDatas.forEach(item => {
-        switch(filterName){
-            case "productName":
-                if(item.name.includes(searchVal)){
-                    filteredDatas.push(item);
-                }
-                break;
-            case "companyName":
-                if(item.company.includes(searchVal)){
-                    filteredDatas.push(item);
-                }
-                break;
-        }
-    });
+    filteredDatas = filterName == "productName" ? doSearchFilter(productDatas, "name", searchVal) : doSearchFilter(productDatas, "company", searchVal);
 
     productTableManager.set_table_content(filteredDatas);
 }

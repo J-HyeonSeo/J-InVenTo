@@ -13,13 +13,13 @@
     border-collapse: collapse;
 }
 
-.table-wrapper tbody{
-    overflow: hidden;
-}
+/* .table-wrapper tbody{
+    display: block;
+} */
 
 .table-wrapper th{
     position: sticky;
-    top: 0;
+    top: -1px;
     background-color: #FF1E56;
     color: white;
     font-size: 1rem;

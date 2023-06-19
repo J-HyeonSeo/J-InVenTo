@@ -12,11 +12,11 @@
   .modal-content {
     background-color: rgba(255, 255, 255, 0.5);
     margin: 10% auto;
-    padding: 20px;
+    padding: 10px 30px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 1000px;
     height: 600px;
     padding: 50px;
-    overflow: hidden;
+    overflow: auto;
   }

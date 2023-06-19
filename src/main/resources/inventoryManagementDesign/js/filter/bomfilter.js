@@ -22,18 +22,7 @@ function filterByInput(){
     const searchVal = document.getElementById("search").value;
     const filterName = filter.value;
 
-    var filteredDatas = [];
-
-    //input filtering
-    bomTopDatas.forEach(item => {
-        switch(filterName){
-            case "productName":
-                if(item.productName.includes(searchVal)){
-                    filteredDatas.push(item);
-                }
-                break;
-        }
-    });
+    const filteredDatas = doSearchFilter(bomTopDatas, "productName", searchVal);
 
     bomTableManager.set_table_content(filteredDatas);
 }

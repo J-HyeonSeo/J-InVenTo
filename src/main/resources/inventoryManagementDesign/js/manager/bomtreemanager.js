@@ -50,8 +50,10 @@ class BomRequest{
 
 
 const bomTreeContainer = document.querySelector(".bom-container");
+var parentProductId = null; 
 
 function showBomTree(bomTreeData, editMode){
+    parentProductId = null;
     bomTreeContainer.innerHTML = "";
 
     const initailTable = document.createElement('table');
@@ -136,6 +138,13 @@ function displayRecursive(bomTreeData, treeTable, editMode){
         deleteTd.textContent = '-';
         deleteTd.className = 'bom-cursor-click';
         //삭제 메소드 셋팅. (단, 최상단 객체일 경우, tree를 지우는 걸로 셋팅해야함.)
+
+        if(bomTreeData.id == null || bomTreeData.id == 'null'){ //최상단 객체임.
+            deleteTd.setAttribute('onclick', 'clickDeleteTreeBomBtn(event)');
+        }else{ //BOM 구성요소 객체
+            deleteTd.setAttribute('onclick', 'clickDeleteNodeBomBtn(event)');
+        }
+        
 
         nowTr.appendChild(addTd);
         nowTr.appendChild(deleteTd);
@@ -276,8 +285,53 @@ function clickUpdateCancelBtn(event){
 
 }
 
+//추가(+)버튼을 클릭하였을 경우, 품목 선택 창을 띄움.
 function clickAddBomBtn(event){
-    initalizeProductModal('product-modal');
+    parentProductId = event.target.parentNode.dataset.productid;
+    initalizeProductModal('product-modal', 'selectedProductAfter');
+}
+
+//추가 버튼 => 프로덕트 선택 => selectedProductAfter실행
+function selectedProductAfter(selectedProductId){
+
+    const productModal = document.getElementById('product-modal');
+
+    if(parentProductId != null){ //mode가 true인 경우는 품목 추가임.
+
+        addBom(parentProductId, selectedProductId, 1)
+        .then(res => {
+            loadBomTreeData();
+            productModal.style.display = 'none';
+        }).catch(error => {
+            alert(error.errorMessage);
+        })
+
+    }else{ //mode가 false인 경우는 새 BOM임.
+        loadBomTreeData(selectedProductId);
+        productModal.style.display = 'none';
+    }
+}
+
+//삭제 버튼 (최상단 BOM삭제)
+function clickDeleteTreeBomBtn(event){
+    deleteBomTree(event.target.parentNode.dataset.productid)
+    .then(res => {
+        window.location.assign('');
+    }).catch(error => {
+        alert(error);
+    })
+}
+
+//삭제 버튼 (BOM 구성 객체 삭제)
+function clickDeleteNodeBomBtn(event){
+    const productModal = document.getElementById('product-modal');
+    deleteBomNode(event.target.parentNode.dataset.id)
+    .then(res => {
+        loadBomTreeData();
+        productModal.style.display = 'none';
+    }).catch(error => {
+        alert(error);
+    })
 }
 
 //=========================== 실제 통신으로 넘어가는 메소드 ====================================
