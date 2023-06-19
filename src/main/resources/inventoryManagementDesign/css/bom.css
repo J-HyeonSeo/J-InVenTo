@@ -23,6 +23,12 @@
     width: 20px;
 }
 
+.bom-container th:nth-child(4),
+.bom-container th:nth-child(5){
+    width: 40px;
+}
+
+
 .bom-container td{
     border: 1px solid rgb(151, 151, 151);
     font-size: 1.1rem;
