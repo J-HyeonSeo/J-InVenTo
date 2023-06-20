@@ -91,6 +91,10 @@ public class ProductService implements ProductInterface{
         if(request.getSpec() != null && !request.getSpec().trim().equals(""))
             productEntity.setSpec(request.getSpec());
 
+        if(request.getEnabled() != null){
+            productEntity.setEnabled(request.getEnabled());
+        }
+
         return ProductEntity.toDto(productRepository.save(productEntity));
     }
 
@@ -126,7 +130,7 @@ public class ProductService implements ProductInterface{
             throw new ProductException(PRODUCT_PRICE_NULL);
         }
 
-        if(request.getPrice() < 0){
+        if(request.getPrice() < 0){ //나중에 <= 0 으로 수정하고 에러메세지 바꿔야 할 것!!
             throw new ProductException(PRODUCT_PRICE_MINUS);
         }
 

@@ -1,9 +1,21 @@
 const productTable = document.getElementById("product-table");
+const is_edit = document.getElementById('page-type').value == "manage" ? true : false;
+var productTableManager = null;
 
-const productTableManager = new TableManager(productTable, 
-    ["id", "name", "company", "price", "spec", "enabled"], 
-    ["품목 ID" , "품목명", "거래처명", "단가", "규격", "사용여부"], 
-    [3]);
+
+if(is_edit){
+    productTableManager = new TableManager(productTable, 
+        ["id", "name", "company", "price", "spec", "enabled"], 
+        ["품목 ID" , "품목명", "거래처명", "단가", "규격", "사용여부"], 
+        [3],
+        new TableOnClickSet('clickUpdateProductBtn', null));
+}else{
+    productTableManager = new TableManager(productTable, 
+        ["id", "name", "company", "price", "spec", "enabled"], 
+        ["품목 ID" , "품목명", "거래처명", "단가", "규격", "사용여부"], 
+        [3]);
+}
+
 
 productTableManager.table_initiallize("productTableManager");
 

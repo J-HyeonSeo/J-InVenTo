@@ -132,7 +132,10 @@ class TableManager{
 
                 if(this.tableOnClickSet != null){ //할당이 되었다.
                     trTemp.setAttribute('onclick', 
-                        this.tableOnClickSet.methodString + '(' + setDatas[row][this.tableOnClickSet.argsString] + ')'
+                        this.tableOnClickSet.methodString + 
+                        '(' + 
+                        (this.tableOnClickSet.argsString != null ? setDatas[row][this.tableOnClickSet.argsString] : 'event') + 
+                        ')'
                     );
                 }
 

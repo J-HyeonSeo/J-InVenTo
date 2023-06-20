@@ -28,6 +28,7 @@ public class ProductDto {
         private String company;
         private Double price;
         private String spec;
+        private Boolean enabled;
     }
 
     @Getter
