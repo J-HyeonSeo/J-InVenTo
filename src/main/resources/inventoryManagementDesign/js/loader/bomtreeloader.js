@@ -1,5 +1,5 @@
 const is_edit = document.getElementById('page-type').value == "manage" ? true : false;
-var latestProductId = null;
+let latestProductId = null;
 
 function loadBomTreeData(productId = null){
 

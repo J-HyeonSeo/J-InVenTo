@@ -40,7 +40,7 @@ function clickUpdateProductBtn(event){
     const id = parseInt(event.target.parentNode.children[0].textContent);
     const name = event.target.parentNode.children[1].textContent;
     const company = event.target.parentNode.children[2].textContent;
-    const price = parseFloat(event.target.parentNode.children[3].textContent);
+    const price = Parsing.parseDouble(event.target.parentNode.children[3].textContent);
     const spec = event.target.parentNode.children[4].textContent;
     const enabled = event.target.parentNode.children[5].textContent;
 

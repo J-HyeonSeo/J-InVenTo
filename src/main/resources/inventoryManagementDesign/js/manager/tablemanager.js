@@ -1,11 +1,11 @@
-class TableOnClickSet{
+export class TableOnClickSet{
     constructor(methodString, argsString){
         this.methodString = methodString;
         this.argsString = argsString;
     }
 }
 
-class TableManager{
+export class TableManager{
     constructor(table, colNames, displayColNames, numCols, tableOnClickSet = null){
         this.tableElement = table;
         this.colSize = colNames.length;
@@ -18,7 +18,7 @@ class TableManager{
         this.tableOnClickSet = tableOnClickSet;
     }
 
-    table_initiallize(managerString){
+    table_initiallize(){
 
         const tableHeader = this.tableElement.firstElementChild.firstElementChild;
         this.orderList = [];
@@ -27,7 +27,7 @@ class TableManager{
             const headerTemp = document.createElement("th");
             headerTemp.textContent = this.displayColNames[i];
             headerTemp.setAttribute('data-col', i);
-            headerTemp.setAttribute('onclick', managerString +'.addOrder(event)');
+            headerTemp.addEventListener('click', this.addOrder.bind(this));
             tableHeader.appendChild(headerTemp);
         }
         this.set_table_content(null);
@@ -45,6 +45,8 @@ class TableManager{
     }
 
     addOrder(event){
+
+        console.log(this.orderList);
 
         const nowName = event.target.textContent;
         const nowCol = event.target.dataset.col;
