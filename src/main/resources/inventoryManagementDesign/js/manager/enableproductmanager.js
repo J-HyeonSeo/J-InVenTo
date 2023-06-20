@@ -14,10 +14,10 @@ function initalizeProductModal(modalID, callbackString){
 
     enableProductTableManager = new TableManager(
         enableProductTable,
-        ["id", "name", "company", "spec"],
-        ["품목 ID", "품목명", "거래처명", "규격"],
-        [],
-        new TableOnClickSet(callbackString, 'id'));
+        ["id", "name", "company", "spec", "price"],
+        ["품목 ID", "품목명", "거래처명", "규격", "단가"],
+        [4],
+        new TableOnClickSet(callbackString, null));
     
     enableProductTableManager.table_initiallize("enableProductTableManager");
 
@@ -39,7 +39,7 @@ function initalizeProductModal(modalID, callbackString){
     const searchElement = document.getElementById("product-search");
 
     searchElement.addEventListener("input", function(){
-        const searchVal = document.getElementById("search").value;
+        const searchVal = searchElement.value;
         const filterName = filter.value;
 
         filteredDatas = filterName == "productName" ? doSearchFilter(enableProducts, "name", searchVal) : doSearchFilter(enableProducts, "company", searchVal);

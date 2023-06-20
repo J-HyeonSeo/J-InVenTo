@@ -292,7 +292,9 @@ function clickAddBomBtn(event){
 }
 
 //추가 버튼 => 프로덕트 선택 => selectedProductAfter실행
-function selectedProductAfter(selectedProductId){
+function selectedProductAfter(event){
+
+    selectedProductId = parseInt(event.target.parentNode.children[0].textContent);
 
     const productModal = document.getElementById('product-modal');
 
