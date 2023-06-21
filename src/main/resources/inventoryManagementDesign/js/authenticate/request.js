@@ -1,5 +1,6 @@
+import { BASE_URL } from "../main.js";
 
-async function requestExecute(url, methodType, bodyContent){
+export async function requestExecute(url, methodType, bodyContent){
     
     var options;
 

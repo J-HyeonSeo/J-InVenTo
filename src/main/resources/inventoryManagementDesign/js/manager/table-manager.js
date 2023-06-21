@@ -1,7 +1,7 @@
 export class TableOnClickSet{
-    constructor(methodString, argsString){
-        this.methodString = methodString;
-        this.argsString = argsString;
+    constructor(method, args){
+        this.method = method;
+        this.args = args;
     }
 }
 
@@ -133,12 +133,21 @@ export class TableManager{
                 const trTemp = document.createElement("tr");
 
                 if(this.tableOnClickSet != null){ //할당이 되었다.
-                    trTemp.setAttribute('onclick', 
-                        this.tableOnClickSet.methodString + 
-                        '(' + 
-                        (this.tableOnClickSet.argsString != null ? setDatas[row][this.tableOnClickSet.argsString] : 'event') + 
-                        ')'
-                    );
+
+                    if(this.tableOnClickSet.args == null){
+                        trTemp.addEventListener('click', this.tableOnClickSet.method);
+                    }else{
+                        trTemp.addEventListener('click', () => {
+                            this.tableOnClickSet.method(setDatas[row][this.tableOnClickSet.args]);
+                        })
+                    }
+
+                    // trTemp.setAttribute('onclick', 
+                    //     this.tableOnClickSet.methodString + 
+                    //     '(' + 
+                    //     (this.tableOnClickSet.argsString != null ? setDatas[row][this.tableOnClickSet.argsString] : 'event') + 
+                    //     ')'
+                    // );
                 }
 
                 for(let col = 0; col < this.colSize; col++){

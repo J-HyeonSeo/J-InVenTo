@@ -9,14 +9,9 @@
     <link rel="stylesheet" href="css/form.css">
     <link rel="stylesheet" href="css/modal.css">
 
-    <!-- 리팩토링이 필요합니다. -->
-    <script src="js/main.js" defer></script>
     <script src="js/util/parsing.js" defer></script>
-    <script src="js/authenticate/request.js" defer></script>
-    <script src="js/filter/mainfilter.js" defer></script>
-    <script type="module" src="js/filter/product-viewer.js" defer></script>
-    <script src="js/manager/productmanager.js" defer></script>
-    <script src="js/manager/modalmanager.js"></script>
+    <script type="module" src="js/viewer/product-viewer.js" defer></script>
+    <script src="js/manager/modal-manager.js" defer></script>
     <title>재고관리</title>
 </head>
 <body>
@@ -53,7 +48,7 @@
                 </p>
                 <br>
                 <div>
-                    <button type="button" id="add-product-btn" onclick="addProduct()">품목 생성</button>
+                    <button type="button" id="add-product-btn">품목 생성</button>
                     <button type="button" id="update-product-btn">품목 수정</button>
                     <button type="button" id="enable-product-btn">활성화</button>
                     <button type="button" id="disable-product-btn">비활성화</button>
@@ -128,7 +123,7 @@
         <input type="text" id="search">
 
         <button type="button" onclick="productTableManager.resetOrder()">정렬 초기화</button>
-        <button type="button" onclick="clickAddProductBtn()">+ 새 품목</button>
+        <button type="button" id="new-product-btn">+ 새 품목</button>
 
     </section>
 
