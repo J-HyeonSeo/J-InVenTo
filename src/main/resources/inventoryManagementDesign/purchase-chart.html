@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/mainstyle.css">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/chart.css">
+    <script type="module" src="js/chart/purchase-chart.js" defer></script>
+    <title>재고관리</title>
+</head>
+<body>
+    <input id="page-type" type="hidden" value="show">
+
+    <br>
+    <br>
+
+    <header>
+        <nav>
+            <ul id="nav-ul">
+                <li class="main-menu"><a>구매관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">구매요청</a></li>
+                        <li><a href="">구매조회</a></li>
+                        <li><a href="">구매수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>입고관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">입고</a></li>
+                        <li><a href="">입고조회</a></li>
+                        <li><a href="">입고수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>출고관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">출고</a></li>
+                        <li><a href="">출고조회</a></li>
+                        <li><a href="">출고수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>재고관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">재고조회</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>품목관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">품목조회</a></li>
+                        <li><a href="">품목수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>BOM</a>
+                    <ul class="additional-list">
+                        <li><a href="">BOM조회</a></li>
+                        <li><a href="">BOM관리</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>계획관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">계획조회</a></li>
+                        <li><a href="">계획관리</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <br>
+    <br>
+
+    <section class="form-wrapper" style="width: 500px;">
+        <form>
+            <label>
+            시작일자
+            <input type="date" id="startDate">
+            </label>
+            <label>
+            종료일자
+            <input type="date" id="endDate">
+            </label>
+            <div style="margin-top: 1rem;">
+                <button type="button" id="daily-chart">일별 차트 조회</button>
+                <button type="button">월간 차트 조회</button>
+                <button type="button">연간 차트 조회</button>
+                <select name="" id="">
+                    <option value="">기본</option>
+                    <option value="">누적</option>
+                </select>
+            </div>
+        </form>
+    </section>
+
+    <br>
+
+    <main>
+        <section id="main-section">
+            <canvas id="purchase-chart" class="chart">
+
+            </canvas>
+        </section>
+    </main>
+    <br>
+    <br>
+    <footer>
+        <p class="context">
+            오픈소스프로젝트이며, 코드 수정 및 상업적이용으로써 사용이 가능합니다.
+        </p>
+        <p class="context">
+            단, 해당 프로그램을 개조하여, 판매의 목적으로 사용하는 것을 금지합니다.
+        </p>
+        <p class="context">
+            Copyright 2023. J-HYEONSEO. All right reserved.
+        </p>
+    </footer>
+</body>
+</html>
