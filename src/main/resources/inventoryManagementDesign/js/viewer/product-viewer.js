@@ -61,38 +61,3 @@ window.addEventListener('load', function(){
     const productViewer = new ProductViewer();
     productViewer.viewerInitailize();
 });
-
-// const productTable = document.getElementById("product-table");
-// const is_edit = document.getElementById('page-type').value == "manage" ? true : false;
-// let productTableManager = null;
-
-
-// if(is_edit){
-//     productTableManager = new TableManager(productTable, 
-//         ["id", "name", "company", "price", "spec", "enabled"], 
-//         ["품목 ID" , "품목명", "거래처명", "단가", "규격", "사용여부"], 
-//         [3],
-//         new TableOnClickSet('clickUpdateProductBtn', null));
-// }else{
-//     productTableManager = new TableManager(productTable, 
-//         ["id", "name", "company", "price", "spec", "enabled"], 
-//         ["품목 ID" , "품목명", "거래처명", "단가", "규격", "사용여부"], 
-//         [3]);
-// }
-
-// productTableManager.table_initiallize("productTableManager");
-
-// const filter = document.getElementById("filter");
-// const searchElement = document.getElementById("search");
-
-// function filterByInput(){
-
-//     const searchVal = document.getElementById("search").value;
-//     const filterName = filter.value;
-
-//     filteredDatas = filterName == "productName" ? doSearchFilter(productDatas, "name", searchVal) : doSearchFilter(productDatas, "company", searchVal);
-
-//     productTableManager.set_table_content(filteredDatas);
-// }
-
-// searchElement.addEventListener("input", filterByInput);

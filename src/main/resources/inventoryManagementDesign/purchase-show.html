@@ -7,12 +7,7 @@
     <link rel="stylesheet" href="css/mainstyle.css">
     <link rel="stylesheet" href="css/maintable.css">
     <link rel="stylesheet" href="css/form.css">
-    <script src="js/main.js" defer></script>
-    <script src="js/authenticate/request.js"></script>
-    <script src="js/manager/tablemanager.js" defer></script>
-    <script src="js/filter/mainfilter.js" defer></script>
-    <script src="js/filter/purchasefilter.js" defer></script>
-    <script src="js/loader/purchaseloader.js" defer></script>
+    <script type="module" src="js/viewer/purchase-viewer.js" defer></script>
     <title>재고관리</title>
 </head>
 <body>
@@ -90,7 +85,7 @@
             종료일자
             <input type="date" id="endDate">
           </label>
-          <button type="button" onclick="loadPurchaseData()">조회</button>
+          <button type="button" id="purchase-load-btn">조회</button>
     </section>
 
     <br>

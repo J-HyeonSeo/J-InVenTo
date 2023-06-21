@@ -9,11 +9,8 @@
     <link rel="stylesheet" href="css/form.css">
     <link rel="stylesheet" href="css/modal.css">
     
-    <script src="js/filter/purchasefilter.js" defer></script>
-    <script src="js/loader/enableproductloader.js" defer></script>
-    <script src="js/manager/enableproductmanager.js" defer></script>
-    <script src="js/manager/purchasemanager.js" defer></script>
-    <script src="js/manager/modalmanager.js" defer></script>
+    <script type="module" src="js/viewer/purchase-viewer.js" defer></script>
+    <script src="js/manager/modal-manager.js" defer></script>
     <script src="js/util/parsing.js" defer></script>
     <title>재고관리</title>
 </head>
@@ -29,7 +26,7 @@
                     <p>
                         <label for="productName">품목명</label>
                         <br>
-                        <input type="text" id="productName" name="productName" onclick="showProductSelector()" readonly>
+                        <input type="text" id="productName" name="productName" readonly>
                     </p>
                     <br>
                     <p>
@@ -57,7 +54,7 @@
                     </p>
                     <br>
                     <div>
-                        <button type="button" id="add-purchase-btn" onclick="addPurchase()">구매 추가</button>
+                        <button type="button" id="add-purchase-btn">구매 추가</button>
                     </div>
                 </form>
             </div>
@@ -69,8 +66,8 @@
                 <form action="" class="form-style" style="width: 400px; padding: 20px;">
                     <h2 style="margin-bottom: 10px;">해당 구매를 삭제하시겠습니까?</h2>
                     <div>
-                        <button type="button" onclick="deletePurchase()">예</button>
-                        <button type="button" onclick="closeDeletePurchaseModel()">아니오</button>
+                        <button type="button" id="delete-purchase-btn">예</button>
+                        <button type="button" id="cancel-delete-purchase-btn">아니오</button>
                     </div>
                 </form>
             </div>
@@ -87,7 +84,7 @@
                     <input type="text" id="product-search">
                 </div>
                 <div class="table-wrapper">
-                    <table>
+                    <table id="product-table">
                         <thead>
                             <tr>
                             </tr>
@@ -172,8 +169,8 @@
             종료일자
             <input type="date" id="endDate">
           </label>
-          <button type="button" onclick="loadPurchaseData()">조회</button>
-          <button type="button" onclick="openAddPurchaseModal()">+ 새 구매</button>
+          <button type="button" id="purchase-load-btn">조회</button>
+          <button type="button" id="open-add-purchase">+ 새 구매</button>
     </section>
 
     <br>
