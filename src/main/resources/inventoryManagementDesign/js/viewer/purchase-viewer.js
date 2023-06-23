@@ -6,6 +6,7 @@ import { PurchaseManager } from "../manager/purchase-manager.js";
 class PurchaseViewer{
 
     constructor(){
+        this.purchaseTable = document.getElementById('purchaseTable');
         this.purchaseDataLoader = new PurchaseDataLoader();
         this.purchaseTableManager = null;
         this.filter = document.getElementById("filter");
@@ -21,7 +22,7 @@ class PurchaseViewer{
             this.purchaseManager = new PurchaseManager();
             this.purchaseManager.initailize();
 
-            this.purchaseTableManager = new TableManager(purchaseTable,
+            this.purchaseTableManager = new TableManager(this.purchaseTable,
                 ["id", "productId", "productName", "at", "amount", "price", "purchasePrice", "company", "note"],
                 ["구매번호", "품목번호", "품목명", "구매일시", "수량", "단가", "구매금액", "거래처명", "비고"],
                 [4, 5, 6],

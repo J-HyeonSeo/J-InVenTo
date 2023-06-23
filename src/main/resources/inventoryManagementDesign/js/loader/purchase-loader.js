@@ -4,10 +4,14 @@ import { DateManager } from "../manager/date-manager.js";
 
 export class PurchaseDataLoader{
 
+    constructor(){
+        this.dateManager = new DateManager();
+    }
+
     async loadPurchaseData(option = 'day'){
 
         try{
-            const date = new DateManager().getDateRange(option);
+            const date = this.dateManager.getDateRange(option);
 
             const response = await requestExecute("/purchase?startDate=" + date.start + "&endDate=" + date.end, "get", null);
 
