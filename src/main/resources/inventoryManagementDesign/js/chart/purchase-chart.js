@@ -1,27 +1,55 @@
 import { PurchaseDataLoader } from "../loader/purchase-loader.js";
 import { ChartManager, ChartData } from "../manager/chart-manager.js";
 
-window.addEventListener('load', function(){
+class PurchaseChart{
 
-    const purchaseDataLoader = new PurchaseDataLoader();
+    constructor(){
+        this.purchaseDataLoader = new PurchaseDataLoader();
+        this.purchaseChart = new ChartManager('purchase-chart');
+        this.optionPrice = document.getElementById('option-price');
+    }
 
-    this.document.getElementById('daily-chart').addEventListener('click', () => {
-        purchaseDataLoader.loadPurchaseData('year');
-    })
+    initailize(){
+        document.getElementById('daily-chart').addEventListener('click', () => {
+            const optionPrice = this.optionPrice.value;
+            this.loadDataAndViewChart('day', optionPrice);
+        });
 
-    const purchaseChart = new ChartManager('purchase-chart');
+        document.getElementById('monthly-chart').addEventListener('click', () => {
+            const optionPrice = this.optionPrice.value;
+            this.loadDataAndViewChart('month', optionPrice);
+        });
+
+        document.getElementById('yearly-chart').addEventListener('click', () => {
+            const optionPrice = this.optionPrice.value;
+            this.loadDataAndViewChart('year', optionPrice);
+        });
+    }
+
+    async loadDataAndViewChart(optionDate, optionPrice){
+
+        try{
+            let purchaseData = await this.purchaseDataLoader.loadPurchaseData(optionDate, optionPrice);
+            
+            this.purchaseChart.initailize();
+            const chartdata = new ChartData();
+            chartdata.setDatas(purchaseData, 'at', 'purchasePrice', optionDate, optionPrice);
+            chartdata.setDivisors();
+            this.purchaseChart.dataView(chartdata);
+
+        }catch(error){
+            alert(error);
+            alert("구매 데이터를 불러오는 도중에 오류가 발생했습니다.");
+        }
+
+    }
+
+}
+
+
+window.addEventListener('load', async function(){
+
+    const purchaseChart = new PurchaseChart();
     purchaseChart.initailize();
-
-    const chartdata = new ChartData();
-
-    chartdata.setDates(['2023-01-01', '2023-03-07', '2023-06-05', '2023-06-06', '2023-07-07', '2023-07-08', '2023-07-09'],
-                        [1, 7, 5, 6, 7, 8, 9]);
-    chartdata.setValues([10000, 50000, 25000, 70000, 75000, 50000, 80000]);
-    // chartdata.setValues([1000, 7000, 50000, 1000]);
-    chartdata.setDivisors();
-
-    purchaseChart.dataView(chartdata);
-
-    // purchaseDataLoader.loadPurchaseData('month');
 
 });

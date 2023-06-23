@@ -16,13 +16,68 @@ export class ChartData{
         this.maxValue = 100000000;
     }
 
-    setDates(dates, shortDates){
-        this.dates = dates;
-        this.shortDates = shortDates;
-    }
+    setDatas(data, dateString, valueString, optionDate='day', optionPrice = 'normal'){
 
-    setValues(values){
-        this.values = values;
+        //초기화
+        this.dates = [];
+        this.shortDates = [];
+        this.values = [];
+
+        const group = {};
+        let endSclice = 10;
+
+        if(optionDate == 'day'){
+            endSclice = 10;            
+        }else if(optionDate == 'month'){
+            endSclice = 7; 
+        }else if(optionDate == 'year'){
+            endSclice = 4;
+        }
+
+        data.forEach(item => {
+            const nowDay = item[dateString].slice(0, endSclice);
+
+            console.log(nowDay);
+
+            if(group[nowDay]){
+                group[nowDay] += item[valueString];
+            }else{
+                group[nowDay] = item[valueString];
+            }
+        });
+
+        const sortedArray = Object.entries(group)
+            .sort((a, b) => a[0].localeCompare(b[0])) // 키(key)를 오름차순으로 정렬
+            .map(([date, value]) => ({ date, value }));
+
+        let sumValue = 0;
+
+        sortedArray.forEach(item => {
+            this.dates.push(item.date);
+
+            //makeShortDate
+            const date = new Date(item.date);
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+
+            if(optionDate == 'day'){
+                this.shortDates.push(`${month}/${day}`);
+            }else if(optionDate == 'month'){
+                this.shortDates.push(`${year}/${month}`);
+            }else if(optionDate == 'year'){
+                this.shortDates.push(`${year}`);
+            }
+
+            if(optionPrice == 'sum'){
+                sumValue += item.value;
+                this.values.push(sumValue);
+            }else{
+                this.values.push(item.value);
+            }
+            
+        });
+
     }
 
     setDivisors(){
@@ -47,6 +102,8 @@ export class ChartManager{
         this.canvas = document.getElementById(canvasString);
         this.ctx = this.canvas.getContext('2d');
 
+        //width, height 설정 및 레티나 디스플레이를 위한 스케일 설정.
+        const devicePixelRatio = window.devicePixelRatio || 1;
         const parent = this.canvas.parentNode;
 
         this.width = parent.clientWidth;
@@ -54,6 +111,7 @@ export class ChartManager{
 
         this.canvas.width = this.width;
         this.canvas.height = this.height;
+        this.ctx.scale(devicePixelRatio, devicePixelRatio);
 
         this.eventPoses = [];
         this.chartDatas = null;
@@ -61,21 +119,44 @@ export class ChartManager{
         this.canvas.addEventListener('mousemove', this.hoverEffect.bind(this));
 
         this.chartDetail = document.getElementById('chart-detail');
+
+        this.resizeTimeOut;
+
+        window.addEventListener('resize', () => {
+
+            clearTimeout(this.resizeTimeOut);
+
+            this.resizeTimeOut = setTimeout(() => {
+                const parent = this.canvas.parentNode;
+
+                this.width = parent.clientWidth;
+                this.height = parent.clientHeight;
+        
+                this.canvas.width = this.width;
+                this.canvas.height = this.height;
+                
+                if(this.chartDatas != null)
+                    this.initailize();
+                this.dataView(null);
+            }, 200);
+
+        });
     }
 
     async initailize(){
+        this.ctx.clearRect(0, 0, this.width, this.height);
         this.ctx.font = '15px GmarketSansMedium';
 
-        //draw x axis
-        this.drawLine(this.width * 0.1, this.height * 0.9, this.width * 0.9, this.height * 0.9, 500)
+        // draw x axis
+        this.drawLine(this.width * 0.1, this.height * 0.9, this.width * 0.9, this.height * 0.9, 250)
         .then(res => {
             this.drawLine(this.width * 0.9, this.height * 0.9, this.width * 0.9 - 5, this.height * 0.9 - 5, 10);
             this.drawLine(this.width * 0.9, this.height * 0.9, this.width * 0.9 - 5, this.height * 0.9 + 5, 10);
         });
         
 
-        //draw y axis
-        this.drawLine(this.width * 0.1, this.height * 0.9, this.width * 0.1, this.height * 0.1, 500)
+        // draw y axis
+        this.drawLine(this.width * 0.1, this.height * 0.9, this.width * 0.1, this.height * 0.1, 250)
         .then(res => {
             this.drawLine(this.width * 0.1, this.height * 0.1, this.width * 0.1 - 5, this.height * 0.1 + 5, 10);
             this.drawLine(this.width * 0.1, this.height * 0.1, this.width * 0.1 + 5, this.height * 0.1 + 5, 10);
@@ -85,11 +166,19 @@ export class ChartManager{
 
     async dataView(chartDatas){
 
+        if(chartDatas != null){
+            this.chartDatas = chartDatas;
+        }else if(this.chartDatas == null){
+            return;
+        }else{
+            chartDatas = this.chartDatas;
+        }
+        this.eventPoses = [];
+
+
         //y축 다시 그리기
         this.drawYdivisor(chartDatas.divisors);
 
-        this.chartDatas = chartDatas;
-        this.eventPoses = [];
 
         const startWidth = this.width * 0.1 + 40; //draw 시작 width
         const endWidth = this.width * 0.9 - 40; //draw 끝 width
@@ -102,7 +191,20 @@ export class ChartManager{
         this.ctx.fillRect(startWidth, endHeight, endWidth - startWidth, startHeight - endHeight);
 
         if(chartDatas.values.length == 1){
+            let nowWidth = startWidth + (endWidth - startWidth) / 2;
 
+            // this.drawDot(nowWidth, endHeight, 'red');
+            await this.drawLine(nowWidth, endHeight, nowWidth, startHeight, 100);
+            this.drawDot(nowWidth, endHeight, 'red');
+            this.eventPoses.push(new Pos(nowWidth, endHeight));
+
+            //현재 X축 눈금 그리기
+            await this.drawLine(nowWidth, this.height * 0.9 - 5, nowWidth, this.height * 0.9 + 5, 10);
+            this.ctx.fillStyle = 'white';
+            this.ctx.font = '10px GmarketSansMedium';
+            const text = chartDatas.shortDates[0];
+            const textWidth = this.ctx.measureText(text).width;
+            this.ctx.fillText(text, nowWidth - textWidth / 2, this.height * 0.95);
         }else{
 
             const div = (endWidth - startWidth) / (chartDatas.values.length - 1);
@@ -150,7 +252,13 @@ export class ChartManager{
                 //현재 X축 눈금 그리기
                 await this.drawLine(nowWidth, this.height * 0.9 - 5, nowWidth, this.height * 0.9 + 5, 10);
                 this.ctx.fillStyle = 'white';
-                this.ctx.fillText(chartDatas.shortDates[i], nowWidth - 5, this.height * 0.95);
+                this.ctx.font = '10px GmarketSansMedium';
+
+                const text = chartDatas.shortDates[i];
+                const textWidth = this.ctx.measureText(text).width;
+                this.ctx.fillText(text, nowWidth - textWidth / 2, this.height * 0.95);
+
+                // this.ctx.fillText(chartDatas.shortDates[i], nowWidth - 5, this.height * 0.95); //눈금 정중에 표시되게 해주세요.
 
                 nowWidth += div;
             }
@@ -218,6 +326,7 @@ export class ChartManager{
             await this.drawLine(startWidth, nowHeight, endWidth, nowHeight, 15);
             console.log('f');
             this.ctx.fillStyle = 'white';
+            this.ctx.font = '15px GmarketSansMedium';
             this.ctx.fillText(divisors[i].toLocaleString(), startWidth - 100, nowHeight);
             nowHeight -= divHeight;
         }
@@ -236,12 +345,14 @@ export class ChartManager{
     async drawLine(startX, startY, endX, endY, time) {
         const startTime = performance.now();
 
+        // console.log('originX : ' + startX + ', originY : ' + startY);
+
         let prevX = startX;
         let prevY = startY;
       
         return new Promise(resolve => {
           const animate = (currentTime) => {
-            const elapsedTime = currentTime - startTime;
+            const elapsedTime = Math.max(currentTime - startTime, 1);
             const progress = Math.min(elapsedTime / time, 1); // 진행 상태 (0 ~ 1)
 
             // 진행 상태에 따른 현재 좌표 계산
@@ -252,6 +363,8 @@ export class ChartManager{
             this.ctx.beginPath();
             this.ctx.moveTo(prevX, prevY);
             this.ctx.lineTo(currentX, currentY);
+
+            // console.log('startX : ' + prevX + ', startY : ' + prevY + ', endX : ' + currentX + ', endY : ' + currentY);
 
             this.ctx.strokeStyle = 'white';
             this.ctx.lineWidth = 2; // 라인의 굵기
