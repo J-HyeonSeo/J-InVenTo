@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/mainstyle.css">
+    <link rel="stylesheet" href="css/maintable.css">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/modal.css">
+    
+    <script type="module" src="js/viewer/plan-viewer.js" defer></script>
+    <script src="js/manager/modal-manager.js" defer></script>
+    <script src="js/util/parsing.js" defer></script>
+    <title>재고관리</title>
+</head>
+<body>
+    <input id="page-type" type="hidden" value="manage">
+
+        <!-- 계획 추가/수정/삭제 모달폼 -->
+        <aside id="plan-modal" class="modal-container">
+            <div class="modal-content" style="width: 500px; background-color: transparent; overflow: hidden; border: none;">
+                <form action="" class="form-style" style="width: 400px; padding: 20px;">
+                    <h1 style="margin-top: 0rem;" id="modal-title">새 계획</h1>
+                    <br>
+                    <p>
+                        <label for="productName">품목명</label>
+                        <br>
+                        <input type="text" id="productName" name="productName" readonly>
+                    </p>
+                    <br>
+                    <p>
+                        <label for="company">출고 예정 수량</label>
+                        <br>
+                        <input type="text" id="amount" name="amount">
+                    </p>
+                    <br>
+                    <p>
+                        <label for="price">출고처</label>
+                        <br>
+                        <input type="text" id="destination" name="destination">
+                    </p>
+                    <br>
+                    <p>
+                        <label for="spec">출고 예정일</label>
+                        <br>
+                        <input type="date" id="due" name="due">
+                    </p>
+                    <br>
+                    <div>
+                        <button type="button" id="add-plan-btn">계획 추가</button>
+                        <button type="button" id="update-plan-btn">계획 수정</button>
+                        <button type="button" id="delete-plan-btn">삭제</button>
+                    </div>
+                </form>
+            </div>
+        </aside>
+
+
+        <!-- PRODUCT 모달 폼 -->
+        <div id="product-modal" class="modal-container">
+            <div class="modal-content">
+                <div style="margin: 10px 0;">
+                    <select id="product-filter">
+                        <option value="productName">품목명</option>
+                        <option value="companyName">거래처명</option>
+                    </select>
+                    <input type="text" id="product-search">
+                </div>
+                <div class="table-wrapper">
+                    <table id="product-table">
+                        <thead>
+                            <tr>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    <br>
+    <br>
+
+    <header>
+        <nav>
+            <ul id="nav-ul">
+                <li class="main-menu"><a>구매관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">구매요청</a></li>
+                        <li><a href="">구매조회</a></li>
+                        <li><a href="">구매수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>입고관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">입고</a></li>
+                        <li><a href="">입고조회</a></li>
+                        <li><a href="">입고수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>출고관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">출고</a></li>
+                        <li><a href="">출고조회</a></li>
+                        <li><a href="">출고수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>재고관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">재고조회</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>품목관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">품목조회</a></li>
+                        <li><a href="">품목수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>BOM</a>
+                    <ul class="additional-list">
+                        <li><a href="">BOM조회</a></li>
+                        <li><a href="">BOM관리</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>계획관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">계획조회</a></li>
+                        <li><a href="">계획관리</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <br>
+    <br>
+
+    <section class="form-wrapper-calendar" style="width: 1050px;">
+        <select id="filter">
+            <option value="productName">품목명</option>
+            <option value="destination">출고처</option>
+        </select>
+        <input type="text" id="search">
+        <button type="button" id="reset-sort-btn">정렬 초기화</button>
+          <label>
+            시작일자
+            <input type="date" id="startDate">
+          </label>
+          <label>
+            종료일자
+            <input type="date" id="endDate">
+          </label>
+          <button type="button" id="plan-load-btn">조회</button>
+          <button type="button" id="open-add-plan-btn">+ 새 계획</button>
+    </section>
+
+    <br>
+
+    <main>
+        <section id="main-section">
+            <div class="table-wrapper">
+            <table id="plan-table">
+                <thead>
+                    <tr>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            </div>
+        </section>
+    </main>
+    <br>
+    <br>
+    <footer>
+        <p class="context">
+            오픈소스프로젝트이며, 코드 수정 및 상업적이용으로써 사용이 가능합니다.
+        </p>
+        <p class="context">
+            단, 해당 프로그램을 개조하여, 판매의 목적으로 사용하는 것을 금지합니다.
+        </p>
+        <p class="context">
+            Copyright 2023. J-HYEONSEO. All right reserved.
+        </p>
+    </footer>
+</body>
+</html>
