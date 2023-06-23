@@ -1,8 +1,8 @@
 export class DateManager{
 
-    constructor(){
-        this.startCalendar = document.getElementById("startDate");
-        this.endCalendar = document.getElementById("endDate");
+    constructor(startCalendarId, endCalendarId){
+        this.startCalendar = document.getElementById(startCalendarId);
+        this.endCalendar = document.getElementById(endCalendarId);
     }
 
     getDateRange(option = 'day'){

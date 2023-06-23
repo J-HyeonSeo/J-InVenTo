@@ -4,7 +4,7 @@ import { ChartManager, ChartData } from "../manager/chart-manager.js";
 class PurchaseChart{
 
     constructor(){
-        this.purchaseDataLoader = new PurchaseDataLoader();
+        this.purchaseDataLoader = new PurchaseDataLoader('startDate', 'endDate');
         this.purchaseChart = new ChartManager('purchase-chart');
         this.optionPrice = document.getElementById('option-price');
     }

@@ -1,6 +1,6 @@
 import { requestExecute } from "../authenticate/request.js";
 import { BomTreeDataLoader } from "../loader/bomtree-loader.js";
-import { EnableProductManager } from "./enableproduct-manager.js";
+import { EnableProductModalViewer } from "../modals/enableproduct-modal-viewer.js";
 
 class BomRequest{
     constructor(methodType, id, pid, cid, cost){
@@ -58,7 +58,7 @@ export class BomManager{
         this.parentProductId = null;
         this.bomTreeDataLoader = new BomTreeDataLoader();
         this.editMode = document.getElementById('page-type').value == "manage" ? true : false;
-        this.enableProductManager = new EnableProductManager();
+        this.enableProductModalViewer = new EnableProductModalViewer();
     }
 
     initailize(productId){
@@ -324,7 +324,7 @@ export class BomManager{
     //추가(+)버튼을 클릭하였을 경우, 품목 선택 창을 띄움.
     clickAddBomBtn(event){
         this.parentProductId = event.target.parentNode.dataset.productid;
-        this.enableProductManager.initailize('product-modal', this.selectedProductAfter.bind(this));
+        this.enableProductModalViewer.initailize('product-modal', this.selectedProductAfter.bind(this));
         // initalizeProductModal('product-modal', 'selectedProductAfter'); //일단 보류....
     }
 

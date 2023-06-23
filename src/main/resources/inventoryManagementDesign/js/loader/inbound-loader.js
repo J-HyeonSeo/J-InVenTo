@@ -5,7 +5,7 @@ import { DateManager } from "../manager/date-manager.js";
 export class InboundDataLoader{
 
     constructor(){
-        this.dateManager = new DateManager();
+        this.dateManager = new DateManager('startDate', 'endDate');
     }
 
     async loadInboundData(option = 'day'){

@@ -9,13 +9,15 @@
     <link rel="stylesheet" href="css/form.css">
     <link rel="stylesheet" href="css/modal.css">
     <script type="module" src="js/viewer/inbound-viewer.js" defer></script>
+    <script src="js/manager/modal-manager.js" defer></script>
+    <script src="js/util/parsing.js" defer></script>
     <title>재고관리</title>
 </head>
 <body>
     <input id="page-type" type="hidden" value="manage">
 
     <!-- 입고 추가 모달폼 -->
-    <aside id="inbound-add-modal" class="modal-container" onclick="hideModal(event)">
+    <aside id="inbound-add-modal" class="modal-container">
         <div class="modal-content" style="width: 500px; background-color: transparent; overflow: hidden; border: none;">
             <form action="" class="form-style" style="width: 400px; padding: 20px;">
                 <h1 style="margin-top: 0rem;" id="modal-title">입고 수행</h1>
@@ -33,7 +35,7 @@
                 </p>
                 <br>
                 <p>
-                    <label for="spec">수량</label>
+                    <label for="spec" id="can-amount-label">입고 수량(가능 수량 : 1,000개)</label>
                     <br>
                     <input type="text" id="amount" name="amount">
                 </p>
@@ -45,11 +47,56 @@
                 </p>
                 <br>
                 <div>
-                    <button type="button" id="add-purchase-btn">구매 추가</button>
+                    <button type="button" id="add-inbound-btn">수행</button>
                 </div>
             </form>
         </div>
     </aside>
+
+    <!-- 입고 삭제 확인 모달폼 -->
+    <aside id="inbound-delete-modal" class="modal-container">
+        <div class="modal-content" style="width: 500px; height: 200px; background-color: transparent; overflow: hidden; border: none;">
+            <form action="" class="form-style" style="width: 400px; padding: 20px;">
+                <h2 style="margin-bottom: 10px;">해당 입고를 취소하시겠습니까?</h2>
+                <div>
+                    <button type="button" id="delete-inbound-btn">예</button>
+                    <button type="button" id="cancel-delete-inbound-btn">아니오</button>
+                </div>
+            </form>
+        </div>
+    </aside>
+
+
+    <!-- PURCHASE 모달 폼 -->
+    <div id="purchase-modal" class="modal-container">
+        <div class="modal-content">
+            <div style="margin: 10px 0; color: black;">
+                <select id="purchase-filter">
+                    <option value="productName">품목명</option>
+                </select>
+                <input type="text" id="purchase-search">
+                <label>
+                    시작일자
+                    <input type="date" id="purchase-startDate">
+                  </label>
+                  <label>
+                    종료일자
+                    <input type="date" id="purchase-endDate">
+                </label>
+                <button type="button" id="purchase-load-btn">조회</button>
+            </div>
+            <div class="table-wrapper">
+                <table id="purchase-table">
+                    <thead>
+                        <tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <br>
     <br>

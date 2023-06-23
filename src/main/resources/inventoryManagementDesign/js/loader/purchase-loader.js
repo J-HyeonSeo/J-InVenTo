@@ -4,8 +4,8 @@ import { DateManager } from "../manager/date-manager.js";
 
 export class PurchaseDataLoader{
 
-    constructor(){
-        this.dateManager = new DateManager();
+    constructor(startCalendarId, endCanlendarId){
+        this.dateManager = new DateManager(startCalendarId, endCanlendarId);
     }
 
     async loadPurchaseData(option = 'day'){

@@ -1,5 +1,5 @@
 //구매 추가와 삭제를 담당하는 친구.
-import { EnableProductManager } from "./enableproduct-manager.js";
+import { EnableProductModalViewer } from "../modals/enableproduct-modal-viewer.js";
 import { requestExecute } from "../authenticate/request.js";
 
 export class PurchaseManager{
@@ -7,7 +7,7 @@ export class PurchaseManager{
     constructor(){
         this.addProductId = null;
         this.deletePurchaseId = null;
-        this.enableProductManager = new EnableProductManager();
+        this.enableProductModalViewer = new EnableProductModalViewer();
 
         this.openAddPurchase = document.getElementById('open-add-purchase');
         this.addPurchaseBtn = document.getElementById('add-purchase-btn');
@@ -40,7 +40,7 @@ export class PurchaseManager{
     }
     
     showProductSelector(){
-        this.enableProductManager.initailize('product-modal', this.selectedProductAfter.bind(this));
+        this.enableProductModalViewer.initailize('product-modal', this.selectedProductAfter.bind(this));
     }
     
     selectedProductAfter(event){

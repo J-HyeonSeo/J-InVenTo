@@ -30,6 +30,7 @@ public class PurchaseDto {
         private String productName;
         private LocalDateTime at;
         private Double amount;
+        private Double canAmount;
         private Double price;
         private String company;
         private String note;

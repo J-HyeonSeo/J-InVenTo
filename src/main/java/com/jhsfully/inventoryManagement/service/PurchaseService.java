@@ -32,8 +32,9 @@ public class PurchaseService implements PurchaseInterface{
 
     @Override
     public PurchaseDto.PurchaseResponse getPurchase(Long id){
-        return PurchaseEntity.toDto(purchaseRepository.findById(id)
-                .orElseThrow(() -> new PurchaseException(PURCHASE_NOT_FOUND)));
+        return purchaseRepository.getPurchase(id);
+//        return PurchaseEntity.toDto(purchaseRepository.findById(id)
+//                .orElseThrow(() -> new PurchaseException(PURCHASE_NOT_FOUND)));
     }
 
     @Override
@@ -41,9 +42,11 @@ public class PurchaseService implements PurchaseInterface{
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
 
-        return purchaseRepository.findByAtBetween(startDateTime, endDateTime)
-                .stream().map(PurchaseEntity::toDto)
-                .collect(Collectors.toList());
+        return purchaseRepository.getPurchases(startDateTime, endDateTime);
+
+//        return purchaseRepository.findByAtBetween(startDateTime, endDateTime)
+//                .stream().map(PurchaseEntity::toDto)
+//                .collect(Collectors.toList());
     }
 
     @Override

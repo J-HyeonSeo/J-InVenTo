@@ -87,12 +87,14 @@ public class InboundFacade {
                 purchaseService.getPurchase(request.getPurchaseId());
 
         //해당 되는 구매ID의 입고합을 가져와야함. (inboundService)
-        Double inboundSum = inboundService.getInboundsByPurchase(purchase.getId());
+
+        Double canInboundAmount = purchase.getCanAmount();
+//        Double inboundSum = inboundService.getInboundsByPurchase(purchase.getId());
 
         //현재 입고수량을 더했을 경우, 구매량을 초과하는지 검증해야함.
-        inboundSum += request.getAmount();
+//        inboundSum += request.getAmount();
 
-        if(purchase.getAmount() < inboundSum){
+        if(purchase.getAmount() > canInboundAmount){
             throw new InboundException(InboundErrorType.INBOUND_EXCEED_PURCHASE_AMOUNT);
         }
         return purchase;

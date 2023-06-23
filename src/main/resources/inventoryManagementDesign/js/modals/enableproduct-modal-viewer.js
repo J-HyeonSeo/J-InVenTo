@@ -1,9 +1,9 @@
 //모달 폼을 입력으로 받아서, 테이블 Content에 넣고 띄워줌.
 import { loadEnableProducts } from "../loader/enableproduct-loader.js";
 import { doSearchFilter } from "../viewer/mainfilter.js";
-import { TableManager, TableOnClickSet } from "./table-manager.js";
+import { TableManager, TableOnClickSet } from "../manager/table-manager.js";
 
-export class EnableProductManager{
+export class EnableProductModalViewer{
 
     constructor(){
         this.filter = document.getElementById("product-filter");

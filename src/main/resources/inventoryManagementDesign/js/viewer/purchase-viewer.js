@@ -7,7 +7,7 @@ class PurchaseViewer{
 
     constructor(){
         this.purchaseTable = document.getElementById('purchaseTable');
-        this.purchaseDataLoader = new PurchaseDataLoader();
+        this.purchaseDataLoader = new PurchaseDataLoader('startDate', 'endDate');
         this.purchaseTableManager = null;
         this.filter = document.getElementById("filter");
         this.searchElement = document.getElementById("search");
@@ -23,14 +23,14 @@ class PurchaseViewer{
             this.purchaseManager.initailize();
 
             this.purchaseTableManager = new TableManager(this.purchaseTable,
-                ["id", "productId", "productName", "at", "amount", "price", "purchasePrice", "company", "note"],
-                ["구매번호", "품목번호", "품목명", "구매일시", "수량", "단가", "구매금액", "거래처명", "비고"],
+                ["id", "productId", "productName", "at", "amount", "canAmount", "price", "purchasePrice", "company", "note"],
+                ["구매번호", "품목번호", "품목명", "구매일시", "수량", "입고가능수량", "단가", "구매금액", "거래처명", "비고"],
                 [4, 5, 6],
                 new TableOnClickSet(this.purchaseManager.openDeletePurchaseModal.bind(this.purchaseManager), 'id'));    
         }else{
             this.purchaseTableManager = new TableManager(purchaseTable,
-                ["id", "productId", "productName", "at", "amount", "price", "purchasePrice", "company", "note"],
-                ["구매번호", "품목번호", "품목명", "구매일시", "수량", "단가", "구매금액", "거래처명", "비고"],
+                ["id", "productId", "productName", "at", "amount", "canAmount", "price", "purchasePrice", "company", "note"],
+                ["구매번호", "품목번호", "품목명", "구매일시", "수량", "입고가능수량", "단가", "구매금액", "거래처명", "비고"],
                 [4, 5, 6]);    
         }
         
