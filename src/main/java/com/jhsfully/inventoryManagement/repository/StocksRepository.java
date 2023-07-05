@@ -20,6 +20,9 @@ public interface StocksRepository extends JpaRepository<StocksEntity, Long> {
     )
     List<StocksDto.StockGroupResponse> getStocksGroupProduct();
 
+    @Query(
+            "SELECT s FROM stocks s WHERE s.product = ?1 and s.amount > 0"
+    )
     List<StocksEntity> findByProduct(ProductEntity product);
 
 }

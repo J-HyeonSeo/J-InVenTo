@@ -57,8 +57,7 @@ public class StocksFacade {
                             .spec(product.getSpec())
                             .amount(stocks.getOrDefault(product.getId(),
                                     new stockInfo(0D, 0D)).getAmount())
-                            .price(stocks.getOrDefault(product.getId(),
-                                    new stockInfo(0D, 0D)).getPrice())
+                            .price(product.getPrice())
                             .build());
         }
 
@@ -90,8 +89,10 @@ public class StocksFacade {
 
         //반환할 데이터 값 정리
         for(var response : responses.values()){
-            if(response.getAmount() <= 0){
+            if(response.getAmount() < 0){
                 response.setLackAmount(Math.abs(response.getAmount()));
+            }else{
+                response.setLackAmount(0D);
             }
             response.setAmount(stocks.getOrDefault(response.getProductId(),
                     new stockInfo(0D, 0D)).getAmount());

@@ -114,13 +114,11 @@ export class TableManager{
             setDatas = []
 
             if(this.tableContents != null){
-                this.tableContents.forEach(item => {
-                    setDatas.push(item);
-                });
+                setDatas = [...this.tableContents];
             }
 
         }else{
-            this.tableContents = setDatas;
+            this.tableContents = [...setDatas];
         }
     
         if(setDatas != null){
