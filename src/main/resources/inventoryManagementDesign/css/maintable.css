@@ -49,3 +49,21 @@
     background-color: rgb(155, 155, 155);
     cursor: pointer;
 }
+
+.twin-table{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.twin-table .table-wrapper{
+    width: 700px;
+    height: 600px;
+    /* font-size: 0.5rem; */
+}
+
+.arrow{
+    color: black;
+    font-size: 1.5rem;
+    padding: 1rem;
+}
