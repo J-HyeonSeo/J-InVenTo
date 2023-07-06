@@ -6,6 +6,8 @@ export class SelectLotModalViewer{
     constructor(){
         this.lotDatas = null;
         this.selected = [];
+
+        this.completeBtn = document.getElementById('select-complete-btn');
     }
 
     initialize(modalID, callback, productId, requires){
@@ -49,6 +51,9 @@ export class SelectLotModalViewer{
         }).catch(error => {
             alert(error);
         });
+
+        //이벤트 추가
+        this.completeBtn.addEventListener('click', this.clickComplete.bind(this));
     }
 
     //우측으로 로트 이동
@@ -146,7 +151,7 @@ export class SelectLotModalViewer{
 
     clickComplete(){
 
-        if(this.requires == this.nowCount){
+        if(this.requires != this.nowCount){
             alert("수량이 맞지 않아 출고할 수 없습니다.");
             return;
         }

@@ -8,6 +8,10 @@ export class BomLeafModalViewer{
         this.bomLeafDatas = null;
         this.selectLotModalViewer = new SelectLotModalViewer();
 
+        this.destinationInput = document.getElementById('destination');
+        this.noteInput = document.getElementById('note');
+        this.executeBtn = document.getElementById('execute-outbonud-btn');
+
         this.lots = {};
     }
 
@@ -15,6 +19,7 @@ export class BomLeafModalViewer{
 
         this.productId = productId;
         this.callback = callback;
+        this.amount = amount; //출고 필요 수량
 
         //모달폼 오픈 => 테이블 초기화
         openModal(modalID);
@@ -45,6 +50,9 @@ export class BomLeafModalViewer{
             alert(error.errorMessage);
             return;
         })
+
+        //이벤트 추가
+        this.executeBtn.addEventListener('click', this.clickExecuteBtn.bind(this));
     }
 
     openSelectLotModal(event){
@@ -58,21 +66,66 @@ export class BomLeafModalViewer{
 
     selectedLotAfter(productId, seleted){
 
+        hideModal('select-lot-modal');
+
+        //현재 데이터에서, 해당되는 값 변경해야함.
+
+        this.bomLeafDatas.forEach(item => {
+            if(item.productId == productId){
+                item.selectedCost = item.cost;
+            }
+        })
+
+        this.bomLeafTableManager.set_table_content(this.bomLeafDatas);
+
         const data = []
 
+        //서버에 맞게 데이터 변환 수행
         seleted.forEach(item => {
             data.push({
-                stockId: item.id,
-                amount: item.amount
+                stockId: parseInt(item.id),
+                amount: Parsing.parseDouble(item.amount)
             })
         });
 
-        this.lots.productId = data;
+        //productId를 기준으로, 그룹화 해서 데이터 보관.
+        this.lots[productId] = data;
 
     }
 
-    clickExecuteBtn(){
+    clickExecuteBtn(event){
 
+        event.stopPropagation();
+
+        if(this.destinationInput.value.trim() == ''){
+            alert('출고처를 입력해주세요.');
+            return;
+        }
+
+        for(let i = 0; i < this.bomLeafDatas.length; i++){
+            if(this.bomLeafDatas[i].cost != this.bomLeafDatas[i].selectedCost){
+                alert("필요 수량과 선택 수량이 일치하지 않아 출고가 불가능합니다.");
+                return;
+            }
+        }
+
+        const stocks = [];
+
+        Object.values(this.lots).forEach(list => {
+            list.forEach(item => {
+                stocks.push(item);
+            })
+        })
+
+        const body = {
+            productId: parseInt(this.productId),
+            amount: Parsing.parseDouble(this.amount),
+            destination: this.destinationInput.value,
+            note: this.noteInput.value,
+            stocks: stocks
+        };
+
+        this.callback(body);
     }
 
 }

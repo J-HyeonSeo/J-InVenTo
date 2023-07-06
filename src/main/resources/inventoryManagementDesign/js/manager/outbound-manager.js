@@ -53,7 +53,7 @@ export class OutboundManager{
 
         hideModal('product-modal');
         const productId = event.target.parentNode.children[0].textContent;
-        this.bomLeafModalViewer.initailize('bom-leaf-modal', null, productId, amount);
+        this.bomLeafModalViewer.initailize('bom-leaf-modal', this.executeOutbound.bind(this), productId, amount);
     }
 
     clickDeleteOutbound(){
@@ -73,8 +73,14 @@ export class OutboundManager{
 
     //================== Communication Back-end Server ==========================
 
-    executeOutbound(){
-
+    executeOutbound(body){
+        requestExecute('/outbound', 'post', body)
+        .then(response => {
+            alert('성공적으로 출고를 수행하였습니다.');
+            window.location.assign('');
+        }).catch(error => {
+            alert(error);
+        })
     }
 
     deleteOutbound(id){
