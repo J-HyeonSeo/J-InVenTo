@@ -1,4 +1,5 @@
 //구매 추가와 삭제를 담당하는 친구.
+import { Parsing } from "../util/parsing.js";
 import { EnableProductModalViewer } from "../modals/enableproduct-modal-viewer.js";
 import { requestExecute } from "../authenticate/request.js";
 
@@ -84,7 +85,7 @@ export class PurchaseManager{
             alert('구매가 성공적으로 추가되었습니다.');
             window.location.assign('');
         }).catch(error => {
-            alert(error);
+            alert(error.errorMessage);
         });
     
     }

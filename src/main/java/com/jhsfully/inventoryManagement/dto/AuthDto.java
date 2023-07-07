@@ -1,6 +1,7 @@
 package com.jhsfully.inventoryManagement.dto;
 
 import com.jhsfully.inventoryManagement.entity.MemberEntity;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
@@ -40,11 +41,36 @@ public class AuthDto {
     }
 
     @Data
+    public static class PasswordInitializeRequest{
+        private String username;
+        private String password;
+    }
+
+    @Data
     public static class UserChangeRequest{
         private String username;
         private String name;
         private String department;
         private List<String> roles;
     }
+
+    @Data
+    @Builder
+    public static class UserResponse{
+        private String username;
+        private String name;
+        private String department;
+        private List<String> roles;
+
+        public static UserResponse of(MemberEntity member){
+            return UserResponse.builder()
+                    .username(member.getUsername())
+                    .name(member.getName())
+                    .department(member.getDepartment())
+                    .roles(member.getRoles())
+                    .build();
+        }
+    }
+
 
 }

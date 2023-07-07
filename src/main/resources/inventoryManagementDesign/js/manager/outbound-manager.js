@@ -56,13 +56,15 @@ export class OutboundManager{
         this.bomLeafModalViewer.initailize('bom-leaf-modal', this.executeOutbound.bind(this), productId, amount);
     }
 
-    clickDeleteOutbound(){
+    clickDeleteOutbound(event){
+        event.stopPropagation();
         if(confirm("해당 출고를 삭제하시겠습니까?")){
             this.deleteOutbound(this.deleteTargetId);
         }
     }
 
     clickDeleteOutboundDetail(event){
+        event.stopPropagation();
         if(confirm("해당 출고 상세를 삭제하시겠습니까?")){
             const targetTr = event.target.parentNode;
             const id = targetTr.children[0].textContent;
@@ -87,6 +89,7 @@ export class OutboundManager{
         requestExecute('/outbound/' + id, 'delete', null)
         .then(response => {
             alert("해당 출고를 삭제하였습니다.");
+            window.location.assign('');
         }).catch(error => {
             alert(error);
         })
@@ -96,6 +99,7 @@ export class OutboundManager{
         requestExecute('/outbound/detail/' + id, 'delete', null)
         .then(response => {
             alert("해당 출고 상세를 삭제하였습니다.");
+            window.location.assign('');
         }).catch(error => {
             alert(error);
         })

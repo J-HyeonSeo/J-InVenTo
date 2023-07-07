@@ -1,11 +1,11 @@
-import { PurchaseDataLoader } from "../loader/purchase-loader.js";
+import { OutboundDataLoader } from "../loader/outbound-loader.js";
 import { ChartManager, ChartData } from "../manager/chart-manager.js";
 
-class PurchaseChart{
+class OutboundChart{
 
     constructor(){
-        this.purchaseDataLoader = new PurchaseDataLoader('startDate', 'endDate');
-        this.purchaseChart = new ChartManager('purchase-chart');
+        this.outboundDataLoader = new OutboundDataLoader();
+        this.outboundChart = new ChartManager('outbound-chart');
         this.optionPrice = document.getElementById('option-price');
     }
 
@@ -29,17 +29,17 @@ class PurchaseChart{
     async loadDataAndViewChart(optionDate, optionPrice){
 
         try{
-            let purchaseData = await this.purchaseDataLoader.loadPurchaseData(optionDate);
+            let outboundData = await this.outboundDataLoader.loadOutboundData(optionDate);
             
-            this.purchaseChart.initailize();
+            this.outboundChart.initailize();
             const chartdata = new ChartData();
-            chartdata.setDatas(purchaseData, 'at', 'purchasePrice', optionDate, optionPrice);
+            chartdata.setDatas(outboundData, 'at', 'outboundPrice', optionDate, optionPrice);
             chartdata.setDivisors();
-            this.purchaseChart.dataView(chartdata);
+            this.outboundChart.dataView(chartdata);
 
         }catch(error){
             alert(error);
-            alert("구매 데이터를 불러오는 도중에 오류가 발생했습니다.");
+            alert("출고 데이터를 불러오는 도중에 오류가 발생했습니다.");
         }
 
     }
@@ -49,7 +49,7 @@ class PurchaseChart{
 
 window.addEventListener('load', async function(){
 
-    const purchaseChart = new PurchaseChart();
-    purchaseChart.initailize();
+    const outboundChart = new OutboundChart();
+    outboundChart.initailize();
 
 });

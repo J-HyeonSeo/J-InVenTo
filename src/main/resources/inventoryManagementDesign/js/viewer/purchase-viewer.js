@@ -25,13 +25,13 @@ class PurchaseViewer{
             this.purchaseTableManager = new TableManager(this.purchaseTable,
                 ["id", "productId", "productName", "at", "amount", "canAmount", "price", "purchasePrice", "company", "note"],
                 ["구매번호", "품목번호", "품목명", "구매일시", "수량", "입고가능수량", "단가", "구매금액", "거래처명", "비고"],
-                [4, 5, 6],
+                [4, 5, 6, 7],
                 new TableOnClickSet(this.purchaseManager.openDeletePurchaseModal.bind(this.purchaseManager), 'id'));    
         }else{
             this.purchaseTableManager = new TableManager(purchaseTable,
                 ["id", "productId", "productName", "at", "amount", "canAmount", "price", "purchasePrice", "company", "note"],
                 ["구매번호", "품목번호", "품목명", "구매일시", "수량", "입고가능수량", "단가", "구매금액", "거래처명", "비고"],
-                [4, 5, 6]);    
+                [4, 5, 6, 7]);    
         }
         
         this.purchaseTableManager.table_initiallize();

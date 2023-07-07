@@ -1,4 +1,4 @@
-class Parsing{
+export class Parsing{
 
     static parseDouble(stringDouble){
         var response = stringDouble;

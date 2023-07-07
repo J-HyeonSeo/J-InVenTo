@@ -1,5 +1,4 @@
-import { TableManager, TableOnClickSet } from "./table-manager.js";
-import { doSearchFilter } from "../viewer/mainfilter.js";
+import { Parsing } from "../util/parsing.js";
 import { PurchaseModalViewer } from "../modals/purchase-modal-viewer.js";
 import { requestExecute } from "../authenticate/request.js";
 

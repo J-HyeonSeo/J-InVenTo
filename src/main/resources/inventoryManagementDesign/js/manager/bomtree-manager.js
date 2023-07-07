@@ -1,3 +1,4 @@
+import { Parsing } from "../util/parsing.js";
 import { requestExecute } from "../authenticate/request.js";
 import { BomTreeDataLoader } from "../loader/bomtree-loader.js";
 import { EnableProductModalViewer } from "../modals/enableproduct-modal-viewer.js";
@@ -284,7 +285,7 @@ export class BomManager{
         // console.log(targetTd);
 
         const id = targetTr.dataset.id;
-        const cost = parseInt(inputElement.value);
+        const cost = Parsing.parseDouble(inputElement.value);
 
         if(id == null || id == "null"){
             alert("최상단 품목의 수량은 변경할 수 없습니다.");

@@ -2,6 +2,7 @@ import { OutboundDataLoader } from "../loader/outbound-loader.js";
 import { TableManager, TableOnClickSet } from "../manager/table-manager.js";
 import {doSearchFilter} from "../viewer/mainfilter.js";
 import { OutboundManager } from "../manager/outbound-manager.js";
+import { OutboundDetailModalViewer } from "../modals/outbound-detail-modal-viewer.js";
 
 class OutboundViewer{
 
@@ -24,21 +25,28 @@ class OutboundViewer{
             this.outboundManager.initialize();
 
             this.outboundTableManager = new TableManager(this.outboundTable,
-                ["id", "productName", "destination", "amount", "price", "at", "note"],
-                ["출고 ID", "품목명", "출고처", "출고수량", "출고단가", "출고일", "비고"],
-                [4, 5, 6],
+                ["id", "productName", "destination", "amount", "price", "outboundPrice", "at", "note"],
+                ["출고 ID", "품목명", "출고처", "출고수량", "출고단가", "출고금액", "출고일", "비고"],
+                [3, 4, 5],
                 new TableOnClickSet(this.outboundManager.openDetailModal.bind(this.outboundManager), 'id'));    
         }else{
+
+            this.outboundDetailModalViewer = new OutboundDetailModalViewer();
+
             this.outboundTableManager = new TableManager(this.outboundTable,
-                ["id", "productName", "destination", "amount", "price", "at", "note"],
-                ["출고 ID", "품목명", "출고처", "출고수량", "출고단가", "출고일", "비고"],
-                [4, 5, 6],
-                );      
+                ["id", "productName", "destination", "amount", "price", "outboundPrice", "at", "note"],
+                ["출고 ID", "품목명", "출고처", "출고수량", "출고단가", "출고금액", "출고일", "비고"],
+                [3, 4, 5],
+                new TableOnClickSet(this.showOnly.bind(this), 'id'));      
         }
         
         this.outboundTableManager.table_initiallize();
         this.searchElement.addEventListener("input", this.filterByInput.bind(this));
         this.loadBtn.addEventListener('click', this.clickLoadBtn.bind(this));
+    }
+
+    showOnly(id){
+        this.outboundDetailModalViewer.initailize('outbound-detail-modal', null, id);
     }
 
     clickLoadBtn(){

@@ -1,4 +1,5 @@
 import { requestExecute } from "../authenticate/request.js";
+import { Parsing } from "../util/parsing.js";
 
 //product의 추가, 수정, 삭제를 관리한다.
 
@@ -86,7 +87,7 @@ export class ProductManager{
         //extract data from form.
         const name = document.getElementById('name').value;
         const company = document.getElementById('company').value;
-        const price = parseFloat(document.getElementById('price').value);
+        const price = Parsing.parseDouble(document.getElementById('price').value);
         const spec = document.getElementById('spec').value;
 
         const body = {
@@ -113,7 +114,7 @@ export class ProductManager{
         //extract data from form.
         const name = document.getElementById('name').value;
         const company = document.getElementById('company').value;
-        const price = parseFloat(document.getElementById('price').value);
+        const price = Parsing.parseDouble(document.getElementById('price').value);
         const spec = document.getElementById('spec').value;
     
         const body = {

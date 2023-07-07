@@ -5,55 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/mainstyle.css">
-    <link rel="stylesheet" href="css/maintable.css">
     <link rel="stylesheet" href="css/form.css">
-    <link rel="stylesheet" href="css/modal.css">
-
-    <script type="module" src="js/viewer/product-viewer.js" defer></script>
-    <script src="js/manager/modal-manager.js" defer></script>
+    <link rel="stylesheet" href="css/chart.css">
+    <script type="module" src="js/chart/outbound-chart.js" defer></script>
     <title>재고관리</title>
 </head>
 <body>
-    <input id="page-type" type="hidden" value="manage">
+    <input id="page-type" type="hidden" value="show">
 
-    <!-- 품목 상세 모달 폼 -->
-    <aside id="product-details" class="modal-container">
-        <div class="modal-content" style="width: 500px; background-color: transparent; overflow: hidden; border: none;">
-            <form action="" class="form-style" style="width: 400px; padding: 20px;">
-                <h1 style="margin-top: 0rem;" id="modal-title">새 품목</h1>
-                <br>
-                <p>
-                    <label for="name">품목명</label>
-                    <br>
-                    <input type="text" id="name" name="name">
-                </p>
-                <br>
-                <p>
-                    <label for="company">거래처명</label>
-                    <br>
-                    <input type="text" id="company" name="company">
-                </p>
-                <br>
-                <p>
-                    <label for="price">단가</label>
-                    <br>
-                    <input type="text" id="price" name="price">
-                </p>
-                <br>
-                <p>
-                    <label for="spec">규격</label>
-                    <br>
-                    <input type="text" id="spec" name="spec">
-                </p>
-                <br>
-                <div>
-                    <button type="button" id="add-product-btn">품목 생성</button>
-                    <button type="button" id="update-product-btn">품목 수정</button>
-                    <button type="button" id="enable-product-btn">활성화</button>
-                    <button type="button" id="disable-product-btn">비활성화</button>
-                    <button type="button" id="delete-product-btn">삭제</button>
-                </div>
-            </form>
+    <!-- 차트 추가 정보 -->
+    <aside>
+        <div id="chart-detail">
+            <h3>금액</h3>
+            <h4>250,000,000</h4>
+            <br>
+            <h3>시기</h3>
+            <h4>2023년 5월</h4>
         </div>
     </aside>
 
@@ -114,32 +81,34 @@
     <br>
     <br>
 
-    <section class="form-wrapper" style="width: 600px;">
-        <select id="filter">
-            <option value="productName">품목명</option>
-            <option value="companyName">거래처명</option>
-        </select>
-        <input type="text" id="search">
-
-        <button type="button" onclick="productTableManager.resetOrder()">정렬 초기화</button>
-        <button type="button" id="new-product-btn">+ 새 품목</button>
-
+    <section class="form-wrapper" style="width: 500px;">
+        <form>
+            <label>
+            시작일자
+            <input type="date" id="startDate">
+            </label>
+            <label>
+            종료일자
+            <input type="date" id="endDate">
+            </label>
+            <div style="margin-top: 1rem;">
+                <button type="button" id="daily-chart">일별 차트 조회</button>
+                <button type="button" id="monthly-chart">월별 차트 조회</button>
+                <button type="button" id="yearly-chart">연별 차트 조회</button>
+                <select name="" id="option-price">
+                    <option value="normal">기본</option>
+                    <option value="sum">누적</option>
+                </select>
+            </div>
+        </form>
     </section>
 
     <br>
 
     <main>
         <section id="main-section">
-            <div class="table-wrapper">
-            <table id="product-table">
-                <thead>
-                    <tr>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-            </div>
+            <canvas id="outbound-chart" class="chart">
+            </canvas>
         </section>
     </main>
     <br>

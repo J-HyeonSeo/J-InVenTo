@@ -27,6 +27,12 @@ public class MemberService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
     private MemberRepository memberRepository;
 
+    public List<AuthDto.UserResponse> getMembers(){
+        return memberRepository.findAll().stream()
+                .map(AuthDto.UserResponse::of)
+                .collect(Collectors.toList());
+    }
+
     public List<String> getRoleLists(){
         return Arrays.stream(RoleType.values())
                 .map(Enum::name)
@@ -155,7 +161,17 @@ public class MemberService implements UserDetailsService {
         if(changeRoles){
             user.setRoles(request.getRoles());
         }
-
+        memberRepository.save(user);
     }
 
+    //관리자가 수행하는 비밀번호 초기화.
+    public void initializePassword(AuthDto.PasswordInitializeRequest request) {
+
+        MemberEntity member = memberRepository.findById(request.getUsername())
+                .orElseThrow(() -> new AuthException(AUTH_LOGIN_FAILED));
+
+        member.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        memberRepository.save(member);
+    }
 }

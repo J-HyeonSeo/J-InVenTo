@@ -1,3 +1,4 @@
+import { Parsing } from "../util/parsing.js";
 import { loadStocksLotByProductId } from "../loader/stocks-lot-loader.js";
 import { TableManager, TableOnClickSet } from "../manager/table-manager.js";
 
@@ -12,7 +13,7 @@ export class SelectLotModalViewer{
 
     initialize(modalID, callback, productId, requires){
         this.selected = [];
-        this.requires = parseInt(requires);
+        this.requires = Parsing.parseDouble(requires);
         this.nowCount = 0;
         this.productId = productId;
         this.callback = callback;
@@ -86,17 +87,17 @@ export class SelectLotModalViewer{
             }
         }
 
-        if(parseInt(inputAmount) <= 0){
+        if(Parsing.parseDouble(inputAmount) <= 0){
             alert("0이하의 수량은 출고가 불가능합니다.");
             return;
         }
 
-        if(parseInt(inputAmount) > parseInt(amount)){
+        if(Parsing.parseDouble(inputAmount) > Parsing.parseDouble(amount)){
             alert("출고 수량이 재고 수량을 넘어설 수 없습니다.");
             return;
         }
 
-        if(this.requires < this.nowCount + parseInt(inputAmount)){
+        if(this.requires < this.nowCount + Parsing.parseDouble(inputAmount)){
             alert("필요 수량을 초과하였습니다.");
             return;
         }
@@ -111,11 +112,11 @@ export class SelectLotModalViewer{
                 company: company
             }
         )
-        this.nowCount += parseInt(inputAmount);
+        this.nowCount += Parsing.parseDouble(inputAmount);
         
         this.lotDatas.forEach(item => {
             if(item.id == id){
-                item.amount -= parseInt(inputAmount);
+                item.amount -= Parsing.parseDouble(inputAmount);
             }
         });
 
@@ -141,11 +142,11 @@ export class SelectLotModalViewer{
         //좌측 데이터 수정
         this.lotDatas.forEach(item => {
             if(item.id == id){
-                item.amount += parseInt(amount);
+                item.amount += Parsing.parseDouble(amount);
             }
         });
 
-        this.nowCount -= parseInt(amount);
+        this.nowCount -= Parsing.parseDouble(amount);
         this.lotTableManager.set_table_content(this.lotDatas);
     }
 

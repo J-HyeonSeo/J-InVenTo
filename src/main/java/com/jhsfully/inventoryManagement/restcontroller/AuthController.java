@@ -7,6 +7,7 @@ import com.jhsfully.inventoryManagement.security.TokenProvider;
 import com.jhsfully.inventoryManagement.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,12 @@ public class AuthController {
 
     private final MemberService memberService;
     private final TokenProvider tokenProvider;
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getMembers(){
+        return ResponseEntity.ok(memberService.getMembers());
+    }
 
     @PostMapping("/signup")
     @PreAuthorize("hasRole('ADMIN')")
@@ -41,6 +48,13 @@ public class AuthController {
     @PutMapping("user/update/password")
     public ResponseEntity<?> changePassword(@RequestBody AuthDto.PasswordChangeRequest request){
         memberService.changePassword(request);
+        return ResponseEntity.ok(request.getUsername());
+    }
+
+    @PutMapping("admin/update/password")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> initializePassword(@RequestBody AuthDto.PasswordInitializeRequest request){
+        memberService.initializePassword(request);
         return ResponseEntity.ok(request.getUsername());
     }
 

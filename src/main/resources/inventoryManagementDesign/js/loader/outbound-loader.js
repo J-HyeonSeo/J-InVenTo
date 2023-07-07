@@ -14,6 +14,10 @@ export class OutboundDataLoader{
             const date = this.dateManager.getDateRange(option);
 
             const response = await requestExecute("/outbound?startDate=" + date.start + "&endDate=" + date.end, "get", null);
+            
+            response.forEach(item => {
+                item.outboundPrice = item.price * item.amount;
+            });
 
             return response;
 

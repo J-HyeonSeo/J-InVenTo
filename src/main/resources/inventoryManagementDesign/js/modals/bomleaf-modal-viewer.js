@@ -1,3 +1,4 @@
+import { Parsing } from "../util/parsing.js";
 import { loadBomLeafDatas } from "../loader/bomleaf-loader.js";
 import { SelectLotModalViewer } from "./select-lot-modal-viewer.js";
 import { TableManager, TableOnClickSet } from "../manager/table-manager.js";
@@ -41,7 +42,7 @@ export class BomLeafModalViewer{
             //데이터 테이블에 할당함.
 
             response.forEach(item => {
-                item.cost *= parseInt(amount);
+                item.cost *= Parsing.parseDouble(amount);
             });
 
             this.bomLeafDatas = response;
