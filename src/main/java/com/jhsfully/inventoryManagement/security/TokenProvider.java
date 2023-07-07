@@ -81,13 +81,13 @@ public class TokenProvider {
     }
 
 
-    public Authentication getAuthentication(List<String> roles){
+    public Authentication getAuthentication(List<String> roles, String userName){
 
         List<SimpleGrantedAuthority> grantedAuthorities = roles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        return new UsernamePasswordAuthenticationToken("", "", grantedAuthorities);
+        return new UsernamePasswordAuthenticationToken(userName, "", grantedAuthorities);
     }
 
     public String getUsername(String token){

@@ -60,6 +60,9 @@ export class BomManager{
         this.bomTreeDataLoader = new BomTreeDataLoader();
         this.editMode = document.getElementById('page-type').value == "manage" ? true : false;
         this.enableProductModalViewer = new EnableProductModalViewer();
+
+        this.addBomBtn = document.getElementById('add-bom-btn');
+        this.addBomBtn.addEventListener('click', this.clickAddBomBtn.bind(this));
     }
 
     initailize(productId){
@@ -347,7 +350,7 @@ export class BomManager{
             })
 
         }else{ //mode가 false인 경우는 새 BOM임.
-            loadBomTreeData(selectedProductId);
+            this.initailize(selectedProductId);
             productModal.style.display = 'none';
         }
     }

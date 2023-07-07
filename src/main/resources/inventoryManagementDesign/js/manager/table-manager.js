@@ -95,7 +95,7 @@ export class TableManager{
                     orderingDatas.sort((a, b) => b[this.colNames[item[0]]] - a[this.colNames[item[0]]]);
                 }
             }else{
-                if(item[1] == -1){
+                if(item[1] == 1){
                     orderingDatas.sort((a, b) => a[this.colNames[item[0]]].localeCompare(b[this.colNames[item[0]]]));
                 }else{
                     orderingDatas.sort((a, b) => b[this.colNames[item[0]]].localeCompare(a[this.colNames[item[0]]]));

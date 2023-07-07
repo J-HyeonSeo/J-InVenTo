@@ -52,6 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)){
             //권한 확인 및 부여
             List<String> roles = tokenProvider.getRoles(accessToken);
+            String userName = tokenProvider.getUsername(accessToken);
 
             System.out.println(roles);
             System.out.println("?????");
@@ -61,7 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
 
-            Authentication auth = tokenProvider.getAuthentication(roles);
+            Authentication auth = tokenProvider.getAuthentication(roles, userName);
             SecurityContextHolder.getContext().setAuthentication(auth);
 
         }else if(StringUtils.hasText(accessToken) &&
@@ -74,7 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String newAccessToken = tokenProvider.generateAccessToken(username, roles);
                 response.addHeader("accessToken", newAccessToken);
 
-                Authentication auth = tokenProvider.getAuthentication(roles);
+                Authentication auth = tokenProvider.getAuthentication(roles, username);
                 SecurityContextHolder.getContext().setAuthentication(auth);
         }else{
             HttpServletResponse httpResponse = (HttpServletResponse) response;

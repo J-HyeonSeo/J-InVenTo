@@ -7,7 +7,7 @@ export function doSearchFilter(dataset, filterProperty, inputValue){
 
     dataset.forEach(item => {
         
-        if(item[filterProperty].includes(inputValue)){
+        if(item != null && item[filterProperty].includes(inputValue)){
             filtered.push(item);
         }
 
