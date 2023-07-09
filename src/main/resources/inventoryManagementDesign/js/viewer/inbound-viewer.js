@@ -14,6 +14,8 @@ class InboundViewer{
         this.searchElement = document.getElementById("search");
         this.inboundDatas = null;
         this.loadBtn = document.getElementById('inbound-load-btn');
+
+        this.resetSortBtn = document.getElementById('reset-sort-btn');
     }
 
     viewerInitailize(){
@@ -36,8 +38,11 @@ class InboundViewer{
         }
         
         this.inboundTableManager.table_initiallize();
+
+        //이벤트 추가
         this.searchElement.addEventListener("input", this.filterByInput.bind(this));
         this.loadBtn.addEventListener('click', this.clickLoadBtn.bind(this));
+        this.resetSortBtn.addEventListener('click', this.inboundTableManager.resetOrder.bind(this.inboundTableManager));
     }
 
     clickLoadBtn(){

@@ -1,4 +1,4 @@
-package com.jhsfully.inventoryManagement.aop;
+package com.jhsfully.inventoryManagement.log;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -8,7 +8,7 @@ import java.util.List;
 public interface LogService {
 
     void addLog(@RequestBody LogDto.AddRequest request);
-    void deleteLogs(LocalDate startDate, LocalDate endDate);
+    void deleteLogs();
     List<LogDto.Response> getLogs(LocalDate startDate, LocalDate endDate);
 
 }

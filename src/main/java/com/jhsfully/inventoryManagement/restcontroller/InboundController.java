@@ -8,6 +8,7 @@ import com.jhsfully.inventoryManagement.type.LockType;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ public class InboundController {
     private final InboundInterface inboundService;
 
     @GetMapping("")
+    @PreAuthorize("hasRole('INBOUND_READ')")
     public ResponseEntity<?> getInbounds(
             @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate)
@@ -30,18 +32,20 @@ public class InboundController {
     }
 
     @GetMapping("/{purchaseId}")
+    @PreAuthorize("hasRole('INBOUND_READ')")
     public ResponseEntity<?> getSumInboundsByPurchase(@PathVariable Long purchaseId){
         return ResponseEntity.ok(inboundService.getInboundsByPurchase(purchaseId));
     }
 
-    @ProcessLock(key = LockType.PURCHASE_INBOUND)
+    @ProcessLock(value = LockType.PURCHASE_INBOUND, key = "request.purchaseId")
     @PostMapping("")
+    @PreAuthorize("hasRole('INBOUND_MANAGE')")
     public ResponseEntity<?> executeInbound(@RequestBody InboundDto.InboundOuterAddRequest request){
         return ResponseEntity.ok(inboundFacade.executeInbound(request));
     }
 
-    @ProcessLock(key = LockType.INBOUND_OUTBOUND)
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('INBOUND_MANAGE')")
     public ResponseEntity<?> cancelInbound(@PathVariable Long id){
         inboundFacade.cancelInbound(id);
         return ResponseEntity.ok(id);

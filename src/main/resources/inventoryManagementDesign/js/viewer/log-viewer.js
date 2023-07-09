@@ -12,6 +12,7 @@ class LogViewer{
         this.searchElement = document.getElementById("search");
         this.logDatas = null;
         this.loadBtn = document.getElementById('log-load-btn');
+        this.resetSortBtn = document.getElementById('reset-sort-btn');
     }
 
     viewerInitailize(){
@@ -24,6 +25,7 @@ class LogViewer{
         this.logTableManager.table_initiallize();
         this.searchElement.addEventListener("input", this.filterByInput.bind(this));
         this.loadBtn.addEventListener('click', this.clickLoadBtn.bind(this));
+        this.resetSortBtn.addEventListener('click', this.logTableManager.resetOrder.bind(this.logTableManager));
     }
 
     clickLoadBtn(){

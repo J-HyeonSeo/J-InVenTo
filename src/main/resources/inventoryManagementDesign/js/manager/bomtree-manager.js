@@ -61,8 +61,10 @@ export class BomManager{
         this.editMode = document.getElementById('page-type').value == "manage" ? true : false;
         this.enableProductModalViewer = new EnableProductModalViewer();
 
-        this.addBomBtn = document.getElementById('add-bom-btn');
-        this.addBomBtn.addEventListener('click', this.clickAddBomBtn.bind(this));
+        if(this.editMode){
+            this.addBomBtn = document.getElementById('add-bom-btn');
+            this.addBomBtn.addEventListener('click', this.clickAddBomBtn.bind(this));
+        }
     }
 
     initailize(productId){

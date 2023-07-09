@@ -16,7 +16,7 @@
 <body>
     <input id="page-type" type="hidden" value="show">
 
-    <aside id="bom-modal" class="modal-container" onclick="hideModal(event)">
+    <aside id="bom-modal" class="modal-container">
         <div class="modal-content bom-container">
         </div>
     </aside>
@@ -83,7 +83,7 @@
             <option value="productName">품목명</option>
         </select>
         <input type="text" id="search">
-        <button type="button" onclick="bomTableManager.resetOrder()">정렬 초기화</button>
+        <button type="button" id="reset-sort-btn">정렬 초기화</button>
     </section>
 
     <br>

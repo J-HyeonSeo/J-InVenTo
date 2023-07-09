@@ -7,9 +7,11 @@ import com.jhsfully.inventoryManagement.exception.StocksException;
 import com.jhsfully.inventoryManagement.entity.InboundEntity;
 import com.jhsfully.inventoryManagement.entity.ProductEntity;
 import com.jhsfully.inventoryManagement.entity.StocksEntity;
+import com.jhsfully.inventoryManagement.lock.ProcessLock;
 import com.jhsfully.inventoryManagement.repository.InboundRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
 import com.jhsfully.inventoryManagement.repository.StocksRepository;
+import com.jhsfully.inventoryManagement.type.LockType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,6 +90,7 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
+    @ProcessLock(value = LockType.INBOUND_OUTBOUND, key = "id")
     @Transactional
     public void spendStockById(Long id, Double amount) {
         StocksEntity stocksEntity = validateSpendStock(id, amount);
@@ -98,6 +101,7 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
+    @ProcessLock(value = LockType.INBOUND_OUTBOUND, key = "id")
     @Transactional
     public void cancelSpendStockById(Long id, Double amount){
         StocksEntity stocksEntity = validateCancelSpendStock(id, amount);
@@ -108,6 +112,7 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
+    @ProcessLock(value = LockType.INBOUND_OUTBOUND, key = "id")
     @Transactional
     public void deleteStock(Long id) {
         //파서드단에서 밸리데이션을 수행했을거임.

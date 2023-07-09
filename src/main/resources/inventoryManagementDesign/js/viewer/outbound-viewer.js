@@ -15,6 +15,8 @@ class OutboundViewer{
         this.searchElement = document.getElementById("search");
         this.outboundDatas = null;
         this.loadBtn = document.getElementById('outbound-load-btn');
+
+        this.resetSortBtn = document.getElementById('reset-sort-btn');
     }
 
     viewerInitailize(){
@@ -43,6 +45,7 @@ class OutboundViewer{
         this.outboundTableManager.table_initiallize();
         this.searchElement.addEventListener("input", this.filterByInput.bind(this));
         this.loadBtn.addEventListener('click', this.clickLoadBtn.bind(this));
+        this.resetSortBtn.addEventListener('click', this.outboundTableManager.resetOrder.bind(this.outboundTableManager));
     }
 
     showOnly(id){

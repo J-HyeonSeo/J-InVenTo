@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -22,18 +23,21 @@ public class PurchaseController {
     private final PurchaseInterface purchaseService;
 
     @GetMapping("")
+    @PreAuthorize("hasRole('PURCHASE_READ')")
     public ResponseEntity<?> getPurchases(@RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
                                           @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate){
         return ResponseEntity.ok(purchaseService.getPurchases(startDate, endDate));
     }
 
     @PostMapping("")
+    @PreAuthorize("hasRole('PURCHASE_MANAGE')")
     public ResponseEntity<?> addPurchase(@RequestBody PurchaseDto.PurchaseAddRequest request){
         return ResponseEntity.ok(purchaseService.addPurchase(request));
     }
 
-    @ProcessLock(key = LockType.PURCHASE_INBOUND)
+    @ProcessLock(value = LockType.PURCHASE_INBOUND, key = "id")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('PURCHASE_MANAGE')")
     public ResponseEntity<?> deletePurchase(@PathVariable Long id){
         purchaseService.deletePurchase(id);
         return ResponseEntity.ok(id);

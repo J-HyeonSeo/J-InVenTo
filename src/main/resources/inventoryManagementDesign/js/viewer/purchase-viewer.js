@@ -13,6 +13,7 @@ class PurchaseViewer{
         this.searchElement = document.getElementById("search");
         this.purchaseDatas = null;
         this.loadBtn = document.getElementById('purchase-load-btn');
+        this.resetSortBtn = document.getElementById('reset-sort-btn');
     }
 
     viewerInitailize(){
@@ -37,6 +38,7 @@ class PurchaseViewer{
         this.purchaseTableManager.table_initiallize();
         this.searchElement.addEventListener("input", this.filterByInput.bind(this));
         this.loadBtn.addEventListener('click', this.clickLoadBtn.bind(this));
+        this.resetSortBtn.addEventListener('click', this.purchaseTableManager.bind(this.purchaseTableManager));
     }
 
     clickLoadBtn(){

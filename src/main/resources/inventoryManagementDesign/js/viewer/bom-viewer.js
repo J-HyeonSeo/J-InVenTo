@@ -10,6 +10,7 @@ class BomViewer{
         this.searchElement = document.getElementById("search");
         this.bomTopDatas = null;
         this.bomManager = new BomManager();
+        this.resetSortBtn = document.getElementById('reset-sort-btn');
     }
 
     viewerInitailize(){
@@ -22,7 +23,11 @@ class BomViewer{
         );
 
         this.bomTableManager.table_initiallize();
+
+        //이벤트추가
         this.searchElement.addEventListener("input", this.filterByInput.bind(this));
+        this.resetSortBtn.addEventListener('click', this.bomTableManager.resetOrder.bind(this.bomTableManager));
+
 
         loadBomTopDatas()
         .then(response => {

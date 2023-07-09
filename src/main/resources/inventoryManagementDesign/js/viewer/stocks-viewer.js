@@ -12,6 +12,7 @@ class StocksViewer{
         this.stockDatas = null;
 
         this.stocksLotModalViewer = new StocksLotModalViewer();
+        this.resetSortBtn = document.getElementById('reset-sort-btn');
     }
 
     viewerInitailize(){
@@ -24,6 +25,7 @@ class StocksViewer{
 
         this.stocksTableManager.table_initiallize();
         this.searchElement.addEventListener("input", this.filterByInput.bind(this));
+        this.resetSortBtn.addEventListener('click', this.stocksTableManager.bind(this.stocksTableManager));
 
         loadAllStockData()
         .then(response => {

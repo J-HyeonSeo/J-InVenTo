@@ -1,4 +1,4 @@
-package com.jhsfully.inventoryManagement.aop;
+package com.jhsfully.inventoryManagement.log;
 
 import lombok.Builder;
 import lombok.Data;

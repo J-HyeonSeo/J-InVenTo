@@ -10,6 +10,8 @@ class ProductViewer{
         this.filter = document.getElementById("filter");
         this.searchElement = document.getElementById("search");
         this.productDatas = null;
+
+        this.resetSortBtn = document.getElementById('reset-sort-btn');
     }
 
     viewerInitailize(){
@@ -31,6 +33,7 @@ class ProductViewer{
         }
         this.productTableManager.table_initiallize();
         this.searchElement.addEventListener("input", this.filterByInput.bind(this));
+        this.resetSortBtn.addEventListener('click', this.productTableManager.resetOrder.bind(this.productTableManager));
 
         loadAllProductData()
         .then(response => {

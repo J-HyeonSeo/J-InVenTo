@@ -1,4 +1,4 @@
-package com.jhsfully.inventoryManagement.aop;
+package com.jhsfully.inventoryManagement.log;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,12 +18,6 @@ public class LogController {
     public ResponseEntity<?> getLogs(@RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
                                      @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate){
         return ResponseEntity.ok(logService.getLogs(startDate, endDate));
-    }
-
-    @DeleteMapping
-    public void deleteLogs(@RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
-                           @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate){
-
     }
 
 }

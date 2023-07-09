@@ -1,7 +1,7 @@
-package com.jhsfully.inventoryManagement.aop;
+package com.jhsfully.inventoryManagement.log;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -32,11 +32,14 @@ public class LogServiceImpl implements LogService{
     }
 
     @Override
-    public void deleteLogs(LocalDate startDate, LocalDate endDate) {
-        LocalDateTime startDateTime = startDate.atStartOfDay();
-        LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
+    @Scheduled(cron = "0 0 * * * *") //1시간 마다 동작
+    public void deleteLogs() {
 
-        logRepository.deleteByAtBetween(startDateTime, endDateTime);
+        //현재 날짜에서, 2주 정도뒤에 날짜를 가져와서 해당 날짜 이전인 로그 전부 지우기
+        LocalDateTime prevDateTime = LocalDate.now().minusWeeks(2).atStartOfDay();
+        List<LogEntity> logs = logRepository.findByAtBefore(prevDateTime);
+        logRepository.deleteAll(logs);
+
     }
 
     @Override
