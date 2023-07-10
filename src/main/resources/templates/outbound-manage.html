@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/mainstyle.css">
+    <link rel="stylesheet" href="css/maintable.css">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/modal.css">
+    
+    <script type="module" src="js/viewer/outbound-viewer.js" defer></script>
+    <script src="js/manager/modal-manager.js" defer></script>
+    <title>출고 관리</title>
+</head>
+<body>
+    <input id="page-type" type="hidden" value="manage">
+
+    <!-- BOM LEAF 모달 폼 -->
+    <div id="bom-leaf-modal" class="modal-container">
+        <div class="modal-content">
+
+            <form action="" class="form-wrapper" style="width: 700px; margin-bottom: 10px;">
+                <label for="destination">출고처
+                    <input type="text" id="destination">
+                </label>
+                <label for="note">비고
+                    <input type="text" id="note">
+                </label>
+                <button type="button" id="execute-outbonud-btn" style="margin-bottom: 10px;">출고 수행</button>
+            </form>
+
+            <div class="table-wrapper">
+                <table id="bom-leaf-table">
+                    <thead>
+                        <tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCT 모달 폼 -->
+    <div id="product-modal" class="modal-container">
+        <div class="modal-content">
+            <div style="margin: 10px 0;">
+                <select id="product-filter">
+                    <option value="productName">품목명</option>
+                    <option value="companyName">거래처명</option>
+                </select>
+                <input type="text" id="product-search">
+            </div>
+            <div class="table-wrapper">
+                <table id="product-table">
+                    <thead>
+                        <tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Select Lot 모달 폼 -->
+    <div id="select-lot-modal" class="modal-container" style="display: none;">
+        <div class="modal-content" style="width: 100%; height: 800px;">
+            <button type="button" id="select-complete-btn" style="margin-bottom: 10px;">선택 완료</button>
+            <div class="twin-table">
+                <div class="table-wrapper">
+                    <table id="lot-table">
+                        <thead>
+                            <tr>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="arrow">
+                    <div>
+                        =>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table id="selected-table">
+                        <thead>
+                            <tr>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Outbound Detail 모달 폼 -->
+    <div id="outbound-detail-modal" class="modal-container">
+        <div class="modal-content">
+            <button type="button" id="all-delete-btn" style="margin-bottom: 10px;">출고 전체 삭제</button>
+            <div class="table-wrapper">
+                <table id="outbound-detail-table">
+                    <thead>
+                        <tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+    <header>
+        <nav>
+            <ul id="nav-ul">
+                <li class="main-menu"><a>구매관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">구매요청</a></li>
+                        <li><a href="">구매조회</a></li>
+                        <li><a href="">구매수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>입고관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">입고</a></li>
+                        <li><a href="">입고조회</a></li>
+                        <li><a href="">입고수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>출고관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">출고</a></li>
+                        <li><a href="">출고조회</a></li>
+                        <li><a href="">출고수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>재고관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">재고조회</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>품목관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">품목조회</a></li>
+                        <li><a href="">품목수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>BOM</a>
+                    <ul class="additional-list">
+                        <li><a href="">BOM조회</a></li>
+                        <li><a href="">BOM관리</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>계획관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">계획조회</a></li>
+                        <li><a href="">계획관리</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <br>
+    <br>
+
+    <section class="form-wrapper-calendar" style="width: 1050px;">
+        <select id="filter">
+            <option value="productName">품목명</option>
+            <option value="destination">출고처</option>
+        </select>
+        <input type="text" id="search">
+        <button type="button" id="reset-sort-btn">정렬 초기화</button>
+          <label>
+            시작일자
+            <input type="date" id="startDate">
+          </label>
+          <label>
+            종료일자
+            <input type="date" id="endDate">
+          </label>
+          <button type="button" id="outbound-load-btn">조회</button>
+          <button type="button" id="open-add-outbound">+ 새 출고</button>
+    </section>
+
+    <br>
+
+    <main>
+        <section id="main-section">
+            <div class="table-wrapper">
+            <table id="outbound-table">
+                <thead>
+                    <tr>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            </div>
+        </section>
+    </main>
+    <br>
+    <br>
+    <footer>
+        <p class="context">
+            오픈소스프로젝트이며, 코드 수정 및 상업적이용으로써 사용이 가능합니다.
+        </p>
+        <p class="context">
+            단, 해당 프로그램을 개조하여, 판매의 목적으로 사용하는 것을 금지합니다.
+        </p>
+        <p class="context">
+            Copyright 2023. J-HYEONSEO. All right reserved.
+        </p>
+    </footer>
+</body>
+</html>

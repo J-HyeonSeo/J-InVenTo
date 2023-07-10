@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/mainstyle.css">
+    <link rel="stylesheet" href="css/maintable.css">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/bom.css">
+
+    <script src="js/manager/modal-manager.js" defer></script>
+    <script type="module" src="js/viewer/bom-viewer.js" defer></script>
+    <title>BOM 관리</title>
+</head>
+<body>
+    <input id="page-type" type="hidden" value="manage">
+
+    <!-- BOM 모달 폼 -->
+    <aside id="bom-modal" class="modal-container">
+        <div class="modal-content">
+            <div class="bom-container">
+            </div>
+        </div>
+    </aside>
+
+    <!-- PRODUCT 모달 폼 -->
+    <div id="product-modal" class="modal-container">
+        <div class="modal-content">
+            <div style="margin: 10px 0;">
+                <select id="product-filter">
+                    <option value="productName">품목명</option>
+                    <option value="companyName">거래처명</option>
+                </select>
+                <input type="text" id="product-search">
+            </div>
+            <div class="table-wrapper">
+                <table id="product-table">
+                    <thead>
+                        <tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+    <header>
+        <nav>
+            <ul id="nav-ul">
+                <li class="main-menu"><a>구매관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">구매요청</a></li>
+                        <li><a href="">구매조회</a></li>
+                        <li><a href="">구매수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>입고관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">입고</a></li>
+                        <li><a href="">입고조회</a></li>
+                        <li><a href="">입고수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>출고관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">출고</a></li>
+                        <li><a href="">출고조회</a></li>
+                        <li><a href="">출고수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>재고관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">재고조회</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>품목관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">품목조회</a></li>
+                        <li><a href="">품목수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>BOM</a>
+                    <ul class="additional-list">
+                        <li><a href="">BOM조회</a></li>
+                        <li><a href="">BOM관리</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>계획관리</a>
+                    <ul class="additional-list">
+                        <li><a href="">계획조회</a></li>
+                        <li><a href="">계획관리</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <br>
+    <br>
+
+    <section class="form-wrapper" style="width: 550px;">
+        <select id="filter">
+            <option value="productName">품목명</option>
+        </select>
+        <input type="text" id="search">
+        <button type="button" id="reset-sort-btn">정렬 초기화</button>
+        <button type="button" id="add-bom-btn">+ 새 BOM</button>
+    </section>
+
+    <br>
+
+    <main>
+        <section id="main-section">
+            <div class="table-wrapper">
+            <table id="bomTable">
+                <thead>
+                    <tr>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            </div>
+        </section>
+    </main>
+    <br>
+    <br>
+    <footer>
+        <p class="context">
+            오픈소스프로젝트이며, 코드 수정 및 상업적이용으로써 사용이 가능합니다.
+        </p>
+        <p class="context">
+            단, 해당 프로그램을 개조하여, 판매의 목적으로 사용하는 것을 금지합니다.
+        </p>
+        <p class="context">
+            Copyright 2023. J-HYEONSEO. All right reserved.
+        </p>
+    </footer>
+</body>
+</html>

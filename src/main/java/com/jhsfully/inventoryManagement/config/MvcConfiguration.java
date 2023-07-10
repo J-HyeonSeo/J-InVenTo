@@ -20,6 +20,21 @@ public class MvcConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/templates/", "classpath:/static/")
                 .setCacheControl(CacheControl.noCache());
+
+        registry.addResourceHandler("/page/css/**")
+                .addResourceLocations("classpath:/static/css/")
+                .setCacheControl(CacheControl.noCache());
+
+        registry.addResourceHandler("/page/images/**")
+                .addResourceLocations("classpath:/static/images/")
+                .setCacheControl(CacheControl.noCache());
+
+        registry.addResourceHandler("/page/js/**")
+                .addResourceLocations("classpath:/static/js/")
+                .setCacheControl(CacheControl.noCache());
+//        registry.addResourceHandler("/**")
+//                .addResourceLocations("classpath:/templates/", "classpath:/static/")
+//                .setCacheControl(CacheControl.noCache());
     }
 
 

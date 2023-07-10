@@ -95,9 +95,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean isSkipUrl(String requestURI){
+
+        //controller resources
         if(requestURI.equals("/"))return true;
+        if(requestURI.startsWith("/css"))return true;
+        if(requestURI.startsWith("/js"))return true;
+        if(requestURI.startsWith("/images"))return true;
+        if(requestURI.startsWith("/favicon"))return true;
+        if(requestURI.startsWith("/page"))return true;
+        if(requestURI.startsWith("/admin"))return true;
+        if(requestURI.startsWith("/login"))return true;
+
+
+        //auth-rest-api
         if(requestURI.equals("/auth/signin"))return true;
         if(requestURI.equals("/auth/user/update/password"))return true;
+
+        //test-resources
         if(requestURI.startsWith("/swagger"))return true;
         if(requestURI.startsWith("/v2"))return true;
         if(requestURI.startsWith("/h2-"))return true;

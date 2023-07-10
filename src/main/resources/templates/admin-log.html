@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/mainstyle.css">
+    <link rel="stylesheet" href="css/maintable.css">
+    <link rel="stylesheet" href="css/form.css">
+    <script type="module" src="js/viewer/log-viewer.js" defer></script>
+    <title>로그 조회</title>
+</head>
+<body>
+    <input id="page-type" type="hidden" value="show">
+
+    <br>
+    <br>
+
+    <header>
+        <nav>
+            <ul id="nav-ul">
+                <li class="main-menu"><a>회원가입</a>
+                    <ul class="additional-list">
+                        <li><a href="">회원가입</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>회원수정</a>
+                    <ul class="additional-list">
+                        <li><a href="">회원수정</a></li>
+                    </ul>
+                </li>
+                <li class="main-menu"><a>사용로그</a>
+                    <ul class="additional-list">
+                        <li><a href="">유저로그</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <br>
+    <br>
+
+    <section class="form-wrapper-calendar">
+        <select id="filter">
+            <option value="username">아이디</option>
+            <option value="method">요청방식</option>
+            <option value="signature">실행된메소드</option>
+            <option value="requestUrl">요청URL</option>
+        </select>
+        <input type="text" id="search">
+        <button type="button" id="reset-sort-btn">정렬 초기화</button>
+          <label>
+            시작일자
+            <input type="date" id="startDate">
+          </label>
+          <label>
+            종료일자
+            <input type="date" id="endDate">
+          </label>
+          <button type="button" id="log-load-btn">조회</button>
+    </section>
+
+    <br>
+
+    <main>
+        <section id="main-section">
+            <div class="table-wrapper">
+            <table id="log-table">
+                <thead>
+                    <tr>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            </div>
+        </section>
+    </main>
+    <br>
+    <br>
+    <footer>
+        <p class="context">
+            오픈소스프로젝트이며, 코드 수정 및 상업적이용으로써 사용이 가능합니다.
+        </p>
+        <p class="context">
+            단, 해당 프로그램을 개조하여, 판매의 목적으로 사용하는 것을 금지합니다.
+        </p>
+        <p class="context">
+            Copyright 2023. J-HYEONSEO. All right reserved.
+        </p>
+    </footer>
+</body>
+</html>

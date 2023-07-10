@@ -34,15 +34,24 @@ import static com.jhsfully.inventoryManagement.type.RoleType.*;
 public class TokenProvider {
 
     //Access Token 기한 = 30분
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30 * 24;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;
     //Refresh Token 기한 = 2주
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14;
-
     private static final String KEY_ROLES = "roles";
     private final MemberService memberService;
     private final RefreshTokenRepository refreshTokenRepository;
-    @Value("${spring.jwt.secret}")
+
+    //외부 주입 변수 정의
+    @Value("${spring.jwt.secret}") //jwt 비밀키
     private String secretKey;
+    @Value("${auth.access-ip.origin}") //인증시 ip대조 여부
+    private boolean isCheckIp;
+    @Value("${auth.access-user-agent-origin}") //인증시 user-agent대조 여부
+    private boolean isCheckUserAgent;
+    @Value("${nginx.use}") //NGINX 사용 여부
+    private boolean isUseNginx;
+    @Value("${nginx.origin-ip.header}") //NGINX 사용 시, origin-ip의 header값
+    private String nginxIpHeader;
     
     //토큰 생성 메서드
     public String generateAccessToken(String username, List<String> roles){
@@ -74,7 +83,15 @@ public class TokenProvider {
                 .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();
 
-        RefreshToken refreshToken = new RefreshToken(refreshTokenString, request.getRemoteAddr(), request.getHeader("User-Agent"));
+        String user_ip = "";
+        //NGINX를 사용하는 사람들을 위해, IP주소를 다르게 함.
+        if(isUseNginx){
+            user_ip = request.getHeader(nginxIpHeader);
+        }else{
+            user_ip = request.getRemoteAddr();
+        }
+
+        RefreshToken refreshToken = new RefreshToken(refreshTokenString, user_ip, request.getHeader("User-Agent"));
         refreshTokenRepository.save(refreshToken);
 
         return refreshTokenString;
@@ -145,14 +162,14 @@ public class TokenProvider {
         }
 
         //로그인 할 때 접속했던 IP와 동일한지 체크.
-        if(!refreshToken.getRemoteAddress().equals(request.getRemoteAddr())){
+        if(isCheckIp && !refreshToken.getRemoteAddress().equals(request.getRemoteAddr())){
             //접속된 IP가 다르다면, 이건 진짜 탈취가능성이 높으므로, refreshToken 파기.
             refreshTokenRepository.delete(refreshToken);
             return false;
         }
 
         //로그인 할 때 접속했던 접속환경이 동일한지 체크.
-        if(!refreshToken.getUserAgent().equals(request.getHeader("User-Agent"))){
+        if(isCheckUserAgent && !refreshToken.getUserAgent().equals(request.getHeader("User-Agent"))){
             return false;
         }
 

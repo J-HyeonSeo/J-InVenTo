@@ -1,0 +1,54 @@
+
+.bom-container table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.bom-container > table table{
+    margin-left: 20px;
+}
+
+.bom-container tbody{
+    overflow: hidden;
+}
+
+.bom-container th{
+    background-color: #FF1E56;
+    color: white;
+    font-size: 1rem;
+    border: 1px solid rgb(151, 151, 151);
+}
+
+.bom-container th:first-child{
+    width: 20px;
+}
+
+.bom-container th:nth-child(3){
+    width: 200px;
+}
+
+.bom-container th:nth-child(4),
+.bom-container th:nth-child(5){
+    width: 40px;
+}
+
+
+.bom-container td{
+    border: 1px solid rgb(151, 151, 151);
+    font-size: 1.1rem;
+}
+
+td.bom-cover-border{
+    border-right: none;
+}
+
+.bom-cursor-click:hover{
+    cursor: pointer;
+    background-color: #6b6b6b;
+    color: white;
+}
+
+.bom-container tr{
+    background-color: white;
+    color: black;
+}
