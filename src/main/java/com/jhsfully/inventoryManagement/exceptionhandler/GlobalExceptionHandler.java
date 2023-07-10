@@ -56,4 +56,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<?> handleExtrasException(Exception e){
+//        return ResponseEntity.internalServerError().body(new ErrorResponse(null, "서버에 오류가 발생하였습니다."));
+//    }
+
 }

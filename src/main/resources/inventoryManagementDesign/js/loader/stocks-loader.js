@@ -5,6 +5,13 @@ export async function loadAllStockData(){
 
   try{
     const response = await requestExecute("/stocks", "get", null);
+
+    for(let i = 0; i < response.length; i++){
+      if(response[i].lackDate == null){
+        response[i].lackDate = '';
+      }
+    }
+
     return response;
   }catch(error){
     throw error;

@@ -126,7 +126,7 @@ class PurchaseServiceTest {
     void getPurchaseNotFoundFail(){
         //when
         PurchaseException exception = assertThrows(PurchaseException.class,
-                () -> purchaseService.getPurchase(10000L));
+                () -> purchaseService.getPurchase(999999L));
         //then
         assertEquals(PURCHASE_NOT_FOUND, exception.getPurchaseErrorType());
     }

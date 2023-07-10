@@ -6,11 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/mainstyle.css">
     <link rel="stylesheet" href="css/mainpage.css">
-    <title>재고관리</title>
+    <title>J-inVenTo</title>
 </head>
 <body>
     
     <header>
+        <a href="/main.html">
+            <img class="left-top-logo" src="/images/LOGO_BG_WH.png" alt="logo">
+        </a>
         <nav>
             <ul id="nav-ul">
                 <li class="main-menu"><a>구매관리</a>
@@ -54,12 +57,6 @@
                         <li><a href="">BOM관리</a></li>
                     </ul>
                 </li>
-                <li class="main-menu"><a>계획관리</a>
-                    <ul class="additional-list">
-                        <li><a href="">계획조회</a></li>
-                        <li><a href="">계획관리</a></li>
-                    </ul>
-                </li>
             </ul>
         </nav>
     </header>
@@ -67,7 +64,7 @@
     <main>
 
         <section id="main-section">
-            <h1>재고관리 프로그램</h1>
+            <h1 style="margin-top: 5rem;">J - inVenTo (재고관리 프로그램)</h1>
             <h2>프로그램 소개</h2>
             <div class="card-group">
                 <div class="card">
@@ -75,6 +72,7 @@
                     <hr>
                     <br>
                     <img src="images/purchase.png" alt="">
+                    <br>
                     <br>
                     <p>구매에 관한 기능을 제공합니다.</p>
                     <p>구매 요청, 조회, 관리등을 수행합니다.</p>
@@ -85,6 +83,7 @@
                     <br>
                     <img src="images/inbound.png" alt="">
                     <br>
+                    <br>
                     <p>구매한 건에 대한 입고기능을 제공합니다.</p>
                     <p>입고를 통해 재고를 확보 및 확인 할 수 있습니다.</p>
                 </div>
@@ -94,6 +93,7 @@
                     <br>
                     <img src="images/outbound.png" alt="">
                     <br>
+                    <br>
                     <p>남은 재고에 대해 출고기능을 제공합니다.</p>
                     <p>출고를 진행하면, 재고를 차감합니다.</p>
                     <p>BOM단위의 출고기능을 지원합니다.</p>
@@ -101,42 +101,81 @@
             </div>
             <br>
             <br>
-            <h1>구매 프로세스</h1>
+            <h1>간소화된 재고 프로세스</h1>
             <div class="introduce">
-                <img src="" alt="" width="700px" height="500px">
+                <div class="img-context-wrapper">
+                    <img src="images/PROCESS.png" alt="chart" width="700px">
+                    <div class="context-wrapper">
+                        <p class="context">J-InVenTo는 간소화된 프로세스를 지향합니다.</p>
+                        <p class="context">"구매 -> 입고 -> 출고"</p>
+                        <p class="context">3단계로써 가장 기본적인 재고관리 프로세스입니다.</p>
+                        <p class="context">간단하기에, 소규모의 재고관리에 적합하고,</p>
+                        <p class="context">간단한 환경 구축으로 쉽게 사용이 가능합니다.</p>
+                    </div>
+                </div>
             </div>
-            <h1>입고 프로세스</h1>
+            <h1>직관적인 UI</h1>
             <div class="introduce">
-                <img src="" alt="" width="700px" height="500px">
+                <div class="img-context-wrapper">
+                    <img src="images/Direct-UI.png" alt="chart" width="700px">
+                    <div class="context-wrapper">
+                        <p class="context">해당 프로그램은 최대한 직관적이게 보이게 노력하였습니다.</p>
+                        <p class="context">UI를 최대한 신경써서 작업하였습니다.</p>
+                        <br>
+                        <p class="context">간소화된 재고관리 프로그램인 만큼, </p>
+                        <p class="context">최대한 보기 편하고 직관적인 UI를 적용하였습니다.</p>
+                        <br>
+                        <p class="context">이를 통해, 배우는 시간을 단축하고, </p>
+                        <p class="context">빠르게 현장에 도입할 수 있습니다.</p>
+                    </div>
+                </div>
             </div>
-            <h1>출고 프로세스</h1>
+            <h1>차트로 보는 통계</h1>
             <div class="introduce">
-                <img src="" alt="" width="700px" height="500px">
+                <div class="img-context-wrapper">
+                    <img src="images/Chart-capture.png" alt="chart" width="700px">
+                    <div class="context-wrapper">
+                        <p class="context">구매 및 출고 목록은 차트를 통해 한 눈에 확인할 수 있습니다.</p>
+                        <p class="context">일별, 월별, 연별로 차트 조회가 가능합니다.</p>
+                        <br>
+                        <p class="context">직관적인 차트로 쉽게 통계를 확인할 수 있습니다.</p>
+                        <p class="context">또한, 차트에 보이는 강조점에 마우스를 올려두면, </p>
+                        <p class="context">해당 시점의 상세 정보를 확인할 수 있습니다.</p>
+                    </div>
+                </div>
             </div>
-            <h1>BOM(Bill Of Materials) 관리</h1>
+            <h1>오픈소스 프로젝트</h1>
             <div class="introduce">
-                <img src="" alt="" width="700px" height="500px">
+                <p class="context">
+                    해당 프로그램은 오픈소스이며, 무료로 상업적인 용도로 사용이 가능합니다.
+                </p>
+            </div>
+            <h1>기술 미지원</h1>
+            <div class="introduce">
+                <p class="context">
+                    해당 프로그램은 포트폴리오를 위한 실습프로젝트로, 기술 지원은 지원하지 않습니다. 
+                </p>
+                <p class="context">
+                    단, 사용 중에 프로그램에 대한 버그는 Issue에 올려주시면, 검토하고 수정합니다.
+                </p>
+                <p class="context">
+                    수정 요구 사항이 의도한 기능을 위배하거나, 개인화가 목적일 경우에는 수정 요청을 철회합니다.
+                </p>
             </div>
             <br>
             <br>
-            <p class="context">
-                해당 프로그램은 Spring Boot 기반의 웹프로그램입니다.
-            </p>
-            <p class="context">
-                최초 사용시에, MySQL을 설치하고, inventory데이터베이스를 생성하여야 합니다.
-            </p>
-            <p class="context">
-                또한, 별도로 존재하는 계정 관리 프로그램을 사용하여, 사용자 계정을 만들어야 합니다.
-            </p>
         </section>
 
     </main>
     <footer>
         <p class="context">
+            J - InVenTo
+        </p>
+        <p class="context">
             오픈소스프로젝트이며, 코드 수정 및 상업적이용으로써 사용이 가능합니다.
         </p>
         <p class="context">
-            단, 해당 프로그램을 개조하여, 판매의 목적으로 사용하는 것을 금지합니다.
+            단, 해당 프로그램을 수정하여, 판매의 목적으로 사용하는 것을 금지합니다.
         </p>
         <p class="context">
             Copyright 2023. J-HYEONSEO. All right reserved.

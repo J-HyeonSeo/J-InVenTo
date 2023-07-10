@@ -18,6 +18,22 @@ body{
     color: white;
 }
 
+/*==============================   로고   =================================*/
+
+.left-top-logo{
+    position: fixed;
+    left: 0.5rem;
+    top: 0.5rem;
+    height: 3rem;
+    border-radius: 10px;
+    z-index: 150;
+}
+
+.left-top-logo:hover{
+    scale: 1.1;
+}
+
+
 /*==============================네비게이션바================================*/
 
 nav{
@@ -86,10 +102,10 @@ nav{
 footer{
     padding: 2rem;
     background-color: rgb(32, 32, 32);
-    color: rgb(255, 255, 255);
 }
 
 footer .context{
     margin: 0;
     font-size: 0.5rem;
+    color: rgb(255, 255, 255);
 }

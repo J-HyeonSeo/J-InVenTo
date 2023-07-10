@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NOT_FOUND;
@@ -32,9 +33,14 @@ public class PurchaseService implements PurchaseInterface{
 
     @Override
     public PurchaseDto.PurchaseResponse getPurchase(Long id){
-        return purchaseRepository.getPurchase(id);
-//        return PurchaseEntity.toDto(purchaseRepository.findById(id)
-//                .orElseThrow(() -> new PurchaseException(PURCHASE_NOT_FOUND)));
+
+        Optional<PurchaseDto.PurchaseResponse> purchase = purchaseRepository.getPurchase(id);
+
+        if(!purchase.isPresent()){
+            throw new PurchaseException(PURCHASE_NOT_FOUND);
+        }
+
+        return purchase.get();
     }
 
     @Override

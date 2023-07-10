@@ -25,7 +25,7 @@ class StocksViewer{
 
         this.stocksTableManager.table_initiallize();
         this.searchElement.addEventListener("input", this.filterByInput.bind(this));
-        this.resetSortBtn.addEventListener('click', this.stocksTableManager.bind(this.stocksTableManager));
+        this.resetSortBtn.addEventListener('click', this.stocksTableManager.resetOrder.bind(this.stocksTableManager));
 
         loadAllStockData()
         .then(response => {

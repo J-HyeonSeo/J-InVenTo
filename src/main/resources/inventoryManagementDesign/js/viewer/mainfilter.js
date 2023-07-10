@@ -5,6 +5,10 @@ export function doSearchFilter(dataset, filterProperty, inputValue){
 
     const filtered = []
 
+    if(dataset == null){
+        return filtered;
+    }
+
     dataset.forEach(item => {
         
         if(item != null && item[filterProperty].includes(inputValue)){

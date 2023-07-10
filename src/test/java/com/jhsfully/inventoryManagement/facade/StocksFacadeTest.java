@@ -73,9 +73,9 @@ class StocksFacadeTest {
         assertAll(
                 () -> assertEquals(9, allStocks.size()),
                 () -> assertEquals(1, allStocks.get(0).getProductId()),
-                    () -> assertEquals(1400000, allStocks.get(0).getPrice()),
+                    () -> assertEquals(70000, allStocks.get(0).getPrice()),
                     () -> assertEquals(20, allStocks.get(0).getAmount()),
-                    () -> assertEquals(LocalDate.of(2023, 6, 18), allStocks.get(0).getLackDate()),
+                    () -> assertEquals(LocalDate.of(2023, 7, 18), allStocks.get(0).getLackDate()),
                     () -> assertEquals(80, allStocks.get(0).getLackAmount()),
 
                 () -> assertEquals(3, allStocks.get(1).getProductId()),
@@ -83,12 +83,12 @@ class StocksFacadeTest {
 
                 () -> assertEquals(4, allStocks.get(2).getProductId()),
                     () -> assertEquals(1, allStocks.get(2).getAmount()),
-                    () -> assertEquals(LocalDate.of(2023, 6, 21), allStocks.get(2).getLackDate()),
+                    () -> assertEquals(LocalDate.of(2023, 7, 21), allStocks.get(2).getLackDate()),
                     () -> assertEquals(299, allStocks.get(2).getLackAmount()),
 
                 () -> assertEquals(5, allStocks.get(3).getProductId()),
                     () -> assertEquals(1, allStocks.get(3).getAmount()),
-                    () -> assertEquals(LocalDate.of(2023, 6, 21), allStocks.get(3).getLackDate()),
+                    () -> assertEquals(LocalDate.of(2023, 7, 21), allStocks.get(3).getLackDate()),
                     () -> assertEquals(299, allStocks.get(3).getLackAmount()),
 
                 () -> assertEquals(6, allStocks.get(4).getProductId()),
@@ -98,7 +98,7 @@ class StocksFacadeTest {
 
                 () -> assertEquals(7, allStocks.get(5).getProductId()),
                     () -> assertEquals(1, allStocks.get(5).getAmount()),
-                    () -> assertEquals(LocalDate.of(2023, 6, 21), allStocks.get(5).getLackDate()),
+                    () -> assertEquals(LocalDate.of(2023, 7, 21), allStocks.get(5).getLackDate()),
                     () -> assertEquals(299, allStocks.get(5).getLackAmount()),
 
                 () -> assertEquals(8, allStocks.get(6).getProductId()),

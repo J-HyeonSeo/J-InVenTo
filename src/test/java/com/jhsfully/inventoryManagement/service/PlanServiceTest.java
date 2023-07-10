@@ -50,7 +50,7 @@ class PlanServiceTest {
     void getPlansSuccess(){
         //when
         List<PlanDto.PlanResponse> plans = planService.getPlans(LocalDate.of(2023, 6, 1),
-                LocalDate.of(2023, 6, 20));
+                LocalDate.of(2023, 7, 20));
 
         //then
         assertEquals(2, plans.size());

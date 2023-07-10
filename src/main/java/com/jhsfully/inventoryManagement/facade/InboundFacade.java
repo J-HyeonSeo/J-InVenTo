@@ -94,7 +94,7 @@ public class InboundFacade {
         //현재 입고수량을 더했을 경우, 구매량을 초과하는지 검증해야함.
 //        inboundSum += request.getAmount();
 
-        if(purchase.getAmount() > canInboundAmount){
+        if(request.getAmount() > canInboundAmount){
             throw new InboundException(InboundErrorType.INBOUND_EXCEED_PURCHASE_AMOUNT);
         }
         return purchase;

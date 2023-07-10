@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PurchaseRepository extends JpaRepository<PurchaseEntity, Long> {
@@ -21,7 +22,7 @@ public interface PurchaseRepository extends JpaRepository<PurchaseEntity, Long> 
             "WHERE p.id = ?1 " +
             "GROUP BY p.id"
     )
-    PurchaseDto.PurchaseResponse getPurchase(Long id);
+    Optional<PurchaseDto.PurchaseResponse> getPurchase(Long id);
 
     @Query(
             "SELECT " +

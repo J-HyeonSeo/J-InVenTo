@@ -14,7 +14,7 @@ export class LogDataLoader{
             const date = this.dateManager.getDateRange(option);
 
             const response = await requestExecute("/admin/log?startDate=" + date.start + "&endDate=" + date.end, "get", null);
-
+            
             return response;
 
         }catch(error){

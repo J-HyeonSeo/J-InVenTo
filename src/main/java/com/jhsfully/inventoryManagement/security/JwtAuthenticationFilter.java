@@ -95,6 +95,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean isSkipUrl(String requestURI){
+        if(requestURI.equals("/"))return true;
         if(requestURI.equals("/auth/signin"))return true;
         if(requestURI.equals("/auth/user/update/password"))return true;
         if(requestURI.startsWith("/swagger"))return true;
