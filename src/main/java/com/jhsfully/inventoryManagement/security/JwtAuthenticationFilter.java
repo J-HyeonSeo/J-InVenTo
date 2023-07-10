@@ -105,6 +105,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(requestURI.startsWith("/page"))return true;
         if(requestURI.startsWith("/admin"))return true;
         if(requestURI.startsWith("/login"))return true;
+        if(requestURI.startsWith("/edit-password"))return true;
 
 
         //auth-rest-api

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,59 +10,8 @@
     <title>J-inVenTo</title>
 </head>
 <body>
-    
-    <header>
-        <a href="/page/main">
-            <img class="left-top-logo" src="/images/LOGO_BG_WH.png" alt="logo">
-        </a>
-        <nav>
-            <ul id="nav-ul">
-                <li class="main-menu"><a>구매관리</a>
-                    <ul class="additional-list">
-                        <li><a href="/page/purchase-show">구매조회</a></li>
-                        <li><a href="/page/purchase-manage">구매관리</a></li>
-                        <li><a href="/page-purchase-chart">구매통계</a></li>
-                    </ul>
-                </li>
-                <li class="main-menu"><a>입고관리</a>
-                    <ul class="additional-list">
-                        <li><a href="/page/inbound-show">입고조회</a></li>
-                        <li><a href="/page/inbound-manage">입고관리</a></li>
-                    </ul>
-                </li>
-                <li class="main-menu"><a>출고관리</a>
-                    <ul class="additional-list">
-                        <li><a href="/page/outbound-show">출고조회</a></li>
-                        <li><a href="/page/outbound-manage">출고관리</a></li>
-                        <li><a href="/page/outbound-chart">출고통계</a></li>
-                    </ul>
-                </li>
-                <li class="main-menu"><a>출고계획</a>
-                    <ul class="additional-list">
-                        <li><a href="/page/plan-show">계획조회</a></li>
-                        <li><a href="/page/plan-manage">계획관리</a></li>
-                    </ul>
-                </li>
-                <li class="main-menu"><a>재고관리</a>
-                    <ul class="additional-list">
-                        <li><a href="/page/stocks-show">재고조회</a></li>
-                    </ul>
-                </li>
-                <li class="main-menu"><a>품목관리</a>
-                    <ul class="additional-list">
-                        <li><a href="/page/product-show">품목조회</a></li>
-                        <li><a href="/page/product-manage">품목수정</a></li>
-                    </ul>
-                </li>
-                <li class="main-menu"><a>BOM</a>
-                    <ul class="additional-list">
-                        <li><a href="/page/bom-show">BOM조회</a></li>
-                        <li><a href="/page/bom-manage">BOM관리</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </header>
+
+    <header th:replace="/fragments/layout.html :: fragment-header"></header>
 
     <main>
 
@@ -170,19 +119,6 @@
         </section>
 
     </main>
-    <footer>
-        <p class="context">
-            J - InVenTo
-        </p>
-        <p class="context">
-            오픈소스프로젝트이며, 코드 수정 및 상업적이용으로써 사용이 가능합니다.
-        </p>
-        <p class="context">
-            단, 해당 프로그램을 수정하여, 판매의 목적으로 사용하는 것을 금지합니다.
-        </p>
-        <p class="context">
-            Copyright 2023. J-HYEONSEO. All right reserved.
-        </p>
-    </footer>
+    <footer th:replace="/fragments/layout.html :: fragment-footer"></footer>
 </body>
 </html>

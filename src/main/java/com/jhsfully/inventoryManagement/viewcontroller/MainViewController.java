@@ -8,24 +8,23 @@ import java.security.Principal;
 @Controller
 public class MainViewController {
 
+    //Main View
+
     @GetMapping("/")
     public String getMainPage(){
-        return "redirect:/page/main";
+        return "main";
     }
 
-    @GetMapping("/page/main")
-    public String mainPage(Principal principal){
-        return "main";
-//        if(principal == null || principal.getName() == null || principal.getName().trim().equals("")){
-//            return "login.html";
-//        }
-//        return "main.html";
-    }
+    //Login View
 
     @GetMapping("/login")
     public String loginPage(){
-        System.out.println("/login/132입장함.");
         return "login";
+    }
+
+    @GetMapping("/edit-password")
+    public String editPasswordPage(){
+        return "edit-password";
     }
 
 }
