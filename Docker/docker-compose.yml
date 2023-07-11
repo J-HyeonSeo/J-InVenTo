@@ -1,0 +1,47 @@
+version: '2'
+services:
+
+  jinvento:
+    image: jinvento:0.0.1
+    container_name: jinvento
+    ports:
+      - "8080:8080"
+    networks:
+      - jinvento-network
+    depends_on:
+      - jinvento-mysql
+      - jinvento-redis
+    restart: always
+
+  jinvento-nginx:
+    image: jinvento-nginx:0.0.1
+    container_name: jinvento-nginx
+    ports:
+      - "8085:8085"
+    networks:
+      - jinvento-network
+
+  jinvento-mysql:
+    image: mysql
+    container_name: jinvento-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: inventory
+      MYSQL_USER: inventory
+      MYSQL_PASSWORD: inventory
+      MYSQL_DATABASE: inventory
+    ports:
+      - "3306:3306"
+    networks:
+      - jinvento-network
+
+  jinvento-redis:
+    image: redis
+    container_name: jinvento-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - jinvento-network
+
+networks:
+  jinvento-network:
+    driver: bridge
