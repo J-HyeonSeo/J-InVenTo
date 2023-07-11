@@ -23,6 +23,12 @@ public class AuthController {
     private final MemberService memberService;
     private final TokenProvider tokenProvider;
 
+    @GetMapping("/admin/ping")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> isAdmin(){
+        return ResponseEntity.ok(true);
+    }
+
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getMembers(){

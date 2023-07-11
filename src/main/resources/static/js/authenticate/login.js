@@ -31,7 +31,7 @@ window.addEventListener('load', function() {
             
             alert("성공적으로 로그인하였습니다.");
     
-            window.location.assign("/main.html");
+            window.location.href = '/';
         }).catch(response => {
             alert(response.errorMessage);
         });

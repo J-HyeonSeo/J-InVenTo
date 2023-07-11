@@ -2,6 +2,7 @@ import { TableManager, TableOnClickSet } from "../manager/table-manager.js";
 import { doSearchFilter } from "../viewer/mainfilter.js";
 import { loadUserDatas } from "../loader/user-loader.js";
 import { requestExecute } from "./request.js";
+import { isAdmin } from "./is-admin.js";
 
 class UserModifier{
 
@@ -271,7 +272,7 @@ class UserModifier{
 }
 
 window.addEventListener('load', function() {
-
+    isAdmin();
     const userModifier = new UserModifier();
     userModifier.initialize();
 

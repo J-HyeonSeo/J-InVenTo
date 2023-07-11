@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,35 +7,13 @@
     <link rel="stylesheet" href="css/mainstyle.css">
     <link rel="stylesheet" href="css/mainpage.css">
     <link rel="stylesheet" href="css/form.css">
-    <link rel="stylesheet" href="css/login.css">
-    <script src="js/main.js" defer></script>
-    <script src="js/authenticate/request.js" defer></script>
-    <script src="js/authenticate/register.js" defer></script>
+    <script type="module" src="js/authenticate/register.js" defer></script>
     <title>회원 가입</title>
 </head>
 <body>
-    
-    <header>
-        <nav>
-            <ul id="nav-ul">
-                <li class="main-menu"><a>회원가입</a>
-                    <ul class="additional-list">
-                        <li><a href="">회원가입</a></li>
-                    </ul>
-                </li>
-                <li class="main-menu"><a>회원수정</a>
-                    <ul class="additional-list">
-                        <li><a href="">회원수정</a></li>
-                    </ul>
-                </li>
-                <li class="main-menu"><a>사용로그</a>
-                    <ul class="additional-list">
-                        <li><a href="">유저로그</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </header>
+
+    <header th:replace="/fragments/layout.html :: fragment-admin-header"></header>
+
     <br>
     <br>
     <main>
@@ -75,20 +53,21 @@
                     <div class="permission-list-wrapper">
                         <div class="permission-list">
                             <ul id="unsetted-permissions">
-                                <li data-role="ROLE_PRODUCT_READ" onclick="setRole(event)">품목 조회</li>
-                                <li data-role="ROLE_BOM_READ" onclick="setRole(event)">BOM 조회</li>
-                                <li data-role="ROLE_PURCHASE_READ" onclick="setRole(event)">구매 조회</li>
-                                <li data-role="ROLE_INBOUND_READ" onclick="setRole(event)">입고 조회</li>
-                                <li data-role="ROLE_STOCKS_READ" onclick="setRole(event)">재고 조회</li>
-                                <li data-role="ROLE_OUTBOUND_READ" onclick="setRole(event)">출고 조회</li>
-                                <li data-role="ROLE_PLAN_READ" onclick="setRole(event)">출고 계획 조회</li>
-                                <li data-role="ROLE_PRODUCT_MANAGE" onclick="setRole(event)">품목 관리</li>
-                                <li data-role="ROLE_BOM_MANAGE" onclick="setRole(event)">BOM 관리</li>
-                                <li data-role="ROLE_PURCHASE_MANAGE" onclick="setRole(event)">구매 관리</li>
-                                <li data-role="ROLE_INBOUND_MANAGE" onclick="setRole(event)">입고 관리</li>
-                                <li data-role="ROLE_STOCKS_MANAGE" onclick="setRole(event)">재고 관리</li>
-                                <li data-role="ROLE_OUTBOUND_MANAGE" onclick="setRole(event)">출고 관리</li>
-                                <li data-role="ROLE_PLAN_MANAGE" onclick="setRole(event)">출고 계획 관리</li>
+                                <li data-role="ROLE_PRODUCT_READ">품목 조회</li>
+                                <li data-role="ROLE_BOM_READ">BOM 조회</li>
+                                <li data-role="ROLE_PURCHASE_READ">구매 조회</li>
+                                <li data-role="ROLE_INBOUND_READ">입고 조회</li>
+                                <li data-role="ROLE_STOCKS_READ">재고 조회</li>
+                                <li data-role="ROLE_OUTBOUND_READ">출고 조회</li>
+                                <li data-role="ROLE_PLAN_READ">출고 계획 조회</li>
+                                <li data-role="ROLE_PRODUCT_MANAGE">품목 관리</li>
+                                <li data-role="ROLE_BOM_MANAGE">BOM 관리</li>
+                                <li data-role="ROLE_PURCHASE_MANAGE">구매 관리</li>
+                                <li data-role="ROLE_INBOUND_MANAGE">입고 관리</li>
+                                <li data-role="ROLE_STOCKS_MANAGE">재고 관리</li>
+                                <li data-role="ROLE_OUTBOUND_MANAGE">출고 관리</li>
+                                <li data-role="ROLE_PLAN_MANAGE">출고 계획 관리</li>
+                                <li data-role="ROLE_ADMIN">관리자</li>
                             </ul>
                         </div>
                         ->
@@ -107,16 +86,6 @@
             <br>
         </section>
     </main>
-    <footer>
-        <p class="context">
-            오픈소스프로젝트이며, 코드 수정 및 상업적이용으로써 사용이 가능합니다.
-        </p>
-        <p class="context">
-            단, 해당 프로그램을 개조하여, 판매의 목적으로 사용하는 것을 금지합니다.
-        </p>
-        <p class="context">
-            Copyright 2023. J-HYEONSEO. All right reserved.
-        </p>
-    </footer>
+    <footer th:replace="/fragments/layout.html :: fragment-footer"></footer>
 </body>
 </html>

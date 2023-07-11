@@ -7,7 +7,7 @@
 <body>
 
   <header th:fragment="fragment-header">
-    <a href="/page/main">
+    <a href="/">
       <img class="left-top-logo" src="/images/LOGO_BG_WH.png" alt="logo">
     </a>
     <nav>
@@ -16,7 +16,7 @@
           <ul class="additional-list">
             <li><a href="/page/purchase-show">구매조회</a></li>
             <li><a href="/page/purchase-manage">구매관리</a></li>
-            <li><a href="/page-purchase-chart">구매통계</a></li>
+            <li><a href="/page/purchase-chart">구매통계</a></li>
           </ul>
         </li>
         <li class="main-menu"><a>입고관리</a>
@@ -53,6 +53,28 @@
           <ul class="additional-list">
             <li><a href="/page/bom-show">BOM조회</a></li>
             <li><a href="/page/bom-manage">BOM관리</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <header th:fragment="fragment-admin-header">
+    <nav>
+      <ul id="nav-ul">
+        <li class="main-menu"><a>회원가입</a>
+          <ul class="additional-list">
+            <li><a href="/admin/page/admin-register">회원가입</a></li>
+          </ul>
+        </li>
+        <li class="main-menu"><a>회원수정</a>
+          <ul class="additional-list">
+            <li><a href="/admin/page/admin-modify">회원수정</a></li>
+          </ul>
+        </li>
+        <li class="main-menu"><a>사용로그</a>
+          <ul class="additional-list">
+            <li><a href="/admin/page/admin-log">유저로그</a></li>
           </ul>
         </li>
       </ul>

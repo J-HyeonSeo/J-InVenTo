@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,27 +40,7 @@
         </div>
     </div>
 
-    <header>
-        <nav>
-            <ul id="nav-ul">
-                <li class="main-menu"><a>회원가입</a>
-                    <ul class="additional-list">
-                        <li><a href="">회원가입</a></li>
-                    </ul>
-                </li>
-                <li class="main-menu"><a>회원수정</a>
-                    <ul class="additional-list">
-                        <li><a href="">회원수정</a></li>
-                    </ul>
-                </li>
-                <li class="main-menu"><a>사용로그</a>
-                    <ul class="additional-list">
-                        <li><a href="">유저로그</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </header>
+    <header th:replace="/fragments/layout.html :: fragment-admin-header"></header>
 
     <br>
     <br>
@@ -117,16 +97,6 @@
             <br>
         </section>
     </main>
-    <footer>
-        <p class="context">
-            오픈소스프로젝트이며, 코드 수정 및 상업적이용으로써 사용이 가능합니다.
-        </p>
-        <p class="context">
-            단, 해당 프로그램을 개조하여, 판매의 목적으로 사용하는 것을 금지합니다.
-        </p>
-        <p class="context">
-            Copyright 2023. J-HYEONSEO. All right reserved.
-        </p>
-    </footer>
+    <footer th:replace="/fragments/layout.html :: fragment-footer"></footer>
 </body>
 </html>

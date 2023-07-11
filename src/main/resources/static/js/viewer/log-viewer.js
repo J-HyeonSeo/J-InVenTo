@@ -1,6 +1,7 @@
 import { LogDataLoader } from "../loader/log-loader.js";
 import { TableManager, TableOnClickSet } from "../manager/table-manager.js";
 import {doSearchFilter} from "../viewer/mainfilter.js";
+import { isAdmin } from "../authenticate/is-admin.js";
 
 class LogViewer{
 
@@ -51,6 +52,7 @@ class LogViewer{
 }
 
 window.addEventListener('load', function(){
+    isAdmin();
     const logViewer = new LogViewer();
     logViewer.viewerInitailize();
 })

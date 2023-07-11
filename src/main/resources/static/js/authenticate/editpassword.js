@@ -1,38 +1,46 @@
-const idArea = document.getElementById("username");
-const originPasswordArea = document.getElementById("origin-password");
-const newPasswordArea = document.getElementById("new-password");
+import {requestExecute} from './request.js';
 
-const editButton = document.getElementById("edit-password-btn");
+window.addEventListener('load', function(){
 
-function handleKey(event){
-    if (event.key === "Enter") {
-        event.preventDefault(); // 기본 동작(페이지 새로고침)을 막음
-        editPasswordExecute();
-    }
-}
+    const idArea = document.getElementById("username");
+    const originPasswordArea = document.getElementById("origin-password");
+    const newPasswordArea = document.getElementById("new-password");
 
-function editPasswordExecute(){
+    const editButton = document.getElementById("edit-password-btn");
 
-    const username = idArea.value;
-    const originPassword = originPasswordArea.value;
-    const newPassword = newPasswordArea.value;
-
-    body = {
-        'username' : username,
-        'originPassword' : originPassword,
-        'newPassword' : newPassword
+    function handleKey(event){
+        event.stopPropagation();
+        if (event.key === "Enter") {
+            event.preventDefault(); // 기본 동작(페이지 새로고침)을 막음
+            editPasswordExecute();
+        }
     }
 
-    requestExecute('/auth/user/update/password', 'put', body).then(response => {
-        alert("비밀번호가 성공적으로 변경되었습니다.");
-        window.location.assign("/login.html");
-    }).catch(response => {
-        alert(response);
-    });
+    function editPasswordExecute(){
 
-}
+        const username = idArea.value;
+        const originPassword = originPasswordArea.value;
+        const newPassword = newPasswordArea.value;
 
-editButton.addEventListener('click', editPasswordExecute);
-newPasswordArea.addEventListener('keydown', handleKey);
+        const body = {
+            'username' : username,
+            'originPassword' : originPassword,
+            'newPassword' : newPassword
+        }
 
-const pwChangeButton = document.getElementById("password-change");
+        requestExecute('/auth/user/update/password', 'put', body).then(response => {
+            alert("비밀번호가 성공적으로 변경되었습니다.");
+            window.location.href = "/login";
+        }).catch(response => {
+            alert(response.errorMessage);
+        });
+
+    }
+
+    editButton.addEventListener('click', editPasswordExecute);
+    newPasswordArea.addEventListener('keydown', handleKey);
+
+    const pwChangeButton = document.getElementById("password-change");
+
+});
+
