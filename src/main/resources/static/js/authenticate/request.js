@@ -59,7 +59,7 @@ export async function requestExecute(url, methodType, bodyContent, count=0){
             }
 
             alert("로그인이 필요합니다.");
-            window.location.href = "/login.html";
+            window.location.href = "/login";
         }else{
             const data = await response.json();
             throw(data);
