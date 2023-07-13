@@ -1,3 +1,5 @@
+![LOGO_BG_WH](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/569db4a4-765e-4fa8-9ef9-a8640e498bfb)
+
 # J-InVenTo (재고관리 프로그램)
 
 ---
@@ -170,4 +172,54 @@ spring boot 프로젝트를 `.jar`로 빌드하고, 이를 `docker`에 올려서
 
 ![login](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/ed525bf5-fa1c-4b42-a6d7-1e221d06431f)
 
+### 비밀번호 변경
 
+![edit-password](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/5f46bd86-f5e4-4946-89df-4157498b8fcc)
+
+### 메인 페이지
+
+![main-page](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/10c68777-2f45-4de0-b684-f91daae77c6b)
+
+### 품목 추가
+
+![add-product](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/dadd3fca-da2b-4af0-ac6b-a7c081788520)
+
+### BOM 추가
+
+![add-bom](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/ac6c593b-d4b2-4ede-8912-3fc46fd8216f)
+
+### 출고 계획 추가
+
+![add-plan](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/ead0555e-de75-4a0b-bf4c-472b1aa3a5b6)
+
+### 구매 요청
+
+![add-purchase](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/54ce0f56-08f5-4e6c-a68c-f5cbba19a97a)
+
+### 입고 수행
+
+![add-inbound](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/17c888c7-f0d8-441e-8c32-616cbfff0d6c)
+
+### 재고 조회
+
+![show-stocks](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/c139b9b0-f05f-4bc8-9227-64b9a4195c9d)
+
+### 출고 수행
+
+![add-outbound](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/5c13c467-3c21-4862-99bd-03780e71f788)
+
+### 구매 통계 차트
+
+![purchase-chart](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/53e8899d-88e4-4659-85c0-658d7164b446)
+
+### 회원 가입 (관리자 페이지)
+
+![admin-register](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/7bef3097-9cf9-41a4-a851-ed7acf657f42)
+
+### 회원 수정 (관리자 페이지)
+
+![admin-modify](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/fc174687-15ee-4eb1-9382-73af21403191)
+
+### 유저 로그 조회 (관리자 페이지)
+
+![admin-log](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/6b8dd72c-6c25-4555-a003-d436935929a1)
