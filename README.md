@@ -166,4 +166,8 @@ spring boot 프로젝트를 `.jar`로 빌드하고, 이를 `docker`에 올려서
 
 ## 프로젝트 시연
 
+### 로그인
+
+![login](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/ed525bf5-fa1c-4b42-a6d7-1e221d06431f)
+
 
