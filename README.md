@@ -1,4 +1,5 @@
-![LOGO_BG_WH](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/569db4a4-765e-4fa8-9ef9-a8640e498bfb)
+![LOGO_BG_WH](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/bc4fc2df-6311-424a-a6af-9d30e501519a)
+
 
 # J-InVenTo (재고관리 프로그램)
 
@@ -47,6 +48,12 @@
 또한, Redis를 통해 Locking을 수행하므로, 분산 환경에서도 동작이 가능합니다.`
 - `MySQL : 실질적인 데이터는 MySQL에 저장됩니다.`
 - `NGINX : 해당 프로젝트는 Docker환경 및 NGINX환경을 지원합니다.`
+
+---
+
+## ERD 설계
+
+![image](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/6560b8f0-e03c-4cc2-9ab8-3a84ea1ea8c3)
 
 ---
 
@@ -170,56 +177,56 @@ spring boot 프로젝트를 `.jar`로 빌드하고, 이를 `docker`에 올려서
 
 ### 로그인
 
-![login](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/ed525bf5-fa1c-4b42-a6d7-1e221d06431f)
+![login](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/fd561926-0fb1-4c58-9c89-bef533a332af)
 
 ### 비밀번호 변경
 
-![edit-password](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/5f46bd86-f5e4-4946-89df-4157498b8fcc)
+![edit-password](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/33dca5bb-b95e-4e2d-a0fd-c1527e7fff3f)
 
 ### 메인 페이지
 
-![main-page](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/10c68777-2f45-4de0-b684-f91daae77c6b)
+![main-page](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/ac0dbc46-25dd-43db-bb41-bc4fab84ef06)
 
 ### 품목 추가
 
-![add-product](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/dadd3fca-da2b-4af0-ac6b-a7c081788520)
+![add-product](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/598697ab-919a-4fe1-8a51-963727324362)
 
 ### BOM 추가
 
-![add-bom](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/ac6c593b-d4b2-4ede-8912-3fc46fd8216f)
+![add-bom](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/1d97dd40-9d7c-436b-8246-e4318be27020)
 
 ### 출고 계획 추가
 
-![add-plan](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/ead0555e-de75-4a0b-bf4c-472b1aa3a5b6)
+![add-plan](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/ab78dc45-f46d-4b66-bde6-07832ba20403)
 
 ### 구매 요청
 
-![add-purchase](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/54ce0f56-08f5-4e6c-a68c-f5cbba19a97a)
+![add-purchase](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/4aa3a0d2-7c13-4143-bfad-8bc414bdf3dd)
 
 ### 입고 수행
 
-![add-inbound](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/17c888c7-f0d8-441e-8c32-616cbfff0d6c)
+![add-inbound](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/1c4d5aa9-4c6b-46e9-8ecd-2afc1f661737)
 
 ### 재고 조회
 
-![show-stocks](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/c139b9b0-f05f-4bc8-9227-64b9a4195c9d)
+![show-stocks](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/a44e2142-0090-4678-9ea8-9ec4345d08ab)
 
 ### 출고 수행
 
-![add-outbound](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/5c13c467-3c21-4862-99bd-03780e71f788)
+![add-outbound](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/5064e1f7-7aaf-4d85-b2a3-7721150b0aba)
 
 ### 구매 통계 차트
 
-![purchase-chart](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/53e8899d-88e4-4659-85c0-658d7164b446)
+![purchase-chart](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/8e731680-6624-40e9-a11c-e88fcff220d5)
 
 ### 회원 가입 (관리자 페이지)
 
-![admin-register](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/7bef3097-9cf9-41a4-a851-ed7acf657f42)
+![admin-register](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/d592b6e1-ce6b-461c-9217-ff4371442849)
 
 ### 회원 수정 (관리자 페이지)
 
-![admin-modify](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/fc174687-15ee-4eb1-9382-73af21403191)
+![admin-modify](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/30f1630d-6aed-46c1-9c0e-e965b42c0dff)
 
 ### 유저 로그 조회 (관리자 페이지)
 
-![admin-log](https://github.com/J-HyeonSeo/inventory_management/assets/47245112/6b8dd72c-6c25-4555-a003-d436935929a1)
+![admin-log](https://github.com/J-HyeonSeo/J-InVenTo/assets/47245112/d00b5a40-a82b-4595-a6c5-5ad7874bc8af)
