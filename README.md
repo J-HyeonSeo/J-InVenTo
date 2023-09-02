@@ -127,19 +127,6 @@ nginx.origin-ip.header=x-original-forwarded-for -> NGINX 사용시 x-forward-for
 
 ---
 
-## 프로젝트 배포 방식
-
-- `단순 외부 배포` : 서버가되는 컴퓨터에 `redis` 및 `mysql`, 스프링부트를 실행하여 배포하는 방법입니다.
-- `단순 외부 도커 배포` : `redis`와 `mysql` 이미지를 도커에서 실행하고, `mysql`에는 `inventory`DB를 만들어줍니다.
-spring boot 프로젝트를 `.jar`로 빌드하고, 이를 `docker`에 올려서 실행합니다.
-- `분산 외부 배포` : 분산된 각각의 서버에, `redis`, `mysql`, `스프링부트` 서버를 올려서 배포합니다.
-이 때 `NGINX`을 사용하여, `default.conf`의 `upstream`에 분산된 `서버`를 기입해야합니다.
-외부로 노출되는 서버는 `NGINX`만 해당됩니다. `NGINX`를 통한 배포시에는, `src/main/com/jhsfully/inventoryManagement/MvcConfiguration`에서 `CORS` 주소에 NGINX의 주소를 추가해야합니다.
-- `분산 외부 도커 배포` : `Dockerfile`을 통해 각각의 이미지를 만들어, 도커환경에 배포합니다.
-- `로컬 환경 도커 배포` : `docker-build.sh`를 수행한 후에, `docker-compose up -d`를 수행하여, 로컬환경 배포를 수행합니다. (테스트 용도)
-
----
-
 ## API 문서
 - 프로젝트 내 `Swagger` 문서 및 `Dto파일 내 ~Response` 클래스 참조.
 
