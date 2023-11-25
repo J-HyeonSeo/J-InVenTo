@@ -24,6 +24,7 @@ import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NOT
 import static com.jhsfully.inventoryManagement.type.StocksErrorType.*;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class StocksService implements StocksInterface {
     private final StocksRepository stocksRepository;
@@ -31,17 +32,20 @@ public class StocksService implements StocksInterface {
     private final InboundRepository inboundRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public StocksDto.StockResponseLot getStock(Long id){
         return StocksEntity.toLotDto(stocksRepository.findById(id)
                 .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND)));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<StocksDto.StockGroupResponse> getAllStocks() {
         return stocksRepository.getStocksGroupProduct();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<StocksDto.StockResponseLot> getLotByPid(Long productid) {
 
         ProductEntity product = productRepository.findById(productid)
@@ -54,7 +58,6 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
-    @Transactional
     public StocksDto.StockResponseLot addStock(StocksDto.StockAddRequest request) {
 
         ProductEntity productEntity = validateAddStock(request);
@@ -69,7 +72,6 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
-    @Transactional
     public void setInbound(Long stockId, Long inboundId){
         StocksEntity stock = stocksRepository.findById(stockId)
                 .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
@@ -82,7 +84,6 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
-    @Transactional
     public void releaseInbound(Long stockId){
         StocksEntity stock = stocksRepository.findById(stockId)
                 .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
@@ -91,7 +92,6 @@ public class StocksService implements StocksInterface {
 
     @Override
     @ProcessLock(value = LockType.INBOUND_OUTBOUND, key = "id")
-    @Transactional
     public void spendStockById(Long id, Double amount) {
         StocksEntity stocksEntity = validateSpendStock(id, amount);
 
@@ -102,7 +102,6 @@ public class StocksService implements StocksInterface {
 
     @Override
     @ProcessLock(value = LockType.INBOUND_OUTBOUND, key = "id")
-    @Transactional
     public void cancelSpendStockById(Long id, Double amount){
         StocksEntity stocksEntity = validateCancelSpendStock(id, amount);
 
@@ -113,7 +112,6 @@ public class StocksService implements StocksInterface {
 
     @Override
     @ProcessLock(value = LockType.INBOUND_OUTBOUND, key = "id")
-    @Transactional
     public void deleteStock(Long id) {
         //파서드단에서 밸리데이션을 수행했을거임.
         StocksEntity stocksEntity = stocksRepository.findById(id)
@@ -122,7 +120,7 @@ public class StocksService implements StocksInterface {
     }
 
     //======================== Validates ======================================
-    public ProductEntity validateAddStock(StocksDto.StockAddRequest request){
+    private ProductEntity validateAddStock(StocksDto.StockAddRequest request){
 
         if(request.getAmount() == null){
             throw new StocksException(STOCKS_AMOUNT_NULL);
@@ -138,7 +136,7 @@ public class StocksService implements StocksInterface {
         return product;
     }
 
-    public StocksEntity validateSpendStock(Long id, Double amount){
+    private StocksEntity validateSpendStock(Long id, Double amount){
 
         if(amount == null){
             throw new StocksException(STOCKS_AMOUNT_NULL);
@@ -154,7 +152,7 @@ public class StocksService implements StocksInterface {
         return stocksEntity;
     }
 
-    public StocksEntity validateCancelSpendStock(Long id, Double amount){
+    private StocksEntity validateCancelSpendStock(Long id, Double amount){
 
         if(amount == null){
             throw new StocksException(STOCKS_AMOUNT_NULL);

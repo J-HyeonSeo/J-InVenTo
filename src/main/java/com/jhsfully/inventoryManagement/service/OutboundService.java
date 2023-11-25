@@ -29,6 +29,7 @@ import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NOT
 import static com.jhsfully.inventoryManagement.type.StocksErrorType.STOCKS_NOT_FOUND;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class OutboundService implements OutboundInterface{
 
@@ -38,6 +39,7 @@ public class OutboundService implements OutboundInterface{
     private final StocksRepository stocksRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public Double countByStock(Long stockId){
         StocksEntity stocksEntity = stocksRepository.findById(stockId)
                 .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
@@ -45,6 +47,7 @@ public class OutboundService implements OutboundInterface{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OutboundDto.OutboundResponse> getOutbounds(LocalDate startDate, LocalDate endDate) {
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
@@ -55,6 +58,7 @@ public class OutboundService implements OutboundInterface{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OutboundDto.OutboundDetailResponse> getOutboundDetails(Long outboundId) {
         OutboundEntity outbound = outboundRepository.findById(outboundId)
                 .orElseThrow(() -> new OutboundException(OUTBOUND_NOT_FOUND));
@@ -65,7 +69,6 @@ public class OutboundService implements OutboundInterface{
     }
 
     @Override
-    @Transactional
     public OutboundDto.OutboundResponse addOutbound(OutboundDto.OutboundAddRequest request) {
 
         ProductEntity product = validateAddOutbound(request);
@@ -82,7 +85,6 @@ public class OutboundService implements OutboundInterface{
     }
 
     @Override
-    @Transactional
     public void addOutboundDetail(OutboundDto.OutboundDetailAddRequest request) {
 
         validateAddOutboundDetail(request);
@@ -104,7 +106,6 @@ public class OutboundService implements OutboundInterface{
     }
 
     @Override
-    @Transactional
     public void deleteOutbound(Long outboundId) {
         OutboundEntity outbound = outboundRepository.findById(outboundId)
                 .orElseThrow(() -> new OutboundException(OUTBOUND_NOT_FOUND));
@@ -113,7 +114,6 @@ public class OutboundService implements OutboundInterface{
     }
 
     @Override
-    @Transactional
     public OutboundDto.OutboundDetailResponse deleteOutboundDetail(Long detailId) {
         OutboundDetailsEntity outboundDetail = outboundDetailRepository.findById(detailId)
                 .orElseThrow(() -> new OutboundException(OUTBOUND_DETAILS_NOT_FOUND));
@@ -127,7 +127,7 @@ public class OutboundService implements OutboundInterface{
 
     //======================== Validates===================================
 
-    public ProductEntity validateAddOutbound(OutboundDto.OutboundAddRequest request){
+    private ProductEntity validateAddOutbound(OutboundDto.OutboundAddRequest request){
 
         if(request.getAmount() == null){
             throw new OutboundException(OUTBOUND_AMOUNT_NULL);
@@ -141,7 +141,7 @@ public class OutboundService implements OutboundInterface{
         return product;
     }
 
-    public void validateAddOutboundDetail(OutboundDto.OutboundDetailAddRequest request){
+    private void validateAddOutboundDetail(OutboundDto.OutboundDetailAddRequest request){
 
         if(request.getAmount() == null){
             throw new OutboundException(OUTBOUND_AMOUNT_NULL);

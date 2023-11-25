@@ -32,6 +32,7 @@ public class BomService implements BomInterface{
     
     //BOM 전체 리스트 리턴
     @Override
+    @Transactional(readOnly = true)
     @Cacheable(value = BOM_TOP, cacheManager = "redisCacheManager")
     public List<BomDto.BomTopResponse> getBoms() {
         return bomRepository.findByGroupParentProduct();
@@ -39,6 +40,7 @@ public class BomService implements BomInterface{
     
     //해당 품목을 기준으로하는, BOM TREE 리턴
     @Override
+    @Transactional(readOnly = true)
     @Cacheable(value = BOM_TREE, cacheManager = "redisCacheManager")
     public BomDto.BomTreeResponse getBom(Long productid){
         ProductEntity product = productRepository.findById(productid)
@@ -48,6 +50,7 @@ public class BomService implements BomInterface{
 
     //해당 품목을 기준으로하는, 최하단 품목 및 코스트 리턴.
     @Override
+    @Transactional(readOnly = true)
     @Cacheable(value = BOM_LEAF, cacheManager = "redisCacheManager")
     public List<BomDto.BomLeaf> getLeafProducts(Long productId){
         List<BomDto.BomLeaf> leafs = new ArrayList<>();
@@ -66,7 +69,6 @@ public class BomService implements BomInterface{
         private ProductEntity child;
     }
     @Override
-    @Transactional
     @CacheEvict(cacheNames = {BOM_TOP, BOM_TREE, BOM_LEAF}, allEntries = true)
     public BomDto.BomResponse addBom(BomDto.BomAddRequest request) {
 
@@ -82,7 +84,6 @@ public class BomService implements BomInterface{
     }
 
     @Override
-    @Transactional
     @CacheEvict(cacheNames = {BOM_TOP, BOM_TREE, BOM_LEAF}, allEntries = true)
     public void updateBomNode(BomDto.BomUpdateRequest request){
         BOMEntity bom = validateUpdateBom(request);
@@ -92,7 +93,6 @@ public class BomService implements BomInterface{
 
     //하나의 BOM Node를 제거합니다.
     @Override
-    @Transactional
     @CacheEvict(cacheNames = {BOM_TOP, BOM_TREE, BOM_LEAF}, allEntries = true)
     public void deleteBomNode(Long bid) {
         if(!bomRepository.existsById(bid)){
@@ -103,7 +103,6 @@ public class BomService implements BomInterface{
 
     //선택된 BOM의 구성요소를 전부 제거합니다.
     @Override
-    @Transactional
     @CacheEvict(cacheNames = {BOM_TOP, BOM_TREE, BOM_LEAF}, allEntries = true)
     public void deleteBomTree(Long pid){
         ProductEntity product = productRepository.findById(pid)
@@ -113,7 +112,7 @@ public class BomService implements BomInterface{
     }
 
     //======================== Validates =============================
-    @Transactional
+
     private ProductSet validateAddBom(BomDto.BomAddRequest request) {
 
         //cost는 비어있으면 안되요.
@@ -188,7 +187,7 @@ public class BomService implements BomInterface{
                 .children(new ArrayList<>())
                 .build();
         System.out.println(entities);
-        if(entities.size() == 0){ //escape
+        if(entities.isEmpty()){ //escape
             return bomTree;
         }
         for(BOMEntity entity : entities){
@@ -213,7 +212,7 @@ public class BomService implements BomInterface{
     }
 
     //최하단 품목 및 코스트 찾기
-    public void findLeafProductAndCost(List<BomDto.BomLeaf> leafs,
+    private void findLeafProductAndCost(List<BomDto.BomLeaf> leafs,
                                        ProductEntity product, Double cost){
         //check leaf node
         if(!bomRepository.existsByParentProduct(product)){

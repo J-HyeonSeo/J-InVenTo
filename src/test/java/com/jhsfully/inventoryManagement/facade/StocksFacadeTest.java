@@ -9,6 +9,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 
@@ -55,7 +56,7 @@ class StocksFacadeTest {
     @DisplayName("[Facade]모든 재고 가져오기")
     void getAllStocks(){
         //when
-        List<StocksDto.StockResponse> allStocks = stocksFacade.getAllStocks();
+        List<StocksDto.StockResponse> allStocks = stocksFacade.getAllStocks(LocalDate.of(2023, 7, 1));
 
         for(var stocks : allStocks){
 

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/stocks")
@@ -25,7 +27,7 @@ public class StocksController {
     @GetMapping("")
     @PreAuthorize("hasRole('STOCKS_READ')")
     public ResponseEntity<?> getAllStocks(){
-        return ResponseEntity.ok(stocksFacade.getAllStocks());
+        return ResponseEntity.ok(stocksFacade.getAllStocks(LocalDate.now()));
     }
 
     @GetMapping("/{productId}")

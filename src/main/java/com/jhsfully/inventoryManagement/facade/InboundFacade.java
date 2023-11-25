@@ -21,6 +21,7 @@ import java.util.List;
 //서비스간 참조를 막기위한 중간층.
 //Controller => Facade => Services => Repositories
 @Component
+@Transactional
 @AllArgsConstructor
 public class InboundFacade {
 
@@ -29,7 +30,7 @@ public class InboundFacade {
     private final PurchaseInterface purchaseService;
     private final StocksInterface stocksService;
 
-    @Transactional
+
     public Long executeInbound(InboundDto.InboundOuterAddRequest request){
 
         PurchaseDto.PurchaseResponse purchase = validateExecute(request);
@@ -59,7 +60,6 @@ public class InboundFacade {
         return inbound.getId();
     }
 
-    @Transactional
     public void cancelInbound(Long id){
         //입고를 지운다. => 재고를 지운다. (조건 : 출고 이력이 없어야 함)
         InboundDto.InboundResponse inboundResponse = inboundService.getInbound(id);
@@ -79,20 +79,15 @@ public class InboundFacade {
         stocksService.deleteStock(stockResponse.getId());
 
     }
+
+
     //========================= Validates ==================================
-    @Transactional
-    public PurchaseDto.PurchaseResponse validateExecute(InboundDto.InboundOuterAddRequest request){
-        //구매번호에대한 입고된 합이, 구매수량 이하여야 함. (구매 수량을 가져옴)
+
+    private PurchaseDto.PurchaseResponse validateExecute(InboundDto.InboundOuterAddRequest request){
         PurchaseDto.PurchaseResponse purchase =
                 purchaseService.getPurchase(request.getPurchaseId());
 
-        //해당 되는 구매ID의 입고합을 가져와야함. (inboundService)
-
         Double canInboundAmount = purchase.getCanAmount();
-//        Double inboundSum = inboundService.getInboundsByPurchase(purchase.getId());
-
-        //현재 입고수량을 더했을 경우, 구매량을 초과하는지 검증해야함.
-//        inboundSum += request.getAmount();
 
         if(request.getAmount() > canInboundAmount){
             throw new InboundException(InboundErrorType.INBOUND_EXCEED_PURCHASE_AMOUNT);

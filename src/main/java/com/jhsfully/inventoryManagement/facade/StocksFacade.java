@@ -12,8 +12,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +31,8 @@ public class StocksFacade {
     private final BomInterface bomService;
     private final PlanInterface planService;
 
-    public List<StocksDto.StockResponse> getAllStocks(){
+    @Transactional(readOnly = true)
+    public List<StocksDto.StockResponse> getAllStocks(LocalDate nowDate){
 
         @Getter
         @AllArgsConstructor
@@ -44,7 +47,7 @@ public class StocksFacade {
         //모든 재고 정보들을 가져옴.
         HashMap<Long, stockInfo> stocks = new HashMap<>();
 
-        stocksService.getAllStocks().stream()
+        stocksService.getAllStocks()
                 .forEach(x -> stocks.put(x.getProductId(), new stockInfo(x.getAmount(), x.getPrice())));
 
         //반환할 데이터
@@ -63,7 +66,7 @@ public class StocksFacade {
 
 
         //오늘을 기준으로 예정된 모든 출고 계획을 가져옴.(오름차순으로 가져와짐)
-        List<PlanDto.PlanResponse> plans = planService.getPlans(LocalDate.now(), null);
+        List<PlanDto.PlanResponse> plans = planService.getPlans(nowDate, null);
 
 
         for(var plan : plans){ //plans를 순회함.

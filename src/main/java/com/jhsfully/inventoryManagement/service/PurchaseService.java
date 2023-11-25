@@ -24,6 +24,7 @@ import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NOT
 import static com.jhsfully.inventoryManagement.type.PurchaseErrorType.*;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class PurchaseService implements PurchaseInterface{
     private final PurchaseRepository purchaseRepository;
@@ -32,31 +33,21 @@ public class PurchaseService implements PurchaseInterface{
     private final BomRepository bomRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public PurchaseDto.PurchaseResponse getPurchase(Long id){
-
-        Optional<PurchaseDto.PurchaseResponse> purchase = purchaseRepository.getPurchase(id);
-
-        if(!purchase.isPresent()){
-            throw new PurchaseException(PURCHASE_NOT_FOUND);
-        }
-
-        return purchase.get();
+        return purchaseRepository.getPurchase(id)
+                .orElseThrow(() -> new PurchaseException(PURCHASE_NOT_FOUND));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PurchaseDto.PurchaseResponse> getPurchases(LocalDate startDate, LocalDate endDate) {
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
-
         return purchaseRepository.getPurchases(startDateTime, endDateTime);
-
-//        return purchaseRepository.findByAtBetween(startDateTime, endDateTime)
-//                .stream().map(PurchaseEntity::toDto)
-//                .collect(Collectors.toList());
     }
 
     @Override
-    @Transactional
     public PurchaseDto.PurchaseResponse addPurchase(PurchaseDto.PurchaseAddRequest request) {
 
         ProductEntity product = validateAddPurchase(request);
@@ -74,7 +65,6 @@ public class PurchaseService implements PurchaseInterface{
     }
 
     @Override
-    @Transactional
     public void deletePurchase(Long id) {
         //입고단에서 해당 ID를 참조하지 않을 경우에만 삭제 가능!!
         PurchaseEntity purchase = purchaseRepository.findById(id)
@@ -89,7 +79,7 @@ public class PurchaseService implements PurchaseInterface{
 
 
     //============================ Validates ==================================
-    public ProductEntity validateAddPurchase(PurchaseDto.PurchaseAddRequest request){
+    private ProductEntity validateAddPurchase(PurchaseDto.PurchaseAddRequest request){
 
         //amount가 존재해야함.
         if(request.getAmount() == null){

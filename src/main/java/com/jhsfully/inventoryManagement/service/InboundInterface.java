@@ -7,14 +7,14 @@ import java.util.List;
 
 public interface InboundInterface {
 
-    public Double getInboundsByPurchase(Long purchaseId);
+    Double getInboundsByPurchase(Long purchaseId);
 
-    public InboundDto.InboundResponse getInbound(Long id);
+    InboundDto.InboundResponse getInbound(Long id);
 
-    public List<InboundDto.InboundResponse> getInbounds(LocalDate startDate, LocalDate endDate);
+    List<InboundDto.InboundResponse> getInbounds(LocalDate startDate, LocalDate endDate);
 
-    public InboundDto.InboundResponse addInbound(InboundDto.InboundAddRequest request);
+    InboundDto.InboundResponse addInbound(InboundDto.InboundAddRequest request);
 
-    public void deleteInbound(Long id);
+    void deleteInbound(Long id);
 
 }
