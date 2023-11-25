@@ -23,6 +23,7 @@ import static com.jhsfully.inventoryManagement.type.OutboundErrorType.*;
 
 //Controller => Facade => Services => Repositories
 @Component
+@Transactional
 @AllArgsConstructor
 public class OutboundFacade {
 
@@ -31,7 +32,7 @@ public class OutboundFacade {
     private final StocksInterface stocksService;
     private final ProductInterface productService;
 
-    @Transactional
+
     public Long executeOutbound(OutboundDto.OutboundAddRequest request){
 
         validateExecute(request); //밸리데이션 수행
@@ -55,7 +56,6 @@ public class OutboundFacade {
 
 
     //출고 전체 단위로 취소
-    @Transactional
     public void cancelOutbound(Long outboundId){
         List<OutboundDto.OutboundDetailResponse> outboundDetails = outboundService
                 .getOutboundDetails(outboundId);
@@ -66,7 +66,6 @@ public class OutboundFacade {
     }
 
     //출고 상세 단위로 취소
-    @Transactional
     public void cancelOutboundDetail(Long detailId){
         OutboundDto.OutboundDetailResponse detailResponse = outboundService.deleteOutboundDetail(detailId);
         stocksService.cancelSpendStockById(detailResponse.getStockId(), detailResponse.getAmount());
@@ -74,7 +73,6 @@ public class OutboundFacade {
 
     //=========================== validates ==================================
 
-    @Transactional
     private void validateExecute(OutboundDto.OutboundAddRequest request){
         if(request.getAmount() == null){
             throw new OutboundException(OUTBOUND_AMOUNT_NULL);

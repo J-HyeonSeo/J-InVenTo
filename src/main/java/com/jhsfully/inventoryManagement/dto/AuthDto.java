@@ -1,10 +1,12 @@
 package com.jhsfully.inventoryManagement.dto;
 
 import com.jhsfully.inventoryManagement.entity.MemberEntity;
+import com.jhsfully.inventoryManagement.type.RoleType;
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AuthDto {
 
@@ -19,7 +21,7 @@ public class AuthDto {
         private String password;
         private String name;
         private String department;
-        private List<String> roles;
+        private List<RoleType> roles;
 
         public MemberEntity toEntity(){
             return MemberEntity.builder()
@@ -27,7 +29,7 @@ public class AuthDto {
                     .password(this.password)
                     .name(this.name)
                     .department(this.department)
-                    .roles(this.roles)
+                    .roles(this.roles.stream().map(Enum::name).collect(Collectors.toList()))
                     .build();
         }
     }
@@ -51,7 +53,7 @@ public class AuthDto {
         private String username;
         private String name;
         private String department;
-        private List<String> roles;
+        private List<RoleType> roles;
     }
 
     @Data

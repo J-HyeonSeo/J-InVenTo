@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.relation.Role;
 import java.util.*;
@@ -21,29 +22,40 @@ import static com.jhsfully.inventoryManagement.type.AuthErrorType.*;
 
 @Slf4j
 @Service
+@Transactional
 @AllArgsConstructor
-public class MemberService implements UserDetailsService {
+public class MemberService implements UserDetailsService, MemberInterface {
 
     private PasswordEncoder passwordEncoder;
     private MemberRepository memberRepository;
+    private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_PASSWORD = "admin";
+    private static final String ADMIN_NAME = "관리자";
+    private static final String ADMIN_DEPARTMENT = "관리부서";
 
+    @Override
+    @Transactional(readOnly = true)
     public List<AuthDto.UserResponse> getMembers(){
         return memberRepository.findAll().stream()
                 .map(AuthDto.UserResponse::of)
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true)
     public List<String> getRoleLists(){
         return Arrays.stream(RoleType.values())
                 .map(Enum::name)
                 .collect(Collectors.toList());
     }
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return memberRepository.findById(username)
                 .orElseThrow(() -> new UsernameNotFoundException("cannot find user -> " + username));
     }
 
+    @Override
     public MemberEntity register(AuthDto.SignUp member){
 
         if(member.getUsername() == null || member.getUsername().trim().equals("")){
@@ -58,18 +70,8 @@ public class MemberService implements UserDetailsService {
             throw new AuthException(AUTH_DEPARTMENT_IS_NULL_OR_EMPTY);
         }
 
-        HashSet<String> roleSets = new HashSet<>();
-        Arrays.stream(RoleType.values())
-                .forEach(x -> roleSets.add(x.name()));
-
-        for(String role : member.getRoles()){
-            if(!roleSets.contains(role)){
-                throw new AuthException(AUTH_NOT_DEFINITION_ROLE_TYPE);
-            }
-        }
-
         boolean exists = memberRepository.existsById(member.getUsername());
-        if(exists){
+        if(exists) {
             throw new AuthException(AUTH_REGISTER_EXISTS_USERNAME);
         }
 
@@ -77,16 +79,17 @@ public class MemberService implements UserDetailsService {
         return memberRepository.save(member.toEntity());
     }
 
+    @Override
     public MemberEntity authenticate(AuthDto.SignIn member){
 
         if(memberRepository.count() == 0){ //첫 사용시.. 권한 처리.
-            if("admin".equals(member.getUsername()) && "admin".equals(member.getPassword())){
+            if(ADMIN_USERNAME.equals(member.getUsername()) && ADMIN_PASSWORD.equals(member.getPassword())){
                 MemberEntity AdminMember = MemberEntity.builder()
-                        .username("admin")
-                        .password(passwordEncoder.encode("admin"))
-                        .name("관리자")
-                        .department("관리자")
-                        .roles(new ArrayList<String>(Arrays.asList(RoleType.ROLE_ADMIN.name())))
+                        .username(ADMIN_USERNAME)
+                        .password(passwordEncoder.encode(ADMIN_PASSWORD))
+                        .name(ADMIN_NAME)
+                        .department(ADMIN_DEPARTMENT)
+                        .roles(new ArrayList<String>(List.of(RoleType.ROLE_ADMIN.name())))
                         .build();
                 memberRepository.save(AdminMember);
             }
@@ -102,6 +105,7 @@ public class MemberService implements UserDetailsService {
         return user;
     }
 
+    @Override
     public void changePassword(AuthDto.PasswordChangeRequest request){
         MemberEntity user = memberRepository.findById(request.getUsername())
                 .orElseThrow(() -> new AuthException(AUTH_LOGIN_FAILED));
@@ -118,53 +122,21 @@ public class MemberService implements UserDetailsService {
         memberRepository.save(user);
     }
 
+    @Override
     public void changeProfile(AuthDto.UserChangeRequest request){
 
         MemberEntity user = memberRepository.findById(request.getUsername())
                 .orElseThrow(() -> new AuthException(AUTH_LOGIN_FAILED));
 
-        boolean changeName = false;
-        boolean changeDepartment = false;
-        boolean changeRoles = false;
+        user.setName(request.getName());
+        user.setDepartment(request.getDepartment());
+        user.setRoles(request.getRoles().stream().map(Enum::name).collect(Collectors.toList()));
 
-        if(request.getName() != null && request.getName().trim().equals("")){
-            changeName = true;
-        }
-
-        if(request.getDepartment() != null && request.getDepartment().trim().equals("")){
-            changeDepartment = true;
-        }
-
-        HashSet<String> roleSets = new HashSet<>();
-        Arrays.stream(RoleType.values())
-                .forEach(x -> roleSets.add(x.name()));
-
-
-        for(int i = 0; i < request.getRoles().size(); i++){
-
-            String role = request.getRoles().get(i);
-
-            if(!roleSets.contains(role)){
-                throw new AuthException(AUTH_NOT_DEFINITION_ROLE_TYPE);
-            }
-            changeRoles = true;
-        }
-
-        if(changeName){
-            user.setName(request.getName());
-        }
-
-        if(changeDepartment){
-            user.setDepartment(request.getDepartment());
-        }
-
-        if(changeRoles){
-            user.setRoles(request.getRoles());
-        }
         memberRepository.save(user);
     }
 
     //관리자가 수행하는 비밀번호 초기화.
+    @Override
     public void initializePassword(AuthDto.PasswordInitializeRequest request) {
 
         MemberEntity member = memberRepository.findById(request.getUsername())

@@ -18,6 +18,7 @@ import static com.jhsfully.inventoryManagement.type.CacheType.*;
 import static com.jhsfully.inventoryManagement.type.ProductErrorType.*;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class ProductService implements ProductInterface{
 
@@ -25,6 +26,7 @@ public class ProductService implements ProductInterface{
     private final BomRepository bomRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public ProductDto.ProductResponse getProduct(Long id){
         return ProductEntity.toDto(productRepository.findById(id)
                 .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND)));
@@ -32,6 +34,7 @@ public class ProductService implements ProductInterface{
 
     //Enabled 여부에 상관없이 모두 가져옴.(클라이언트 단에서 기본적으로 활성화된 품목만 보여줌)
     @Override
+    @Transactional(readOnly = true)
     @Cacheable(value = ALL_PRODUCTS, cacheManager = "redisCacheManager")
     public List<ProductDto.ProductResponse> getAllProducts(){
         return productRepository.findAll()
@@ -42,6 +45,7 @@ public class ProductService implements ProductInterface{
 
     //Enabled == True 인 프로덕트만 가져옴.
     @Override
+    @Transactional(readOnly = true)
     @Cacheable(value = ENABLE_PRODUCTS, cacheManager = "redisCacheManager")
     public List<ProductDto.ProductResponse> getProducts(){
         List<ProductEntity> productEntities = productRepository.findByEnabledIsTrue();
@@ -51,7 +55,6 @@ public class ProductService implements ProductInterface{
     }
 
     @Override
-    @Transactional
     @CacheEvict(cacheNames = {ALL_PRODUCTS, ENABLE_PRODUCTS}, cacheManager = "redisCacheManager", allEntries = true)
     public ProductDto.ProductResponse addProduct(ProductDto.ProductAddRequest request) {
 
@@ -68,7 +71,6 @@ public class ProductService implements ProductInterface{
     }
 
     @Override
-    @Transactional
     @CacheEvict(cacheNames = {ALL_PRODUCTS, ENABLE_PRODUCTS, BOM_TOP, BOM_TREE, BOM_LEAF},
             cacheManager = "redisCacheManager", allEntries = true)
     public ProductDto.ProductResponse updateProduct(ProductDto.ProductUpdateRequest request) {
@@ -100,7 +102,6 @@ public class ProductService implements ProductInterface{
 
     //가장 BOM의 구성에서 종속적인 경우 비활성화도 불가능함.
     @Override
-    @Transactional
     @CacheEvict(cacheNames = {ALL_PRODUCTS, ENABLE_PRODUCTS}, cacheManager = "redisCacheManager", allEntries = true)
     public void disableProduct(Long id) {
         ProductEntity product = validateDisableProduct(id);
@@ -110,7 +111,6 @@ public class ProductService implements ProductInterface{
 
     //연관 데이터에 하나도 포함되지 않은 경우만 삭제가능함.
     @Override
-    @Transactional
     @CacheEvict(cacheNames = {ALL_PRODUCTS, ENABLE_PRODUCTS}, cacheManager = "redisCacheManager", allEntries = true)
     public void deleteProduct(Long id) {
         ProductEntity product = validateDisableProduct(id);

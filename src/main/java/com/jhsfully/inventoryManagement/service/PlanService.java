@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@Transactional
 @AllArgsConstructor
 public class PlanService implements PlanInterface{
 
@@ -27,6 +28,7 @@ public class PlanService implements PlanInterface{
     private final ProductRepository productRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<PlanDto.PlanResponse> getPlans(LocalDate startDate, LocalDate endDate) {
 
         if(endDate == null){
@@ -42,7 +44,6 @@ public class PlanService implements PlanInterface{
     }
 
     @Override
-    @Transactional
     public PlanDto.PlanResponse addPlan(PlanDto.PlanAddRequest request) {
 
         ProductEntity product = validateAddPlan(request);
@@ -57,14 +58,12 @@ public class PlanService implements PlanInterface{
     }
 
     @Override
-    @Transactional
     public PlanDto.PlanResponse updatePlan(PlanDto.PlanUpdateRequest request) {
         PlanEntity updated = validateAndUpdatePlan(request);
         return PlanEntity.toDto(planRepository.save(updated));
     }
 
     @Override
-    @Transactional
     public void deletePlan(Long id) {
         if(!planRepository.existsById(id)){
             throw new PlanException(PlanErrorType.PLAN_NOT_FOUND);
@@ -73,7 +72,7 @@ public class PlanService implements PlanInterface{
     }
 
     //======================== Validates ===========================
-    public ProductEntity validateAddPlan(PlanDto.PlanAddRequest request){
+    private ProductEntity validateAddPlan(PlanDto.PlanAddRequest request){
 
         if(request.getDue() == null){
             throw new PlanException(PlanErrorType.PLAN_DUE_IS_NULL);
@@ -97,7 +96,7 @@ public class PlanService implements PlanInterface{
         return product;
     }
 
-    public PlanEntity validateAndUpdatePlan(PlanDto.PlanUpdateRequest request){
+    private PlanEntity validateAndUpdatePlan(PlanDto.PlanUpdateRequest request){
 
         boolean dueUpdate = false;
         boolean desUpdate = false;

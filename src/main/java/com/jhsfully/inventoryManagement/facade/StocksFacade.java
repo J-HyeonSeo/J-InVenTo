@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class StocksFacade {
     private final BomInterface bomService;
     private final PlanInterface planService;
 
+    @Transactional(readOnly = true)
     public List<StocksDto.StockResponse> getAllStocks(){
 
         @Getter
@@ -44,7 +46,7 @@ public class StocksFacade {
         //모든 재고 정보들을 가져옴.
         HashMap<Long, stockInfo> stocks = new HashMap<>();
 
-        stocksService.getAllStocks().stream()
+        stocksService.getAllStocks()
                 .forEach(x -> stocks.put(x.getProductId(), new stockInfo(x.getAmount(), x.getPrice())));
 
         //반환할 데이터

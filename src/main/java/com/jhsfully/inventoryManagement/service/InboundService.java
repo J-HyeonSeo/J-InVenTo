@@ -25,12 +25,14 @@ import java.util.stream.Collectors;
 import static com.jhsfully.inventoryManagement.type.InboundErrorType.*;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class InboundService implements InboundInterface{
 
     private final InboundRepository inboundRepository;
     private final PurchaseRepository purchaseRepository;
     private final StocksRepository stocksRepository;
+
 
     public Double getInboundsByPurchase(Long purchaseId){
 
@@ -41,12 +43,14 @@ public class InboundService implements InboundInterface{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public InboundDto.InboundResponse getInbound(Long id){
         return InboundEntity.toDto(inboundRepository.findById(id)
                 .orElseThrow(() -> new InboundException(INBOUND_NOT_FOUND)));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<InboundDto.InboundResponse> getInbounds(LocalDate startDate, LocalDate endDate) {
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
@@ -58,7 +62,6 @@ public class InboundService implements InboundInterface{
 
 
     @Override
-    @Transactional
     public InboundDto.InboundResponse addInbound(InboundDto.InboundAddRequest request) {
         //Stock을 추가할 때, 이미 밸리데이션 검증이 완료됨.
 
@@ -80,7 +83,6 @@ public class InboundService implements InboundInterface{
 
 
     @Override
-    @Transactional
     public void deleteInbound(Long id) {
         //파서드 => 밸리데이션 => 서비스 => 삭제(즉, 그냥 삭제만 하면 됨)
         InboundEntity inboundEntity = inboundRepository.findById(id)
