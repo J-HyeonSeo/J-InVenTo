@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -50,7 +51,7 @@ class StocksControllerTest {
     @DisplayName("[Controller] 재고목록 가져오기 성공")
     void getAllStocksSuccess() throws Exception {
         //given
-        given(stocksFacade.getAllStocks())
+        given(stocksFacade.getAllStocks(any()))
                 .willReturn(new ArrayList<StocksDto.StockResponse>(
                         Arrays.asList(
                                 StocksDto.StockResponse.builder()
