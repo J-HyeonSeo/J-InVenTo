@@ -8,8 +8,6 @@ import java.util.List;
 public class OutboundDto {
 
     @Getter
-    @Setter
-    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class OutboundAddRequest{
@@ -23,8 +21,6 @@ public class OutboundDto {
     }
 
     @Getter
-    @Setter
-    @NoArgsConstructor
     @AllArgsConstructor
     public static class stock{
         private Long stockId;
@@ -32,8 +28,6 @@ public class OutboundDto {
     }
 
     @Getter
-    @Setter
-    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class OutboundDetailAddRequest{
@@ -45,8 +39,6 @@ public class OutboundDto {
     }
 
     @Getter
-    @Setter
-    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class OutboundResponse{
@@ -62,8 +54,6 @@ public class OutboundDto {
     }
 
     @Getter
-    @Setter
-    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class OutboundDetailResponse{
