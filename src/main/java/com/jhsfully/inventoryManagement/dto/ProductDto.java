@@ -6,8 +6,6 @@ import lombok.*;
 public class ProductDto {
 
     @Getter
-    @Setter
-    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class ProductAddRequest{
@@ -18,8 +16,6 @@ public class ProductDto {
     }
 
     @Getter
-    @Setter
-    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class ProductUpdateRequest{
@@ -32,7 +28,6 @@ public class ProductDto {
     }
 
     @Getter
-    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +51,7 @@ public class StocksFacade {
 
         //반환할 데이터
         HashMap<Long, StocksDto.StockResponse> responses = new HashMap<>();
-        for(var product : products){
+        for(ProductDto.ProductResponse product : products){
             responses.put(product.getId(),
                     StocksDto.StockResponse.builder()
                             .productId(product.getId())
@@ -69,15 +68,15 @@ public class StocksFacade {
         List<PlanDto.PlanResponse> plans = planService.getPlans(nowDate, null);
 
 
-        for(var plan : plans){ //plans를 순회함.
+        for(PlanDto.PlanResponse plan : plans){ //plans를 순회함.
 
             //해당되는 plan의 최하단 leaf BOM가져옴.
             List<BomDto.BomLeaf> productsLeaves = bomService.getLeafProducts(plan.getProductId());
 
-            for(var productLeaf : productsLeaves) {
+            for(BomDto.BomLeaf productLeaf : productsLeaves) {
                 if (responses.containsKey(productLeaf.getProductId())) {
 
-                    var response = responses.get(productLeaf.getProductId());
+                    StocksDto.StockResponse response = responses.get(productLeaf.getProductId());
 
                     Double nowAmount = response.getAmount();
                     nowAmount -= plan.getAmount() * productLeaf.getCost();
@@ -91,7 +90,7 @@ public class StocksFacade {
         }
 
         //반환할 데이터 값 정리
-        for(var response : responses.values()){
+        for(StocksDto.StockResponse response : responses.values()){
             if(response.getAmount() < 0){
                 response.setLackAmount(Math.abs(response.getAmount()));
             }else{

@@ -2,39 +2,31 @@ package com.jhsfully.inventoryManagement.dto;
 
 import com.jhsfully.inventoryManagement.entity.MemberEntity;
 import com.jhsfully.inventoryManagement.type.RoleType;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AuthDto {
 
-    @Data
+    @Getter
+    @AllArgsConstructor
     public static class SignIn{
         private String username;
         private String password;
     }
-    @Data
+    @Getter
+    @AllArgsConstructor
     public static class SignUp{
         private String username;
         private String password;
         private String name;
         private String department;
         private List<RoleType> roles;
-
-        public MemberEntity toEntity(){
-            return MemberEntity.builder()
-                    .username(this.username)
-                    .password(this.password)
-                    .name(this.name)
-                    .department(this.department)
-                    .roles(this.roles.stream().map(Enum::name).collect(Collectors.toList()))
-                    .build();
-        }
     }
 
-    @Data
+    @Getter
+    @AllArgsConstructor
     public static class PasswordChangeRequest{
         private String username;
         private String originPassword;
@@ -42,13 +34,15 @@ public class AuthDto {
 
     }
 
-    @Data
+    @Getter
+    @AllArgsConstructor
     public static class PasswordInitializeRequest{
         private String username;
         private String password;
     }
 
-    @Data
+    @Getter
+    @AllArgsConstructor
     public static class UserChangeRequest{
         private String username;
         private String name;
@@ -56,7 +50,8 @@ public class AuthDto {
         private List<RoleType> roles;
     }
 
-    @Data
+    @Getter
+    @AllArgsConstructor
     @Builder
     public static class UserResponse{
         private String username;

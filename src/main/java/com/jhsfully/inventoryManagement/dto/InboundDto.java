@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 public class InboundDto {
 
     @Getter
-    @Setter
-    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class InboundOuterAddRequest{
@@ -19,8 +17,6 @@ public class InboundDto {
     }
 
     @Getter
-    @Setter
-    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class InboundAddRequest{
@@ -32,8 +28,6 @@ public class InboundDto {
     }
 
     @Getter
-    @Setter
-    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class InboundResponse{

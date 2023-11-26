@@ -56,34 +56,41 @@ public class MemberService implements UserDetailsService, MemberInterface {
     }
 
     @Override
-    public MemberEntity register(AuthDto.SignUp member){
+    public MemberEntity register(AuthDto.SignUp request){
 
-        if(member.getUsername() == null || member.getUsername().trim().equals("")){
+        if(request.getUsername() == null || request.getUsername().trim().equals("")){
             throw new AuthException(AUTH_USERNAME_IS_NULL_OR_EMPTY);
         }
 
-        if(member.getName() == null || member.getName().trim().equals("")){
+        if(request.getName() == null || request.getName().trim().equals("")){
             throw new AuthException(AUTH_NAME_IS_NULL_OR_EMPTY);
         }
 
-        if(member.getDepartment() == null || member.getDepartment().trim().equals("")){
+        if(request.getDepartment() == null || request.getDepartment().trim().equals("")){
             throw new AuthException(AUTH_DEPARTMENT_IS_NULL_OR_EMPTY);
         }
 
-        boolean exists = memberRepository.existsById(member.getUsername());
+        boolean exists = memberRepository.existsById(request.getUsername());
         if(exists) {
             throw new AuthException(AUTH_REGISTER_EXISTS_USERNAME);
         }
 
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
-        return memberRepository.save(member.toEntity());
+        MemberEntity member = MemberEntity.builder()
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .name(request.getName())
+                .department(request.getDepartment())
+                .roles(request.getRoles().stream().map(Enum::name).collect(Collectors.toList()))
+                .build();
+
+        return memberRepository.save(member);
     }
 
     @Override
-    public MemberEntity authenticate(AuthDto.SignIn member){
+    public MemberEntity authenticate(AuthDto.SignIn request){
 
         if(memberRepository.count() == 0){ //첫 사용시.. 권한 처리.
-            if(ADMIN_USERNAME.equals(member.getUsername()) && ADMIN_PASSWORD.equals(member.getPassword())){
+            if(ADMIN_USERNAME.equals(request.getUsername()) && ADMIN_PASSWORD.equals(request.getPassword())){
                 MemberEntity AdminMember = MemberEntity.builder()
                         .username(ADMIN_USERNAME)
                         .password(passwordEncoder.encode(ADMIN_PASSWORD))
@@ -95,10 +102,10 @@ public class MemberService implements UserDetailsService, MemberInterface {
             }
         }
 
-        MemberEntity user = memberRepository.findById(member.getUsername())
+        MemberEntity user = memberRepository.findById(request.getUsername())
                 .orElseThrow(() -> new AuthException(AUTH_LOGIN_FAILED));
 
-        if(!passwordEncoder.matches(member.getPassword(), user.getPassword())){
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new AuthException(AUTH_LOGIN_FAILED);
         }
 

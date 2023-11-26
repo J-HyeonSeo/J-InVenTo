@@ -7,8 +7,6 @@ import java.util.List;
 public class BomDto {
 
     @Getter
-    @Setter
-    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class BomAddRequest{
@@ -18,8 +16,6 @@ public class BomDto {
     }
 
     @Getter
-    @Setter
-    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class BomUpdateRequest{
@@ -28,7 +24,6 @@ public class BomDto {
     }
 
     @Getter
-    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
@@ -39,7 +34,6 @@ public class BomDto {
     }
 
     @Getter
-    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
@@ -53,7 +47,6 @@ public class BomDto {
     }
 
     @Getter
-    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
@@ -66,7 +59,6 @@ public class BomDto {
     }
 
     @Getter
-    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class BomLeaf{
