@@ -6,19 +6,19 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface OutboundInterface {
-    public Double countByStock(Long stockId);
+    Double countByStock(Long stockId);
 
-    public List<OutboundDto.OutboundResponse> getOutbounds(LocalDate startDate,
+    List<OutboundDto.OutboundResponse> getOutbounds(LocalDate startDate,
                                                            LocalDate endDate);
 
-    public List<OutboundDto.OutboundDetailResponse> getOutboundDetails(Long outboundId);
+    List<OutboundDto.OutboundDetailResponse> getOutboundDetails(Long outboundId);
 
-    public OutboundDto.OutboundResponse addOutbound(OutboundDto.OutboundAddRequest request);
+    OutboundDto.OutboundResponse addOutbound(OutboundDto.OutboundAddRequest request);
 
-    public void addOutboundDetail(OutboundDto.OutboundDetailAddRequest request);
+    void addOutboundDetail(OutboundDto.OutboundDetailAddRequest request);
 
-    public void deleteOutbound(Long outboundId);
+    void deleteOutbound(Long outboundId);
 
-    public OutboundDto.OutboundDetailResponse deleteOutboundDetail(Long detailId);
+    OutboundDto.OutboundDetailResponse deleteOutboundDetail(Long detailId);
 
 }

@@ -7,6 +7,7 @@ import java.time.LocalDate;
 public class StocksDto{
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class StockAddRequest{
@@ -17,6 +18,7 @@ public class StocksDto{
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class StockGroupResponse{ //Use Inner Dto
         private Long productId;
@@ -26,6 +28,7 @@ public class StocksDto{
 
     @Getter
     @Setter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class StockResponse{ //Client Return Dto
@@ -40,6 +43,7 @@ public class StocksDto{
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class StockResponseLot{

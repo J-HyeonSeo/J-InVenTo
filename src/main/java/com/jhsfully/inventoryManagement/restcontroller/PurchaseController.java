@@ -3,17 +3,20 @@ package com.jhsfully.inventoryManagement.restcontroller;
 import com.jhsfully.inventoryManagement.dto.PurchaseDto;
 import com.jhsfully.inventoryManagement.lock.ProcessLock;
 import com.jhsfully.inventoryManagement.service.PurchaseInterface;
-import com.jhsfully.inventoryManagement.service.PurchaseService;
 import com.jhsfully.inventoryManagement.type.LockType;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
@@ -35,7 +38,7 @@ public class PurchaseController {
         return ResponseEntity.ok(purchaseService.addPurchase(request));
     }
 
-    @ProcessLock(value = LockType.PURCHASE_INBOUND, key = "id")
+    @ProcessLock(group = LockType.PURCHASE_INBOUND, key = "#id")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('PURCHASE_MANAGE')")
     public ResponseEntity<?> deletePurchase(@PathVariable Long id){
