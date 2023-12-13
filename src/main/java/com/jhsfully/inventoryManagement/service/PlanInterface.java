@@ -7,12 +7,12 @@ import java.util.List;
 
 public interface PlanInterface {
 
-    public List<PlanDto.PlanResponse> getPlans(LocalDate startdate, LocalDate enddate);
+    List<PlanDto.PlanResponse> getPlans(LocalDate startdate, LocalDate enddate);
 
-    public PlanDto.PlanResponse addPlan(PlanDto.PlanAddRequest request);
+    PlanDto.PlanResponse addPlan(PlanDto.PlanAddRequest request);
 
-    public PlanDto.PlanResponse updatePlan(PlanDto.PlanUpdateRequest request);
+    PlanDto.PlanResponse updatePlan(PlanDto.PlanUpdateRequest request);
 
-    public void deletePlan(Long id);
+    void deletePlan(Long id);
 
 }

@@ -6,18 +6,18 @@ import java.util.List;
 
 public interface BomInterface {
 
-    public List<BomDto.BomTopResponse> getBoms();
+    List<BomDto.BomTopResponse> getBoms();
 
-    public BomDto.BomTreeResponse getBom(Long pid);
+    BomDto.BomTreeResponse getBom(Long pid);
 
-    public List<BomDto.BomLeaf> getLeafProducts(Long id);
+    List<BomDto.BomLeaf> getLeafProducts(Long id);
 
-    public BomDto.BomResponse addBom(BomDto.BomAddRequest request);
+    BomDto.BomResponse addBom(BomDto.BomAddRequest request);
 
-    public void updateBomNode(BomDto.BomUpdateRequest request);
+    void updateBomNode(BomDto.BomUpdateRequest request);
 
-    public void deleteBomNode(Long bid);
+    void deleteBomNode(Long bid);
 
-    public void deleteBomTree(Long pid);
+    void deleteBomTree(Long pid);
 
 }

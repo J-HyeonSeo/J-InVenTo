@@ -1,18 +1,16 @@
 package com.jhsfully.inventoryManagement.service;
 
 import com.jhsfully.inventoryManagement.dto.PurchaseDto;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PurchaseInterface {
 
-    public PurchaseDto.PurchaseResponse getPurchase(Long id);
-    public List<PurchaseDto.PurchaseResponse> getPurchases(LocalDate startDate, LocalDate endDate);
+    PurchaseDto.PurchaseResponse getPurchase(Long id);
+    List<PurchaseDto.PurchaseResponse> getPurchases(LocalDate startDate, LocalDate endDate);
 
-    public PurchaseDto.PurchaseResponse addPurchase(PurchaseDto.PurchaseAddRequest request);
+    PurchaseDto.PurchaseResponse addPurchase(PurchaseDto.PurchaseAddRequest request);
 
-    public void deletePurchase(Long id);
+    void deletePurchase(Long id);
 
 }

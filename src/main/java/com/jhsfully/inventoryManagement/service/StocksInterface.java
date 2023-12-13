@@ -5,22 +5,22 @@ import com.jhsfully.inventoryManagement.dto.StocksDto;
 import java.util.List;
 
 public interface StocksInterface {
-    public StocksDto.StockResponseLot getStock(Long id);
+    StocksDto.StockResponseLot getStock(Long id);
 
-    public List<StocksDto.StockGroupResponse> getAllStocks();
+    List<StocksDto.StockGroupResponse> getAllStocks();
 
-    public List<StocksDto.StockResponseLot> getLotByPid(Long productid);
+    List<StocksDto.StockResponseLot> getLotByPid(Long productid);
 
-    public StocksDto.StockResponseLot addStock(StocksDto.StockAddRequest request);
+    StocksDto.StockResponseLot addStock(StocksDto.StockAddRequest request);
 
-    public void setInbound(Long stockId, Long inboundId);
+    void setInbound(Long stockId, Long inboundId);
 
-    public void releaseInbound(Long stockId);
+    void releaseInbound(Long stockId);
 
-    public void spendStockById(Long id, Double amount);
+    void spendStockById(Long id, Double amount);
 
-    public void cancelSpendStockById(Long id, Double amount);
+    void cancelSpendStockById(Long id, Double amount);
 
-    public void deleteStock(Long id);
+    void deleteStock(Long id);
 
 }
