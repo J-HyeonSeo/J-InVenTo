@@ -7,6 +7,7 @@ import java.util.List;
 public class BomDto {
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class BomAddRequest{
@@ -16,6 +17,7 @@ public class BomDto {
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class BomUpdateRequest{

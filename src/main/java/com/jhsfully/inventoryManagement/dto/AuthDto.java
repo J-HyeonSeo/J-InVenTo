@@ -10,12 +10,14 @@ import java.util.stream.Collectors;
 public class AuthDto {
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class SignIn{
         private String username;
         private String password;
     }
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class SignUp{
         private String username;
@@ -26,6 +28,7 @@ public class AuthDto {
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class PasswordChangeRequest{
         private String username;
@@ -35,6 +38,7 @@ public class AuthDto {
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class PasswordInitializeRequest{
         private String username;
@@ -42,6 +46,7 @@ public class AuthDto {
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class UserChangeRequest{
         private String username;
@@ -51,6 +56,7 @@ public class AuthDto {
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class UserResponse{

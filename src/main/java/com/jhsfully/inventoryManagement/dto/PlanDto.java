@@ -7,6 +7,7 @@ import java.time.LocalDate;
 public class PlanDto {
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class PlanAddRequest{
@@ -17,6 +18,7 @@ public class PlanDto {
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class PlanUpdateRequest{
@@ -27,6 +29,7 @@ public class PlanDto {
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class PlanResponse{

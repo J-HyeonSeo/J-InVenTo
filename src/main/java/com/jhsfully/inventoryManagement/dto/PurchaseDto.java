@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public class PurchaseDto {
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class PurchaseAddRequest{
@@ -18,6 +19,7 @@ public class PurchaseDto {
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class PurchaseResponse{

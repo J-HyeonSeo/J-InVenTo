@@ -6,6 +6,7 @@ import lombok.*;
 public class ProductDto {
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class ProductAddRequest{
@@ -16,6 +17,7 @@ public class ProductDto {
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class ProductUpdateRequest{
