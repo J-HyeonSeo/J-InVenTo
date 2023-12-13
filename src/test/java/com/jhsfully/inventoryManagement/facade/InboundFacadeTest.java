@@ -1,26 +1,32 @@
 package com.jhsfully.inventoryManagement.facade;
 
+import static com.jhsfully.inventoryManagement.type.InboundErrorType.INBOUND_EXCEED_PURCHASE_AMOUNT;
+import static com.jhsfully.inventoryManagement.type.InboundErrorType.INBOUND_NOT_FOUND;
+import static com.jhsfully.inventoryManagement.type.StocksErrorType.STOCKS_NOT_FOUND;
+import static com.jhsfully.inventoryManagement.type.StocksErrorType.STOCKS_OCCURRED_OUTBOUND;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.jhsfully.inventoryManagement.dto.InboundDto;
 import com.jhsfully.inventoryManagement.dto.StocksDto;
 import com.jhsfully.inventoryManagement.exception.InboundException;
 import com.jhsfully.inventoryManagement.exception.StocksException;
 import com.jhsfully.inventoryManagement.service.InboundInterface;
 import com.jhsfully.inventoryManagement.service.StocksInterface;
-import org.junit.jupiter.api.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import javax.sql.DataSource;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import static com.jhsfully.inventoryManagement.type.InboundErrorType.INBOUND_EXCEED_PURCHASE_AMOUNT;
-import static com.jhsfully.inventoryManagement.type.InboundErrorType.INBOUND_NOT_FOUND;
-import static com.jhsfully.inventoryManagement.type.StocksErrorType.STOCKS_NOT_FOUND;
-import static com.jhsfully.inventoryManagement.type.StocksErrorType.STOCKS_OCCURRED_OUTBOUND;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -86,7 +92,7 @@ class InboundFacadeTest {
     @DisplayName("[Facade] 입고 취소 성공")
     void cancelInboundSuccess(){
         //when
-        inboundFacade.cancelInbound(7L);
+        inboundFacade.cancelInbound(7L, 7L);
         //then
         InboundException exceptionI = assertThrows(InboundException.class,
                 () -> inboundService.getInbound(7L));
@@ -123,7 +129,7 @@ class InboundFacadeTest {
     void cancelInboundFail(){
         //when
         StocksException exception = assertThrows(StocksException.class,
-                () -> inboundFacade.cancelInbound(1L));
+                () -> inboundFacade.cancelInbound(1L, 1L));
         //then
         assertEquals(STOCKS_OCCURRED_OUTBOUND, exception.getStocksErrorType());
     }

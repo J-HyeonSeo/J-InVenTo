@@ -1,11 +1,29 @@
 package com.jhsfully.inventoryManagement.restcontroller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jhsfully.inventoryManagement.dto.InboundDto;
+import com.jhsfully.inventoryManagement.dto.InboundDto.InboundResponse;
 import com.jhsfully.inventoryManagement.facade.InboundFacade;
 import com.jhsfully.inventoryManagement.security.JwtAuthenticationFilter;
 import com.jhsfully.inventoryManagement.security.SecurityConfiguration;
 import com.jhsfully.inventoryManagement.service.InboundInterface;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,21 +34,6 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(value = InboundController.class, excludeFilters =
     @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {
@@ -138,6 +141,10 @@ class InboundControllerTest {
     @DisplayName("[Controller]입고 취소 성공")
     void cancelInboundSuccess() throws Exception {
 
+        //given
+        given(inboundService.getInbound(anyLong()))
+            .willReturn(InboundResponse.builder().stockId(1L).build());
+
         //when & then
         mockMvc.perform(delete("/inbound/1")
                         .with(csrf()))
@@ -145,7 +152,7 @@ class InboundControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("1"));
 
-        verify(inboundFacade, times(1)).cancelInbound(anyLong());
+        verify(inboundFacade, times(1)).cancelInbound(anyLong(), anyLong());
 
     }
 }

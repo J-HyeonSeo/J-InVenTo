@@ -1,27 +1,30 @@
 package com.jhsfully.inventoryManagement.service;
 
+import static com.jhsfully.inventoryManagement.type.InboundErrorType.INBOUND_NOT_FOUND;
+import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NOT_FOUND;
+import static com.jhsfully.inventoryManagement.type.StocksErrorType.STOCKS_AMOUNT_NULL;
+import static com.jhsfully.inventoryManagement.type.StocksErrorType.STOCKS_CANT_CANCEL_OR_LESS_ZERO;
+import static com.jhsfully.inventoryManagement.type.StocksErrorType.STOCKS_CANT_SPEND_OR_LESS_ZERO;
+import static com.jhsfully.inventoryManagement.type.StocksErrorType.STOCKS_NOT_CREATE_OR_LESS_ZERO;
+import static com.jhsfully.inventoryManagement.type.StocksErrorType.STOCKS_NOT_FOUND;
+
 import com.jhsfully.inventoryManagement.dto.StocksDto;
-import com.jhsfully.inventoryManagement.exception.InboundException;
-import com.jhsfully.inventoryManagement.exception.ProductException;
-import com.jhsfully.inventoryManagement.exception.StocksException;
 import com.jhsfully.inventoryManagement.entity.InboundEntity;
 import com.jhsfully.inventoryManagement.entity.ProductEntity;
 import com.jhsfully.inventoryManagement.entity.StocksEntity;
+import com.jhsfully.inventoryManagement.exception.InboundException;
+import com.jhsfully.inventoryManagement.exception.ProductException;
+import com.jhsfully.inventoryManagement.exception.StocksException;
 import com.jhsfully.inventoryManagement.lock.ProcessLock;
 import com.jhsfully.inventoryManagement.repository.InboundRepository;
 import com.jhsfully.inventoryManagement.repository.ProductRepository;
 import com.jhsfully.inventoryManagement.repository.StocksRepository;
 import com.jhsfully.inventoryManagement.type.LockType;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.jhsfully.inventoryManagement.type.InboundErrorType.INBOUND_NOT_FOUND;
-import static com.jhsfully.inventoryManagement.type.ProductErrorType.PRODUCT_NOT_FOUND;
-import static com.jhsfully.inventoryManagement.type.StocksErrorType.*;
 
 @Service
 @Transactional
@@ -88,10 +91,11 @@ public class StocksService implements StocksInterface {
         StocksEntity stock = stocksRepository.findById(stockId)
                 .orElseThrow(() -> new StocksException(STOCKS_NOT_FOUND));
         stock.setInbound(null);
+        stocksRepository.save(stock);
     }
 
     @Override
-    @ProcessLock(value = LockType.INBOUND_OUTBOUND, key = "id")
+    @ProcessLock(group = LockType.INBOUND_OUTBOUND, key = "#id")
     public void spendStockById(Long id, Double amount) {
         StocksEntity stocksEntity = validateSpendStock(id, amount);
 
@@ -101,7 +105,7 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
-    @ProcessLock(value = LockType.INBOUND_OUTBOUND, key = "id")
+    @ProcessLock(group = LockType.INBOUND_OUTBOUND, key = "#id")
     public void cancelSpendStockById(Long id, Double amount){
         StocksEntity stocksEntity = validateCancelSpendStock(id, amount);
 
@@ -111,7 +115,6 @@ public class StocksService implements StocksInterface {
     }
 
     @Override
-    @ProcessLock(value = LockType.INBOUND_OUTBOUND, key = "id")
     public void deleteStock(Long id) {
         //파서드단에서 밸리데이션을 수행했을거임.
         StocksEntity stocksEntity = stocksRepository.findById(id)
