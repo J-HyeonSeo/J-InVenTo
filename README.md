@@ -11,7 +11,8 @@
 - 스프링부트로 재고관리에 관련된 API를 작성하였습니다.
 - `구매 -> 입고 -> 출고`, 프로세스를 따르는 간단한 재고관리 프로그램입니다.
 - 해당 API를 가지고, 클라이언트를 구현할 수 있게 서버는 인증부터 요청 응답을 `전부 RestAPI형태`로 처리합니다.
-- 예시를 보여주기 위해, 간단하게 `HTML, CSS, JS`로 프론트엔드 부분을 제작하였습니다.
+- 프론트엔드 부분은 ThymeLeaf Template 엔진과 `HTML, CSS, JS`을 통해 구현하였습니다.
+- 일반적인 출고 뿐만 아니라, BOM품목을 형성하여 BOM단위로 출고할 수 있는 기능을 제공합니다.
 
 ---
 
@@ -74,44 +75,34 @@
 #Spring-Boot Server PROPERTIES
 
 #server.address=localhost -> 스프링부트서버주소
-
 server.port=8080 -> 스프링부트서버포트
 
 #REDIS SERVER PROPERTIES (Caching & Locking Server)
 
 spring.redis.host=jinvento-redis -> redis 서버 주소
-
 spring.redis.port=6379 -> redis 서버 포트
 
 #MySQL SERVER PROPERTIES ( DATABASE SERVER )
-
 spring.datasource.url=jdbc:mysql://jinvento-mysql:3306/inventory?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false -> mysql 서버 주소 및 포트 및 설정
-
 spring.datasource.username=inventory -> mysql 로그인 유저
-
 spring.datasource.password=inventory -> mysql 로그인 암호
 
 #Json Web Token Secret Key
-
-- Json Web Token를 암,복호화 하는 비밀키 설정.(최대한 어렵게 해야함. 그대로 사용 절대 XXX)
+#Json Web Token를 암,복호화 하는 비밀키 설정.(최대한 어렵게 해야함. 그대로 사용 절대 XXX)
 spring.jwt.secret=VGhpcy1pcy1teS1maXJzdC1qd3QtdG9rZW4ta2V5LWdlbmVyYXRlLXNvLWV4Y2l0ZWQtd2VsbAo=
 
 #Whether to save the GET method.
-
 log.save-get-log=true -> GET요청을 log에 남길지 확인 (GET요청이 너무 많다고 생각하면 false설정)
 
 #Whether access is possible only with the IP recorded when logging in
-
 auth.access-ip.origin=true -> 로그인 할 때 기록된 IP만 RefreshToken 사용가능.
 
 #Whether access is possible only with the User-Agent recorded when logging in
-
-auth.access-user-agent-origin=true -> 로그인 할 때 기록된 User-Agent만 RefreshToekn 사용가능.
+auth.access-user-agent-origin=true -> 로그인 할 때 기록된 User-Agent만 RefreshToken 사용가능.
 
 #Whether to use NGINX And Client ip header name included in NGINX
 
 nginx.use=false -> NGINX 사용여부
-
 nginx.origin-ip.header=x-original-forwarded-for -> NGINX 사용시 x-forward-for 헤더이름 기입.
 ```
 
@@ -121,7 +112,7 @@ nginx.origin-ip.header=x-original-forwarded-for -> NGINX 사용시 x-forward-for
 
 - `Dockerfile` : 스프링부트의 Docker설정 file입니다.
 - `NGINX/Dockerfile` : NGINX의 Docker설정 file입니다.
-- `NGINX/default.conf` : 로드밸런서 및 리버스프록시 설정을 지정하는 파일입니다.
+- `NGINX/default.conf` : NGINX의 설정을 지정하는 파일입니다.
 - `Docker/docker-build.sh` : 프로젝트를 빌드하고, 스프링부트 및 NGINX 도커 이미지를 만듭니다. (윈도우에서는 WSL로 실행가능함.)
 - `Docker/docker-compose.yml` : 로컬 환경 테스트를 위해, 제공되는 컴포즈 파일입니다. (docker-compose up -d 로 실행가능.)
 
